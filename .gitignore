@@ -1,0 +1,82 @@
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# JustCode is a .NET coding add-in
+.JustCode
+
+# TeamCity is a build add-in
+_TeamCity*
+
+# DotCover is a Code Coverage Tool
+*.dotCover
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/[Pp]ackages/*
+# except build/, which is used as an MSBuild target.
+!**/[Pp]ackages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/[Pp]ackages/repositories.config
+# NuGet v3's project.json files produces more ignoreable files
+*.nuget.props
+*.nuget.targets
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# User-specific JetBrains Rider files
+.idea/**/workspace.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/tasks.xml
+.idea/modules.xml
+.idea/**/vcs.xml
+.idea/**/codeStyles/
+
+# Ignore obj directory
+**/obj/
+
+
+# End of JetBrains Rider-specific exclusion rules
+# Don't ignore .idea entirely as it contains per-project settings
+# that Rider needs to function properly. Comment in specific .idea dirs
+# as necessary but be mindful of checking in any sensitive data.
+
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Rider generated files
+.idea/
+
+# End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,unity,jetbrains,rider
+

@@ -1,8 +1,21 @@
-﻿namespace SharedProject_IS_HeavyIndustry.ViewModels;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.Services;
+
+namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
 #pragma warning disable CA1822 // Mark members as static
-    public string Greeting => "Welcome to Avalonia!";
 #pragma warning restore CA1822 // Mark members as static
+
+    public MainWindowViewModel()
+    {
+        var service = new BOMDataService();
+        ListParts = new ObservableCollection<Part>(service.GetPartList());
+    }
+    
+    public ObservableCollection<Part> ListParts { get; }
+
 }

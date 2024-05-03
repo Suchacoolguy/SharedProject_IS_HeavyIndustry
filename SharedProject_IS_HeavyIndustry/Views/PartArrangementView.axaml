@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.PartArrangementView">
+    
+    
+    <Grid>
+        <TabControl Margin="5">
+            <TabItem Header="파트배치">   
+                <!-- <TextBlock Text="{Binding Part.Length}"></TextBlock> -->
+                <Canvas Grid.Row="1" Width="600">
+                    <!-- Raw material --> 
+                    <Rectangle Name="RawMaterial" Height="30" Width="600" Fill="LightGray" Canvas.Left="0" Canvas.Top="50" /> 
+                    <!-- Parts --> 
+                    <StackPanel Orientation="Horizontal" Canvas.Left="0" Canvas.Top="50">
+                        <Grid Width="127">
+                            <Rectangle Height="30" Width="127" Fill="Blue" />
+                            <Border BorderBrush="Black" BorderThickness="1" Background="Transparent"/>
+                        </Grid>
+                        <Grid Width="127">
+                            <Rectangle Height="30" Width="127" Fill="BurlyWood" />
+                            <Border BorderBrush="Black" BorderThickness="1" Background="Transparent"/>
+                        </Grid>
+                    </StackPanel>
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Tab 2">
+                <TextBlock Margin="5">This is tab 2 content</TextBlock>
+            </TabItem>
+            <TabItem Header="Tab 3">
+                <TextBlock Margin="5">This is tab 3 content</TextBlock>
+            </TabItem>
+        </TabControl>    
+    </Grid>
+</UserControl>
+
+

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
@@ -13,9 +14,9 @@ public class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel()
     {
         var service = new BOMDataService();
-        ListParts = new ObservableCollection<Part>(service.GetPartList());
+        BOMData = new BOMDataViewModel(service.GetPartList());
     }
     
-    public ObservableCollection<Part> ListParts { get; }
+    public BOMDataViewModel BOMData { get; }
 
 }

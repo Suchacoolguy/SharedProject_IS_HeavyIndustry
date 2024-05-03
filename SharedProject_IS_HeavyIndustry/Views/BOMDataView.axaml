@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SharedProject_IS_HeavyIndustry.Views.BOMDataView"
-             xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
-             x:DataType="vm:BOMDataViewModel"
+             x:DataType="vm:MainWindowViewModel"
              >
     
     
@@ -13,15 +13,17 @@
         <Button DockPanel.Dock="Bottom"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center">
-            Add Item
+            Data Binding Test
         </Button>
-        <ItemsControl ItemsSource="{Binding ListParts}">
+        <ItemsControl ItemsSource="{Binding BOMData.ListParts}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <CheckBox Margin="4"
+                              IsChecked="True"
                               Content="{Binding Length}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </DockPanel>
+    
 </UserControl>

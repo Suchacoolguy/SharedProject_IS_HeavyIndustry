@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SharedProject_IS_HeavyIndustry.Models;
@@ -9,6 +10,11 @@ public class BOMDataViewModel
     public BOMDataViewModel(List<Part> parts)
     {
         ListParts = new ObservableCollection<Part>(parts);
+        Console.WriteLine(ListParts.GetType());
+        // foreach (var part in ListParts)
+        // {
+        //     Console.WriteLine("Type:" + part);
+        // }
     }
     
     public ObservableCollection<Part> ListParts { get; }

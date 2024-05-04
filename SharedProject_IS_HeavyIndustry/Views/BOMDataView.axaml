@@ -3,27 +3,46 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
              x:Class="SharedProject_IS_HeavyIndustry.Views.BOMDataView"
+             xmlns:converters="using:SharedProject_IS_HeavyIndustry.Converters"
              x:DataType="vm:MainWindowViewModel"
              >
     
+    <UserControl.Resources>
+        <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
+    </UserControl.Resources>
     
-    <DockPanel>
-        <Button DockPanel.Dock="Bottom"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center">
-            Data Binding Test
-        </Button>
-        <ItemsControl ItemsSource="{Binding BOMData.ListParts}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <CheckBox Margin="4"
-                              IsChecked="True"
-                              Content="{Binding Length}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </DockPanel>
+    <Grid>
+        <TabControl Margin="5">
+            <TabItem Header="파트배치">
+                <!-- Parts -->
+                <StackPanel Orientation="Vertical">
+                    <ItemsControl ItemsSource="{Binding BOMData.ListParts}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas Width="1200" Height="40">
+                                    <!-- Raw material -->
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <Rectangle Name="RawMaterial" Height="30" Width="1200" Fill="LightGray" Canvas.Left="0" Canvas.Top="5" />
+                                    </Border>
+                                    <!-- Part -->
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <Rectangle Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood" Canvas.Left="0" Canvas.Top="5" />
+                                    </Border>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Tab 2">
+                <TextBlock Margin="5">This is tab 2 content</TextBlock>
+            </TabItem>
+            <TabItem Header="Tab 3">
+                <TextBlock Margin="5">This is tab 3 content</TextBlock>
+            </TabItem>
+        </TabControl>
+    </Grid>
     
 </UserControl>

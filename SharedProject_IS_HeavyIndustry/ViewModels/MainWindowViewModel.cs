@@ -13,10 +13,12 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        var service = new BOMDataService();
-        BOMData = new BOMDataViewModel(service.GetPartList());
+        // var service = new BOMDataService();
+        // BOMData = new BOMDataViewModel(service.GetPartList());
+        var service = new ArrangePartsService();
+        DragAndDropData = new DragAndDropViewModel(service.GetArrangedRawMaterials());
     }
     
     public BOMDataViewModel BOMData { get; }
-
+    public DragAndDropViewModel DragAndDropData { get; }
 }

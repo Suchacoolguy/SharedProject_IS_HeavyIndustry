@@ -8,20 +8,33 @@ namespace SharedProject_IS_HeavyIndustry.Models
 {
     public class RawMaterial
     {
-        public int Length;
-        public List<Part> parts_inside;
+        public int Length
+        {
+            get;
+        }
 
+        public List<Part> PartsInside
+        {
+            get;
+        }
+
+        
+        public List<Part> get_parts_inside()
+        {
+            return PartsInside;
+        }
+        
         public RawMaterial(int length)
         {
             this.Length = length;
-            this.parts_inside = new List<Part>();
+            this.PartsInside = new List<Part>();
         }
 
         public bool add_part(Part part)
         {
             if (part.Num > 0)
             {
-                parts_inside.Add(part);
+                PartsInside.Add(part);
                 return true;
             }
             else
@@ -34,13 +47,13 @@ namespace SharedProject_IS_HeavyIndustry.Models
         public int get_remaining_length()
         {
             int remaining_length = Length;
-            if (parts_inside == null)
+            if (PartsInside == null)
             {
                 return remaining_length;
             }
             else
             {
-                foreach (var part in parts_inside)
+                foreach (var part in PartsInside)
                 {
                     remaining_length -= part.Length;
                 }
@@ -50,33 +63,28 @@ namespace SharedProject_IS_HeavyIndustry.Models
 
         public void remove_all_parts()
         {
-            parts_inside.Clear();
+            PartsInside.Clear();
         }
 
         public void remove_part(int length)
         {
-            var partToRemove = parts_inside.FirstOrDefault(part => part.Length == length);
+            var partToRemove = PartsInside.FirstOrDefault(part => part.Length == length);
 
             if(partToRemove != null)
             {
-                parts_inside.Remove(partToRemove);
+                PartsInside.Remove(partToRemove);
             }
             else
             {
                 System.Console.WriteLine("No part found with given length.");
             }
         }
-
-        public List<Part> get_parts_inside()
-        {
-            return parts_inside;
-        }
         
         public override string ToString()
         {
             string result = "Raw Length: " + Length + "\nParts inside the Raw Material:\n";
 
-            foreach (var part in parts_inside)
+            foreach (var part in PartsInside)
             {
                 result += "Part Length: " + part.Length + "\n";
             }
@@ -118,7 +126,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 int i = 1;
                 int lineX = 0;
 
-                foreach (var part in parts_inside)
+                foreach (var part in PartsInside)
                 {
                     accumulatedLength += part.Length;
 

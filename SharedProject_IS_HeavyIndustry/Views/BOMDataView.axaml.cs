@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -38,19 +39,30 @@ public partial class BOMDataView : UserControl
 
     private void RawMaterial_Drop(object sender, DragEventArgs e)
     {
-        var rawMaterial = (sender as Control)?.DataContext as RawMaterial;
+        var rectangle = this.FindControl<Rectangle>("Rectangle_RawMaterial");
+        var rawMaterial = rectangle?.Tag as RawMaterial;
         var data = e.Data as IDataObject;
         var part = data.Get("part") as Part;
+
         if (rawMaterial != null && part != null)
         {
-            rawMaterial.add_part(part);
+            // rawMaterial.add_part(part);
             Console.WriteLine("Drop");
+            Console.WriteLine(rawMaterial);
         }
-        Console.WriteLine(part);
+
+        if (rectangle == null)
+        {
+            Console.WriteLine("Rectangle is null");
+        }
+
+        if (part != null)
+        {
+            Console.WriteLine(part);
+        }
         if (rawMaterial == null)
         {
             Console.WriteLine("RawMaterial is null");
         }
-        
     }
 }

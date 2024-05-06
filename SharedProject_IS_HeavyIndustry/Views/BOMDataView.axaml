@@ -16,6 +16,7 @@
      <Grid>
         <TabControl Margin="5">
             <TabItem Header="파트배치">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <!-- Parts -->
                 <StackPanel Orientation="Vertical" DragDrop.AllowDrop="True">
                     <ItemsControl ItemsSource="{Binding DragAndDropData.ArrangedRawMaterials}">
@@ -24,8 +25,8 @@
                                 <Canvas Width="1200" Height="40">
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <Rectangle Name="RawMaterial" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
-                                                   DragDrop.AllowDrop="True"/>
+                                        <Rectangle Name="Rectangle_RawMaterial" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
+                                                   DragDrop.AllowDrop="True" Tag="{Binding}" />
                                     </Border>
                                     <!-- Part -->
                                     <ItemsControl ItemsSource="{Binding PartsInside}">
@@ -51,6 +52,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Tab 2">
                 <TextBlock Margin="5">This is tab 2 content</TextBlock>

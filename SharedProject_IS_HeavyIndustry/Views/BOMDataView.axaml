@@ -18,12 +18,17 @@
             <TabItem Header="파트배치">
                 <!-- Parts -->
                 <StackPanel Orientation="Vertical" DragDrop.AllowDrop="True">
+<<<<<<< HEAD
                     <ItemsControl ItemsSource="{Binding BOMData.ListParts}">
+=======
+                    <ItemsControl ItemsSource="{Binding DragAndDropData.ArrangedRawMaterials}">
+>>>>>>> drag-and-drop
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas Width="1200" Height="40">
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1">
+<<<<<<< HEAD
                                         <Rectangle Name="RawMaterial" Height="30" Width="1200" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
                                                    DragDrop.AllowDrop="True"/>
                                     </Border>
@@ -32,6 +37,30 @@
                                         <Rectangle Name="Part_Rectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" 
                                                    Fill="BurlyWood" Canvas.Left="0" Canvas.Top="5" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" />
                                     </Border>
+=======
+                                        <Rectangle Name="RawMaterial" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
+                                                   DragDrop.AllowDrop="True"/>
+                                    </Border>
+                                    <!-- Part -->
+                                    <ItemsControl ItemsSource="{Binding PartsInside}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <!-- Display code for each Part -->
+                                                <!-- Replace this with your actual display code for each Part -->
+                                                <Border BorderBrush="Black" BorderThickness="1">
+                                                    <Rectangle Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood"
+                                                               PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    
+>>>>>>> drag-and-drop
                                 </Canvas>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

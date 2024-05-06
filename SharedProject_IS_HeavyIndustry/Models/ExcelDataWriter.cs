@@ -167,7 +167,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 row++;
                 
                 int j = 1;
-                foreach (var part in bom.parts_inside)
+                foreach (var part in bom.PartsInside)
                 {
                     worksheet.Cells[row, 2].Value = j;
                     worksheet.Cells[row, 3].Value = "BlockMark:";

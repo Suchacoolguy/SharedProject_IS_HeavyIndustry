@@ -12,6 +12,7 @@ public class DragAndDropViewModel
     }
     
     public ObservableCollection<RawMaterial> ArrangedRawMaterials { get; }
+    public RawMaterial CurrentRawMaterial { get; set; }
 }
 
 // public BOMDataViewModel(List<Part> parts)

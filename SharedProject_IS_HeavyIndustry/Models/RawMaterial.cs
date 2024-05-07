@@ -17,6 +17,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
         {
             get;
         }
+        
+        public Part insert_part(Part part)
+        {
+            PartsInside.Add(part);
+            return part;
+        }
 
         
         public List<Part> get_parts_inside()

@@ -25,6 +25,7 @@ public class ArrangePartsService
         RawMaterial best_of_the_best_combination = null;
         List<RawMaterial> best_combination_list = new List<RawMaterial>();
         
+        
         List<int> garra_parts = new List<int>() {2844, 2844};
         raw_material = garra_creator(part_list, garra_parts, 6010);
         raw_materials_used.Add(raw_material);
@@ -35,6 +36,10 @@ public class ArrangePartsService
         raw_material = garra_creator(part_list, garra_parts, 6010);
         raw_materials_used.Add(raw_material);
         
+        raw_material = garra_creator(part_list, garra_parts, 6010);
+        raw_materials_used.Add(raw_material);
+        
+        garra_parts = new List<int>();
         raw_material = garra_creator(part_list, garra_parts, 6010);
         raw_materials_used.Add(raw_material);
         
@@ -261,6 +266,8 @@ public class ArrangePartsService
         garra_parts = new List<int>() {3731, 3581};
         raw_material = garra_creator(part_list, garra_parts, 7510);
         raw_materials_used.Add(raw_material);
+
+        
 
         return raw_materials_used;
     }

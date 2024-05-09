@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using SkiaSharp;
@@ -11,11 +12,13 @@ namespace SharedProject_IS_HeavyIndustry.Models
         public int Length
         {
             get;
+            set;
         }
 
-        public List<Part> PartsInside
+        public ObservableCollection<Part> PartsInside
         {
             get;
+            set;
         }
         
         public Part insert_part(Part part)
@@ -25,7 +28,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         }
 
         
-        public List<Part> get_parts_inside()
+        public ObservableCollection<Part> get_parts_inside()
         {
             return PartsInside;
         }
@@ -33,7 +36,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         public RawMaterial(int length)
         {
             this.Length = length;
-            this.PartsInside = new List<Part>();
+            this.PartsInside = new ObservableCollection<Part>();
         }
 
         public bool add_part(Part part)

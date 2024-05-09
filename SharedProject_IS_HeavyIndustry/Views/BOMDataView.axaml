@@ -18,8 +18,8 @@
             <TabItem Header="파트배치">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <!-- Parts arranged inside raw materials -->
-                <StackPanel Orientation="Vertical" DragDrop.AllowDrop="True">
-                    <ItemsControl ItemsSource="{Binding DragAndDropData.ArrangedRawMaterials}" >
+                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True">
+                    <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropData.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas Width="1200" Height="40">
@@ -28,7 +28,7 @@
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
                                                    DragDrop.AllowDrop="True" Tag="{Binding}" />
                                     </Border>
-                                    <!-- Part -->
+                                    <!-- Parts -->
                                     <ItemsControl ItemsSource="{Binding PartsInside}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -39,12 +39,11 @@
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="1">
                                                     <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood"
-                                                               PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding $parent[Rectangle]}"/>
+                                                               PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    
                                 </Canvas>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

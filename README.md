@@ -13,8 +13,8 @@ Length 값대로 막대 길이 설정하면 넘 길어져서 10으로 나눌려�
 데이터 가져오는 애들은 여기다가 따로 빼려고 함.
 
 ### 드래그앤드랍 관련 파일 ###
-## 정리가 안돼서 아직 뒤죽박죽쓰.. 곧 정리할 것 ##
-DragAndDropViewModel.cs
-BOMDataView.axaml
-BOMDataView.axaml.cs
+#### 정리가 안돼서 아직 뒤죽박죽쓰.. 곧 정리할 것 ####
+- DragAndDropViewModel.cs
+- BOMDataView.axaml
+- BOMDataView.axaml.cs
 etc)

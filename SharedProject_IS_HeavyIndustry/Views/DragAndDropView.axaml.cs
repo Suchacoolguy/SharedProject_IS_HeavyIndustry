@@ -15,9 +15,9 @@ using Border = OfficeOpenXml.Style.Border;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
-public partial class BOMDataView : UserControl
+public partial class DragAndDropView : UserControl
 {
-    public BOMDataView()
+    public DragAndDropView()
     {
         InitializeComponent();
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
@@ -27,7 +27,7 @@ public partial class BOMDataView : UserControl
     private void Part_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         var part = (sender as Control)?.DataContext as Part;
-        RawMaterial rawMaterial = null;
+        RawMaterial originalRawMaterial = null;
 
         ItemsControl itemsControl = this.FindControl<ItemsControl>("RawMaterialList");
         for(int i = 0; i < itemsControl.Items.Count; i++)
@@ -35,9 +35,9 @@ public partial class BOMDataView : UserControl
             RawMaterial temp = itemsControl.Items[i] as RawMaterial;
             foreach (Part p in temp.PartsInside)
             {
-                if (p.Equals(part))
+                if (ReferenceEquals(p, part))
                 {
-                    rawMaterial = temp;      
+                    originalRawMaterial = temp;      
                     break;
                 }
             }
@@ -48,15 +48,15 @@ public partial class BOMDataView : UserControl
 
         // var rawMaterial = rawMaterialRectangle?.Tag as RawMaterial;
 
-        if (part != null && rawMaterial != null)
+        if (part != null && originalRawMaterial != null)
         {
             // the part object being dragged
             var data = new DataObject();
             data.Set("part", part);
-            data.Set("originalRawMaterial", rawMaterial);
+            data.Set("originalRawMaterial", originalRawMaterial);
             
             DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
-            Console.WriteLine("pointer pressed");
+            // Console.WriteLine("pointer pressed");
         }
         
     }
@@ -78,31 +78,31 @@ public partial class BOMDataView : UserControl
         }
 
         var part = data.Get("part") as Part;
-        var originalRawMaterial = data.Get("originalRawMaterial") as RawMaterial;
+        var dragging_from = data.Get("originalRawMaterial") as RawMaterial;
 
-        if (originalRawMaterial == null)
+        if (dragging_from == null)
         {
             Console.WriteLine("originalRawMaterial is null");    
         }
         
         // Get the RawMaterial object from the sender
-        var rawMaterial = (e.Source as Control)?.Tag as RawMaterial;
+        var dragging_to = (e.Source as Control)?.Tag as RawMaterial;
 
-        if (rawMaterial != null && part != null)
+        if (dragging_to != null && part != null)
         {
             // rawMaterial.add_part(part);
             // rawMaterial.insert_part(part);
         
             // Update the ArrangedRawMaterials collection in the ViewModel
             var viewModel = DataContext as MainWindowViewModel;
-            viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, rawMaterial, part);
+            viewModel?.DragAndDropData.UpdateRawMaterial(dragging_from, dragging_to, part);
         }
 
         if (part != null)
         {
             Console.WriteLine(part);
         }
-        if (rawMaterial == null)
+        if (dragging_to == null)
         {
             Console.WriteLine("RawMaterial is null");
         }

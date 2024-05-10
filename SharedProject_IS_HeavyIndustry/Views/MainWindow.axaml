@@ -9,6 +9,6 @@
         Title="SharedProject_IS_HeavyIndustry">
     
     
-    <views:BOMDataView/>
+    <views:DragAndDropView/>
 
 </Window>

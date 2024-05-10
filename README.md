@@ -2,6 +2,7 @@
 ### Services/BOMDataService.cs ###
 BOM 엑셀파일에서 데이터 불러옴.
 git pull 해서 실행하려면 엑셀 파일경로 바꿔야할 것.
+**짐은 현재 사용하지 않고 있음. 가라데이터로 구현하는 중임.**
 
 ### Services/ArrangePartsService.cs ###
 '파트 배치 결과' 더미 데이터 만드는 자슥. 드래그 앤 드랍 테스트용으로 사용함. 얘도 액셀 파일경로 바꿔야 할 것.

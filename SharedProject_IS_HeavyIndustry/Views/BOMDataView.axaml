@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
-             x:Class="SharedProject_IS_HeavyIndustry.Views.DragAndDropView"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.BOMDataView"
              xmlns:converters="using:SharedProject_IS_HeavyIndustry.Converters"
              x:DataType="vm:MainWindowViewModel"
              >

@@ -7,7 +7,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
 public class DragAndDropViewModel
 {
-    public DragAndDropViewModel(List<RawMaterial> arranged_raw_materials)
+    public DragAndDropViewModel(ObservableCollection<RawMaterial> arranged_raw_materials)
     {
         ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arranged_raw_materials);
     }

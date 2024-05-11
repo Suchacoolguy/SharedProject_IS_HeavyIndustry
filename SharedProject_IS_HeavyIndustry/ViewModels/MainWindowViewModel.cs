@@ -18,5 +18,7 @@ public class MainWindowViewModel : ViewModelBase
         var service = new ArrangePartsService();
         DragAndDropData = new DragAndDropViewModel(service.GetArrangedRawMaterials());
     }
+    
+    public BOMDataViewModel BOMData { get; }
     public DragAndDropViewModel DragAndDropData { get; }
 }

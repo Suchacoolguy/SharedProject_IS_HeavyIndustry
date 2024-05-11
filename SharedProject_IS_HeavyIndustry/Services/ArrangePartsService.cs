@@ -8,11 +8,11 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 public class ArrangePartsService
 {
     private static List<int> length_options_rawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010, 12110};
-    private static List<RawMaterial> raw_materials_used = arrangeParts();
+    private static ObservableCollection<RawMaterial> raw_materials_used = arrangeParts();
     
-    public static List<RawMaterial> arrangeParts()
+    public static ObservableCollection<RawMaterial> arrangeParts()
     {
-        List<RawMaterial> raw_materials_used = new List<RawMaterial>();
+        ObservableCollection<RawMaterial> raw_materials_used = new ObservableCollection<RawMaterial>();
         
         List<Part> part_list = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
         // sort in descending order
@@ -293,7 +293,7 @@ public class ArrangePartsService
         return raw;
     }
 
-    public List<RawMaterial> GetArrangedRawMaterials()
+    public ObservableCollection<RawMaterial> GetArrangedRawMaterials()
     {
         return raw_materials_used;
     }

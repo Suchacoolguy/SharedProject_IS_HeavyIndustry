@@ -16,9 +16,9 @@ using Border = OfficeOpenXml.Style.Border;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
-public partial class DragAndDropView : UserControl
+public partial class BOMDataView : UserControl
 {
-    public DragAndDropView()
+    public BOMDataView()
     {
         InitializeComponent();
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
@@ -29,23 +29,23 @@ public partial class DragAndDropView : UserControl
     {
         var part = (sender as Control)?.DataContext as Part;
         RawMaterial originalRawMaterial = null;
-
-        // Get the Part Rectangle's parent Border
-        var parentBorder = (sender as Control)?.GetVisualParent<Avalonia.Controls.Border>();
-        // Get the Border's parent Canvas
-        var parentCanvas = (parentBorder as Avalonia.Controls.Control)?.GetVisualParent<Canvas>();
-        // Get the Canvas's parent Border
-        var parentSecondBorder = (parentCanvas as Control)?.GetVisualParent<Avalonia.Controls.Border>();
-        // Get the Border's parent ItemsControl
-        var parentItemsControl = (parentSecondBorder as Avalonia.Controls.Control)?.GetVisualParent<ItemsControl>();
-
-        // Find the RawMaterial Rectangle within the parent ItemsControl
-        var rawMaterialRectangle = parentItemsControl?.FindControl<Rectangle>("RawMaterialRectangle");
-
-        if (rawMaterialRectangle != null)
+        
+        ItemsControl itemsControl = this.FindControl<ItemsControl>("RawMaterialList");
+        for(int i = 0; i < itemsControl.Items.Count; i++)
         {
-            originalRawMaterial = rawMaterialRectangle.Tag as RawMaterial;
+            RawMaterial temp = itemsControl.Items[i] as RawMaterial;
+            foreach (Part p in temp.PartsInside)
+            {
+                if (p.Equals(part))
+                {
+                    originalRawMaterial = temp;      
+                    break;
+                }
+            }
+            
+            // Console.WriteLine(rawMaterial);
         }
+        
 
         if (part != null && originalRawMaterial != null)
         {
@@ -55,7 +55,7 @@ public partial class DragAndDropView : UserControl
             data.Set("originalRawMaterial", originalRawMaterial);
             
             DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
-            // Console.WriteLine("pointer pressed");
+            Console.WriteLine("pointer pressed");
         }
         
     }
@@ -77,31 +77,31 @@ public partial class DragAndDropView : UserControl
         }
 
         var part = data.Get("part") as Part;
-        var dragging_from = data.Get("originalRawMaterial") as RawMaterial;
+        var originalRawMaterial = data.Get("originalRawMaterial") as RawMaterial;
 
-        if (dragging_from == null)
+        if (originalRawMaterial == null)
         {
             Console.WriteLine("originalRawMaterial is null");    
         }
         
         // Get the RawMaterial object from the sender
-        var dragging_to = (e.Source as Control)?.Tag as RawMaterial;
+        var rawMaterial = (e.Source as Control)?.Tag as RawMaterial;
 
-        if (dragging_to != null && part != null)
+        if (rawMaterial != null && part != null)
         {
             // rawMaterial.add_part(part);
             // rawMaterial.insert_part(part);
         
             // Update the ArrangedRawMaterials collection in the ViewModel
             var viewModel = DataContext as MainWindowViewModel;
-            viewModel?.DragAndDropData.UpdateRawMaterial(dragging_from, dragging_to, part);
+            viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, rawMaterial, part);
         }
 
         if (part != null)
         {
             Console.WriteLine(part);
         }
-        if (dragging_to == null)
+        if (rawMaterial == null)
         {
             Console.WriteLine("RawMaterial is null");
         }

@@ -8,6 +8,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
+using ReactiveUI;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.Services;
@@ -29,24 +30,22 @@ public partial class DragAndDropView : UserControl
         var part = (sender as Control)?.DataContext as Part;
         RawMaterial originalRawMaterial = null;
 
-        ItemsControl itemsControl = this.FindControl<ItemsControl>("RawMaterialList");
-        for(int i = 0; i < itemsControl.Items.Count; i++)
-        {
-            RawMaterial temp = itemsControl.Items[i] as RawMaterial;
-            foreach (Part p in temp.PartsInside)
-            {
-                if (ReferenceEquals(p, part))
-                {
-                    originalRawMaterial = temp;      
-                    break;
-                }
-            }
-            
-            // Console.WriteLine(rawMaterial);
-        }
-        
+        // Get the Part Rectangle's parent Border
+        var parentBorder = (sender as Control)?.GetVisualParent<Avalonia.Controls.Border>();
+        // Get the Border's parent Canvas
+        var parentCanvas = (parentBorder as Avalonia.Controls.Control)?.GetVisualParent<Canvas>();
+        // Get the Canvas's parent Border
+        var parentSecondBorder = (parentCanvas as Control)?.GetVisualParent<Avalonia.Controls.Border>();
+        // Get the Border's parent ItemsControl
+        var parentItemsControl = (parentSecondBorder as Avalonia.Controls.Control)?.GetVisualParent<ItemsControl>();
 
-        // var rawMaterial = rawMaterialRectangle?.Tag as RawMaterial;
+        // Find the RawMaterial Rectangle within the parent ItemsControl
+        var rawMaterialRectangle = parentItemsControl?.FindControl<Rectangle>("RawMaterialRectangle");
+
+        if (rawMaterialRectangle != null)
+        {
+            originalRawMaterial = rawMaterialRectangle.Tag as RawMaterial;
+        }
 
         if (part != null && originalRawMaterial != null)
         {

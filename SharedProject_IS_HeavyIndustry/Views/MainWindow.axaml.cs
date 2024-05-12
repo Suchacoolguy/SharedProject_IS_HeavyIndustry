@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 
@@ -8,6 +9,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
+        DataContext = new MainWindowViewModel();
     }
 }

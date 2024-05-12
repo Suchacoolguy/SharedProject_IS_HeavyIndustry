@@ -10,11 +10,11 @@ public class BOMDataViewModel
     public BOMDataViewModel(List<Part> parts)
     {
         ListParts = new ObservableCollection<Part>(parts);
-        Console.WriteLine(ListParts.GetType());
-        foreach (var part in ListParts)
-        {
-            Console.WriteLine("Length:" + part.Length);
-        }
+        // Console.WriteLine(ListParts.GetType());
+        // foreach (var part in ListParts)
+        // {
+        //     Console.WriteLine("Length:" + part.Length);
+        // }
     }
     
     public ObservableCollection<Part> ListParts { get; }

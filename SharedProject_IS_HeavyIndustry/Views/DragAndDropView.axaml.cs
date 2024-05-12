@@ -16,9 +16,9 @@ using Border = OfficeOpenXml.Style.Border;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
-public partial class BOMDataView : UserControl
+public partial class DragAndDropView : UserControl
 {
-    public BOMDataView()
+    public DragAndDropView()
     {
         InitializeComponent();
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
@@ -29,22 +29,44 @@ public partial class BOMDataView : UserControl
     {
         var part = (sender as Control)?.DataContext as Part;
         RawMaterial originalRawMaterial = null;
-        
-        ItemsControl itemsControl = this.FindControl<ItemsControl>("RawMaterialList");
-        for(int i = 0; i < itemsControl.Items.Count; i++)
+
+
+        foreach (RawMaterial raw in DragAndDropViewModel.ArrangedRawMaterials)
         {
-            RawMaterial temp = itemsControl.Items[i] as RawMaterial;
-            foreach (Part p in temp.PartsInside)
+            foreach (Part p in raw.PartsInside)
             {
-                if (p.Equals(part))
+                if (ReferenceEquals(part, p))
                 {
-                    originalRawMaterial = temp;      
+                    originalRawMaterial = raw;
                     break;
                 }
-            }
-            
-            // Console.WriteLine(rawMaterial);
+            }   
         }
+        
+        foreach (var rawM in DragAndDropViewModel.ArrangedRawMaterials)
+        {
+            foreach (var paart in rawM.PartsInside)
+            {
+                Console.WriteLine(paart);
+            }
+            Console.WriteLine("----------");
+        }
+        
+        // ItemsControl itemsControl = this.FindControl<ItemsControl>("RawMaterialList");
+        // for(int i = 0; i < itemsControl.Items.Count; i++)
+        // {
+        //     RawMaterial temp = itemsControl.Items[i] as RawMaterial;
+        //     foreach (Part p in temp.PartsInside)
+        //     {
+        //         if (ReferenceEquals(part, p))
+        //         {
+        //             originalRawMaterial = temp;      
+        //             break;
+        //         }
+        //     }
+        //     
+        //     // Console.WriteLine(rawMaterial);
+        // }
         
 
         if (part != null && originalRawMaterial != null)
@@ -55,7 +77,6 @@ public partial class BOMDataView : UserControl
             data.Set("originalRawMaterial", originalRawMaterial);
             
             DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
-            Console.WriteLine("pointer pressed");
         }
         
     }

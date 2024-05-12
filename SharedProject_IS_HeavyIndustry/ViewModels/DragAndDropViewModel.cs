@@ -7,6 +7,9 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
 public class DragAndDropViewModel
 {
+    public static ObservableCollection<RawMaterial> ArrangedRawMaterials { get; set; }
+    public RawMaterial CurrentRawMaterial { get; set; }
+    
     public DragAndDropViewModel(ObservableCollection<RawMaterial> arranged_raw_materials)
     {
         ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arranged_raw_materials);
@@ -18,8 +21,8 @@ public class DragAndDropViewModel
         int index_to = ArrangedRawMaterials.IndexOf(to);
         int index_part = ArrangedRawMaterials[index_from].PartsInside.IndexOf(part);
         
-        Console.WriteLine("index from:" + index_from);
-        Console.WriteLine("index to:" + index_to);
+        // Console.WriteLine("index from:" + index_from);
+        // Console.WriteLine("index to:" + index_to);
         
         // Console.WriteLine("Part Index: " + index_part);
         // Console.WriteLine("Raw Count:" + ArrangedRawMaterials.Count);
@@ -27,16 +30,15 @@ public class DragAndDropViewModel
         {
             ArrangedRawMaterials[index_to].insert_part(part);
             ArrangedRawMaterials[index_from].PartsInside.RemoveAt(index_part);
-            Console.WriteLine(ArrangedRawMaterials[index_to]);
+            // Console.WriteLine(ArrangedRawMaterials[index_to]);
         }
         else
         {
-            Console.WriteLine("got into else statement.");
+            // Console.WriteLine("got into else statement.");
         }
     }
     
-    public static ObservableCollection<RawMaterial> ArrangedRawMaterials { get; set; }
-    public RawMaterial CurrentRawMaterial { get; set; }
+    
 }
 
 // public BOMDataViewModel(List<Part> parts)

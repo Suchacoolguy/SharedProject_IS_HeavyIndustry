@@ -18,7 +18,7 @@ namespace SharedProject_IS_HeavyIndustry
         {
             const string sheet = "IMB-현장"; // 원하는 시트 선택
 
-            Part temp = new Part();
+            // Part temp = new Part();
             using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
                 var worksheet = package.Workbook.Worksheets[sheet];
@@ -29,7 +29,7 @@ namespace SharedProject_IS_HeavyIndustry
                     var cellValue = worksheet.Cells[row, 4].Value;
                     if (cellValue != null && int.TryParse(cellValue.ToString(), out int intValue))
                     {
-                        temp = ExtractData(worksheet, row);
+                        Part temp = ExtractData(worksheet, row);
                         // Console.WriteLine(temp.Desc.Type.Equals("TB"));
                         // Console.WriteLine(temp.Desc.Size.Equals("150*100*3.2"));
                         // Console.WriteLine(temp.Desc.Size);

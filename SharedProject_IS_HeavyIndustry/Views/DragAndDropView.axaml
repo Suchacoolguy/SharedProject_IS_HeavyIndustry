@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
-             x:Class="SharedProject_IS_HeavyIndustry.Views.BOMDataView"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.DragAndDropView"
              xmlns:converters="using:SharedProject_IS_HeavyIndustry.Converters"
+             xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
              x:DataType="vm:MainWindowViewModel"
              >
     
@@ -52,10 +53,10 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Tab 2">
-                <TextBlock Margin="5">This is tab 2 content</TextBlock>
+                <views:TableView/>
             </TabItem>
             <TabItem Header="Tab 3">
-                <TextBlock Margin="5">This is tab 3 content</TextBlock>
+                <views:PartArrangementView></views:PartArrangementView>
             </TabItem>
         </TabControl>
     </Grid>

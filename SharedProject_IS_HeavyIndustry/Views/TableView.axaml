@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
+             x:DataType="vm:MainWindowViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
+    
+    
+
+    <DataGrid Name="DataGrid" ItemsSource="{Binding BOMData.ListParts}"
+              Margin="20"
+              IsReadOnly="True"
+              CanUserReorderColumns="True"
+              CanUserResizeColumns="True"
+              CanUserSortColumns="True"
+              GridLinesVisibility="All"
+              BorderThickness="1" BorderBrush="Gray">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Assem"  Binding="{Binding Assem}"/>
+            <DataGridTextColumn Header="Mark"  Binding="{Binding Mark}"/>
+            <DataGridTextColumn Header="Material"  Binding="{Binding Material}"/>
+            <DataGridTextColumn Header="Length"  Binding="{Binding Length}"/>
+            <DataGridTextColumn Header="Num"  Binding="{Binding Num}"/>
+            <DataGridTextColumn Header="WeightOne"  Binding="{Binding WeightOne}"/>
+            <DataGridTextColumn Header="WeightSum"  Binding="{Binding WeightSum}"/>
+            <DataGridTextColumn Header="pArea"  Binding="{Binding PArea}"/>
+            <DataGridTextColumn Header="Type"  Binding="{Binding Desc.Type}"/>
+            <DataGridTextColumn Header="Size"  Binding="{Binding Desc.Size}"/>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>
+
+

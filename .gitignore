@@ -1,3 +1,6 @@
+# my custom script to automate README.md updates
+auto_readme.sh
+
 # User-specific files
 *.suo
 *.user

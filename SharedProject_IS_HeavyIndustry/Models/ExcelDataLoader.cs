@@ -13,6 +13,7 @@ namespace SharedProject_IS_HeavyIndustry
     public class ExcelDataLoader
     {
         private static List<Part> parts = new List<Part>();
+        private int currentNum = 0;
 
         public static List<Part> PartListFromExcel(string filePath)
         {
@@ -35,10 +36,13 @@ namespace SharedProject_IS_HeavyIndustry
                         // Console.WriteLine(temp.Desc.Size);
                         if (temp.Desc.Type.Equals("TB") && temp.Desc.Size.Equals("150*100*3.2"))
                         {
-                            parts.Add(temp);    
+                            for (int i = temp.Num; i > 0; i--)
+                            {
+                                Part part = new Part(temp.Assem, temp.Mark, temp.Material, temp.Length, 1, temp.WeightOne, temp.WeightSum, temp.PArea, temp.Desc);
+                                parts.Add(part);
+                            }    
                         }
                     }
-
                     row++;
                 }
             }

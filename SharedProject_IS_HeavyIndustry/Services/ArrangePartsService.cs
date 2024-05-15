@@ -267,9 +267,7 @@ public class ArrangePartsService
         garra_parts = new List<int>() {3731, 3581};
         raw_material = garra_creator(part_list, garra_parts, 7510);
         raw_materials_used.Add(raw_material);
-
         
-
         return raw_materials_used;
     }
     

@@ -274,17 +274,16 @@ public class ArrangePartsService
     public static RawMaterial garra_creator(List<Part> part_list, List<int> part_length, int raw_length)
     {
         RawMaterial raw = new RawMaterial(raw_length);
-        int trial = part_length.Count;
         
-        foreach (var part in part_list)
+        foreach (var required_len in part_length)
         {
-            foreach (var required_len in part_length)
+            foreach (var part in part_list)
             {
-                if (part.Length == required_len && part.Num > 0 && trial > 0)
+                if (part.Length == required_len)
                 {
                     raw.add_part(part);
-                    part.Num--;
-                    trial--;
+                    part_list.Remove(part);
+                    break;
                 }   
             }
         }    

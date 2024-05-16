@@ -1,18 +1,8 @@
 using System;
-using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
-using ReactiveUI;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels;
-using SharedProject_IS_HeavyIndustry.Services;
-using Border = OfficeOpenXml.Style.Border;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
@@ -29,8 +19,7 @@ public partial class DragAndDropView : UserControl
     {
         var part = (sender as Control)?.DataContext as Part;
         RawMaterial originalRawMaterial = null;
-
-
+        
         foreach (RawMaterial raw in DragAndDropViewModel.ArrangedRawMaterials)
         {
             foreach (Part p in raw.PartsInside)
@@ -51,23 +40,6 @@ public partial class DragAndDropView : UserControl
             }
             Console.WriteLine("----------");
         }
-        
-        // ItemsControl itemsControl = this.FindControl<ItemsControl>("RawMaterialList");
-        // for(int i = 0; i < itemsControl.Items.Count; i++)
-        // {
-        //     RawMaterial temp = itemsControl.Items[i] as RawMaterial;
-        //     foreach (Part p in temp.PartsInside)
-        //     {
-        //         if (ReferenceEquals(part, p))
-        //         {
-        //             originalRawMaterial = temp;      
-        //             break;
-        //         }
-        //     }
-        //     
-        //     // Console.WriteLine(rawMaterial);
-        // }
-        
 
         if (part != null && originalRawMaterial != null)
         {
@@ -107,15 +79,19 @@ public partial class DragAndDropView : UserControl
         
         // Get the RawMaterial object from the sender
         var rawMaterial = (e.Source as Control)?.Tag as RawMaterial;
-
-        if (rawMaterial != null && part != null)
-        {
-            // rawMaterial.add_part(part);
-            // rawMaterial.insert_part(part);
         
+        
+
+        if (rawMaterial != null && part != null && originalRawMaterial != null)
+        {
             // Update the ArrangedRawMaterials collection in the ViewModel
             var viewModel = DataContext as MainWindowViewModel;
             viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, rawMaterial, part);
+        }
+        
+        if (rawMaterial == null)
+        {
+            
         }
 
         if (part != null)
@@ -127,13 +103,4 @@ public partial class DragAndDropView : UserControl
             Console.WriteLine("RawMaterial is null");
         }
     }
-    
-    // private void RawMaterial_PointerReleased(object sender, PointerReleasedEventArgs e)
-    // {
-    //     var rawMaterial = (sender as Control)?.Tag as RawMaterial;
-    //     if (rawMaterial != null)
-    //     {
-    //         Console.WriteLine(rawMaterial);
-    //     }
-    // }
 }

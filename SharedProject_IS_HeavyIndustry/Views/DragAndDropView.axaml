@@ -14,7 +14,7 @@
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
     </UserControl.Resources>
     
-     <Grid>
+     <Grid DragDrop.AllowDrop="True">
         <TabControl Margin="5">
             <TabItem Header="파트배치">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">

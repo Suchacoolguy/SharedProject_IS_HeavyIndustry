@@ -22,24 +22,28 @@ public class DragAndDropViewModel
         int index_to = ArrangedRawMaterials.IndexOf(to);
         int index_part = ArrangedRawMaterials[index_from].PartsInside.IndexOf(part);
         
-        if (index_to > -1 && index_to < ArrangedRawMaterials.Count)
+        if (from != null && to != null && part != null)
         {
-            ArrangedRawMaterials[index_to].insert_part(part);
-            ArrangedRawMaterials[index_from].PartsInside.RemoveAt(index_part);
-            // if (ArrangedRawMaterials[index_from].PartsInside.Count == 0)
-            // {
-            //     ArrangedRawMaterials.RemoveAt(index_from);
-            // }
+            if (index_to > -1 && index_to < ArrangedRawMaterials.Count)
+            {
+                ArrangedRawMaterials[index_to].insert_part(part);
+                ArrangedRawMaterials[index_from].PartsInside.RemoveAt(index_part);
+                if (ArrangedRawMaterials[index_from].PartsInside.Count == 0)
+                {
+                    ArrangedRawMaterials.RemoveAt(index_from);
+                }
+            }
+            else
+            {
+                // Console.WriteLine("got into else statement.");
+            }
+            Console.WriteLine("if statement.");
         }
-        else
-        {
-            // Console.WriteLine("got into else statement.");
-        }
-
-        // If the user drops the part object into an area that doesn't contain any other objects
-        if (to == null)
-        {
+        else if(to == null && part != null)
+        {   // If the user drops the part object into an area that doesn't contain any other objects
             // find the best size of raw material to insert the part
+            
+            Console.WriteLine("else if statement.");
             List<int> lengthOptions = GetLengthOptionsRawMaterial();
             int bestLength = Int32.MaxValue;
             foreach (var len in lengthOptions)
@@ -52,7 +56,13 @@ public class DragAndDropViewModel
             
             // insert the new raw material beyo
             RawMaterial newRawMaterial = new RawMaterial(bestLength);
+            newRawMaterial.insert_part(part);
             ArrangedRawMaterials.Insert(index_from + 1, newRawMaterial);
+            ArrangedRawMaterials[index_from].PartsInside.RemoveAt(index_part);
+            if (ArrangedRawMaterials[index_from].PartsInside.Count == 0)
+            {
+                ArrangedRawMaterials.RemoveAt(index_from);
+            }
         }
     }
     
@@ -64,15 +74,3 @@ public class DragAndDropViewModel
     
     
 }
-
-// public BOMDataViewModel(List<Part> parts)
-// {
-//     ListParts = new ObservableCollection<Part>(parts);
-//     Console.WriteLine(ListParts.GetType());
-//     foreach (var part in ListParts)
-//     {
-//         Console.WriteLine("Length:" + part.Length);
-//     }
-// }
-//     
-// public ObservableCollection<Part> ListParts { get; }

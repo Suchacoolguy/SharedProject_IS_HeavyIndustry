@@ -33,14 +33,14 @@ public partial class DragAndDropView : UserControl
             }   
         }
         
-        foreach (var rawM in DragAndDropViewModel.ArrangedRawMaterials)
-        {
-            foreach (var paart in rawM.PartsInside)
-            {
-                Console.WriteLine(paart);
-            }
-            Console.WriteLine("----------");
-        }
+        // foreach (var rawM in DragAndDropViewModel.ArrangedRawMaterials)
+        // {
+        //     foreach (var paart in rawM.PartsInside)
+        //     {
+        //         Console.WriteLine(paart);
+        //     }
+        //     Console.WriteLine("----------");
+        // }
 
         if (part != null && originalRawMaterial != null)
         {
@@ -88,11 +88,12 @@ public partial class DragAndDropView : UserControl
             // Update the ArrangedRawMaterials collection in the ViewModel
             
             viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, rawMaterial, part);
+            Console.WriteLine("first conditional statement");
         }
-        
-        if (rawMaterial == null)
+        else if (rawMaterial == null && part != null && originalRawMaterial != null)
         {
-            viewModel?.DragAndDropData.ArrangedRawMaterials.IndexOf();
+            viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, null, part);
+            Console.WriteLine("second conditional statement");
         }
 
         if (part != null)

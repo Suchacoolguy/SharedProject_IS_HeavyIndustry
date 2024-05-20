@@ -294,4 +294,9 @@ public class ArrangePartsService
     {
         return raw_materials_used;
     }
+    
+    public static List<int> GetLengthOptionsRawMaterial()
+    {
+        return length_options_rawMaterial;
+    }
 }

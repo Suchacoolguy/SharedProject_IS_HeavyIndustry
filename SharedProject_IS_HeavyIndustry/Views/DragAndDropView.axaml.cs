@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Input;
 using SharedProject_IS_HeavyIndustry.Models;
@@ -80,18 +81,18 @@ public partial class DragAndDropView : UserControl
         // Get the RawMaterial object from the sender
         var rawMaterial = (e.Source as Control)?.Tag as RawMaterial;
         
-        
+        var viewModel = DataContext as MainWindowViewModel;
 
         if (rawMaterial != null && part != null && originalRawMaterial != null)
         {
             // Update the ArrangedRawMaterials collection in the ViewModel
-            var viewModel = DataContext as MainWindowViewModel;
+            
             viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, rawMaterial, part);
         }
         
         if (rawMaterial == null)
         {
-            
+            viewModel?.DragAndDropData.ArrangedRawMaterials.IndexOf();
         }
 
         if (part != null)

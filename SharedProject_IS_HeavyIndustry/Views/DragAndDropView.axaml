@@ -9,7 +9,7 @@
              xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
              x:DataType="vm:MainWindowViewModel"
              >
-    
+
     <UserControl.Resources>
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
     </UserControl.Resources>
@@ -60,5 +60,4 @@
             </TabItem>
         </TabControl>
     </Grid>
-    
 </UserControl>

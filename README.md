@@ -12,6 +12,9 @@
 ## 현재 진행중인 파트: 상헌 ##
 - 짐이 파트배치 일단 구현해보겠음...
 
+### 알쏭달쏭 ###
+- ArrangePartsService 함수 리턴하는 거 말고 바로 접근하믄 될 덧?
+
 ### Services/BOMDataService.cs ###
 BOM 엑셀파일에서 데이터 불러옴.  
 git pull 해서 실행하려면 엑셀 파일경로 바꿔야할 것.  

@@ -20,254 +20,57 @@ public class ArrangePartsService
         // sort in descending order
         length_options_rawMaterial.Sort((a, b) => b.CompareTo(a));
         
-        RawMaterial raw_material = null;
-        int if_count = 0;
-        
-        RawMaterial best_of_the_best_combination = null;
-        List<RawMaterial> best_combination_list = new List<RawMaterial>();
-        
-        
-        List<int> garra_parts = new List<int>() {2844, 2844};
-        raw_material = garra_creator(part_list, garra_parts, 6010);
-        raw_materials_used.Add(raw_material);
-        
-        raw_material = garra_creator(part_list, garra_parts, 6010);
-        raw_materials_used.Add(raw_material);
-        
-        raw_material = garra_creator(part_list, garra_parts, 6010);
-        raw_materials_used.Add(raw_material);
-        
-        raw_material = garra_creator(part_list, garra_parts, 6010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>();
-        raw_material = garra_creator(part_list, garra_parts, 6010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {2868, 2844};
-        raw_material = garra_creator(part_list, garra_parts, 6010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3393, 3131};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {6669};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {6669};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {6669};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {6669};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3393, 3393};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3394, 3394};
-        raw_material = garra_creator(part_list, garra_parts, 7010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3581, 3581};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {4843, 2489};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3731, 3731};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3731, 3731};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3731, 3731};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3731, 3731};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3731, 3731};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {1881, 1881, 1881, 1881};
-        raw_material = garra_creator(part_list, garra_parts, 8010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {2844, 2624, 2331};
-        raw_material = garra_creator(part_list, garra_parts, 8010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {5479, 2331};
-        raw_material = garra_creator(part_list, garra_parts, 8010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {4682, 4682};
-        raw_material = garra_creator(part_list, garra_parts, 9510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3131, 3131, 3131};
-        raw_material = garra_creator(part_list, garra_parts, 9510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3131, 3131, 3131};
-        raw_material = garra_creator(part_list, garra_parts, 9510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3131, 3131, 3131};
-        raw_material = garra_creator(part_list, garra_parts, 9510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3131, 3131, 3131};
-        raw_material = garra_creator(part_list, garra_parts, 9510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3131, 3131, 3131};
-        raw_material = garra_creator(part_list, garra_parts, 9510);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {4832, 4832};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {4832, 4832};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {4832, 4832};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {4832, 4832};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {4843, 4843};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3231, 3231, 3231};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3231, 3231, 3231};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3231, 3231, 3231};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {9705};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {2487, 2487, 2487, 2487};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {2487, 2487, 2487, 2487};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {2487, 2487, 2487, 2487};
-        raw_material = garra_creator(part_list, garra_parts, 10010);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {10137};
-        raw_material = garra_creator(part_list, garra_parts, 12110);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {10504};
-        raw_material = garra_creator(part_list, garra_parts, 12110);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {10604};
-        raw_material = garra_creator(part_list, garra_parts, 12110);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {11304};
-        raw_material = garra_creator(part_list, garra_parts, 12110);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {12004};
-        raw_material = garra_creator(part_list, garra_parts, 12110);
-        raw_materials_used.Add(raw_material);
-        
-        garra_parts = new List<int>() {3731, 3581};
-        raw_material = garra_creator(part_list, garra_parts, 7510);
-        raw_materials_used.Add(raw_material);
-        
+        int best_length = length_options_rawMaterial[0];
+        // iterate through the list of parts and create raw materials if needed
+        for (int i = 0; i < part_list.Count; i++)
+        {
+            foreach (int rawLength in length_options_rawMaterial)
+            {
+                if (part_list[i].Length < rawLength && rawLength < best_length)
+                {
+                    best_length = rawLength;
+                }
+            }
+            
+            // if no raw material is created yet, create one
+            if (raw_materials_used.Count == 0)
+            {
+                RawMaterial raw = new RawMaterial(best_length);
+                raw.insert_part(part_list[i]);
+                raw_materials_used.Add(raw);
+                
+                // removing an item while iterating through the list it belongs to is not recommended, so we don't remove the part here
+                // part_list.Remove(part_list[i]);
+            }
+            // if there are raw materials already created
+            else
+            {
+                bool part_added = false;
+                // add the part to the first raw material that can fit it, if there is one
+                foreach (var used_raw in raw_materials_used)
+                {
+                    if (used_raw.remaining_length >= part_list[i].Length)
+                    {
+                        used_raw.insert_part(part_list[i]);
+                        part_added = true;
+                        break;
+                    }
+                }
+                
+                // if the part was not added to any raw material, create a new raw material
+                if (part_added == false)
+                {
+                    RawMaterial raw = new RawMaterial(best_length);
+                    raw.insert_part(part_list[i]);
+                    raw_materials_used.Add(raw);
+                }
+                
+                // RawMaterial raw = new RawMaterial(best_length);
+                // raw_materials_used.Add(raw);
+            }
+            
+        }
+        count_check(raw_materials_used);
         return raw_materials_used;
     }
     
@@ -281,7 +84,7 @@ public class ArrangePartsService
             {
                 if (part.Length == required_len)
                 {
-                    raw.add_part(part);
+                    raw.insert_part(part);
                     part_list.Remove(part);
                     break;
                 }   
@@ -298,5 +101,19 @@ public class ArrangePartsService
     public static List<int> GetLengthOptionsRawMaterial()
     {
         return length_options_rawMaterial;
+    }
+
+    public static void count_check(ObservableCollection<RawMaterial> rawMaterialUsed)
+    {
+        int count = 0;
+        foreach (var raw in rawMaterialUsed)
+        {
+            foreach (var part in raw.PartsInside)
+            {
+                count++;
+            }
+        }
+        
+        Console.WriteLine("Total parts: " + count);
     }
 }

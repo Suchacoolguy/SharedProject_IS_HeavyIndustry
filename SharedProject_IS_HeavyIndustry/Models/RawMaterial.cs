@@ -20,13 +20,20 @@ namespace SharedProject_IS_HeavyIndustry.Models
             get;
             set;
         }
+
+        public int remaining_length
+        {
+            get;
+            set;
+        }
         
         public Part insert_part(Part part)
         {
             PartsInside.Add(part);
+            remaining_length -= part.Length;
             return part;
         }
-
+        
         
         public ObservableCollection<Part> get_parts_inside()
         {
@@ -37,56 +44,14 @@ namespace SharedProject_IS_HeavyIndustry.Models
         {
             this.Length = length;
             this.PartsInside = new ObservableCollection<Part>();
+            this.remaining_length = length;
         }
 
-        public bool add_part(Part part)
-        {
-            if (part.Num > 0)
-            {
-                PartsInside.Add(part);
-                return true;
-            }
-            else
-            {
-                System.Console.Write("part is not available.");
-                return false;
-            }
-        }
-
-        public int get_remaining_length()
-        {
-            int remaining_length = Length;
-            if (PartsInside == null)
-            {
-                return remaining_length;
-            }
-            else
-            {
-                foreach (var part in PartsInside)
-                {
-                    remaining_length -= part.Length;
-                }
-                return remaining_length;
-            }
-        }
+        
 
         public void remove_all_parts()
         {
             PartsInside.Clear();
-        }
-
-        public void remove_part(int length)
-        {
-            var partToRemove = PartsInside.FirstOrDefault(part => part.Length == length);
-
-            if(partToRemove != null)
-            {
-                PartsInside.Remove(partToRemove);
-            }
-            else
-            {
-                System.Console.WriteLine("No part found with given length.");
-            }
         }
         
         public override string ToString()
@@ -98,7 +63,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 result += "Part Length: " + part.Length + "\n";
             }
 
-            result += "Remaining Length: " + get_remaining_length() +"\n";
+            result += "Remaining Length: " + remaining_length +"\n";
 
             return result;
         }

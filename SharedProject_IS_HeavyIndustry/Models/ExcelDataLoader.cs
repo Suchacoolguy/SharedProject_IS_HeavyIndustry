@@ -113,7 +113,7 @@ namespace SharedProject_IS_HeavyIndustry
                     var rawMaterial = rawMaterials[i];
                     worksheet.Cells[currentRow, 1].Value = i + 1;
                     worksheet.Cells[currentRow, 2].Value = rawMaterial.Length;
-                    worksheet.Cells[currentRow, 9].Value = rawMaterial.get_remaining_length();
+                    worksheet.Cells[currentRow, 9].Value = rawMaterial.remaining_length;
                     var range = worksheet.Cells[currentRow, 3, currentRow, 8];
                     range.Merge = true;
                     range.Style.Border.Top.Style = ExcelBorderStyle.Thin;

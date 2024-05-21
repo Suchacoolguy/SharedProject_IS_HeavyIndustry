@@ -23,13 +23,15 @@
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropData.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Canvas Name="MyCanvas" Width="1200" Height="40">
+                                <Canvas Name="MyCanvas" Width="1200" Height="55">
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
                                                    DragDrop.AllowDrop="True" Tag="{Binding}" />
                                     </Border>
+                                    <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
                                     <!-- Parts -->
+                                    <TextBlock Text="{Binding remaining_length}" Canvas.Right="0" Canvas.Top="35"/>
                                     <ItemsControl ItemsSource="{Binding PartsInside}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>

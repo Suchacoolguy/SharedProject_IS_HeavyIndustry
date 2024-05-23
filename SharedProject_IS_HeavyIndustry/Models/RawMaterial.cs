@@ -34,6 +34,11 @@ namespace SharedProject_IS_HeavyIndustry.Models
             return part;
         }
         
+        public int GetTotalLengthOfPartsInside()
+        {
+            return PartsInside.Sum(part => part.Length);
+        }
+        
         
         public ObservableCollection<Part> get_parts_inside()
         {
@@ -47,7 +52,11 @@ namespace SharedProject_IS_HeavyIndustry.Models
             this.remaining_length = length;
         }
 
-        
+        public void UpdateLength(int newLengthOfRawMaterial)
+        {
+            Length = newLengthOfRawMaterial;
+            remaining_length = newLengthOfRawMaterial - PartsInside.Sum(part => part.Length);
+        }
 
         public void remove_all_parts()
         {

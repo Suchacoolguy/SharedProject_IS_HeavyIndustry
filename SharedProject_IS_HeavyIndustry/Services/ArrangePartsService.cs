@@ -20,11 +20,11 @@ public class ArrangePartsService
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
 
-        foreach (var p in partList)
-        {
-            Console.Write(p.Length);
-            Console.Write(", ");
-        }
+        // foreach (var p in partList)
+        // {
+        //     Console.Write(p.Length);
+        //     Console.Write(", ");
+        // }
         
         int bestLength = _lengthOptionsRawMaterial[0];
         // iterate through the list of parts and create raw materials if needed
@@ -90,15 +90,58 @@ public class ArrangePartsService
             
         }
         count_check(rawMaterialsUsed);
+        rawMaterialsUsed = OptimizeArrangement(rawMaterialsUsed);
         return rawMaterialsUsed;
     }
 
-    public static void OptimizeArrangement()
+    // look for possible improvements by moving parts between raw materials and changing the length of raw materials.
+    public static ObservableCollection<RawMaterial> OptimizeArrangement(ObservableCollection<RawMaterial> rawMaterialsUsed)
     {
+        Console.WriteLine("Hello, I'm optimizing the arrangement.");
         
+        Part partBeingMoved = null;
+        // 원자재 리스트를 돌면서
+        for (int from = 0; from < rawMaterialsUsed.Count; from++)
+        {
+            // 각 원자재 안의 파트 리스트를 돌면서
+            for (int j = 0; j < rawMaterialsUsed[from].PartsInside.Count; j++)
+            {
+                partBeingMoved = rawMaterialsUsed[from].PartsInside[j];
+                // 다른 원자재 리스트를 돌면서
+                for (int to = 0; to < rawMaterialsUsed.Count; to++)
+                {
+                    // 같은 원자재가 아니고, 이동했을 때 더 이득이 되는가 판단한다.
+                    if (from != to && IsBetterToMove(rawMaterialsUsed[from], rawMaterialsUsed[to], partBeingMoved))
+                    {
+                        Console.WriteLine("Hello, I'm moving a part.");
+                        // to 원자재의 길이를 늘려줘야 할 것.
+                        int newLengthOfTo = FindBestFitRawMaterial(rawMaterialsUsed[to].GetTotalLengthOfPartsInside() + partBeingMoved.Length);
+                        rawMaterialsUsed[to].UpdateLength(newLengthOfTo);
+                        
+                        // 이따가 from 원자재의 길이를 줄여줘야 하므로 줄이고 난 뒤 길이를 미리 구해둠.
+                        int newLengthOfFrom = FindBestFitRawMaterial(rawMaterialsUsed[from].GetTotalLengthOfPartsInside() - partBeingMoved.Length);
+                        
+                        // to 원자재에 파트를 삽입
+                        rawMaterialsUsed[to].insert_part(partBeingMoved);
+                        // 삽입한 파트를 from 원자재에서 제거
+                        rawMaterialsUsed[from].PartsInside.Remove(partBeingMoved);
+                        // from 원자재의 길이를 줄여줌
+                        rawMaterialsUsed[from].UpdateLength(newLengthOfFrom);
+                        
+                        // from 원자재의 파트 리스트가 비어있다면 from 원자재를 제거
+                        if (rawMaterialsUsed[from].PartsInside.Count == 0)
+                        {
+                            rawMaterialsUsed.Remove(rawMaterialsUsed[from]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return rawMaterialsUsed;
     }
 
-    public int FindBestFitRawMaterial(int partLengthTotal)
+    public static int FindBestFitRawMaterial(int partLengthTotal)
     {
         int bestFit = _lengthOptionsRawMaterial[0];
         foreach (var len in _lengthOptionsRawMaterial)
@@ -112,7 +155,7 @@ public class ArrangePartsService
         return bestFit;
     }
 
-    public bool IsBetterToMove(RawMaterial from, RawMaterial to, Part part)
+    public static bool IsBetterToMove(RawMaterial from, RawMaterial to, Part part)
     {
         // 파트를 이동시키기 전의 from과 to의 스크랩 길이를 구한다.
         int totalScrapBeforeMove = from.remaining_length + to.remaining_length;

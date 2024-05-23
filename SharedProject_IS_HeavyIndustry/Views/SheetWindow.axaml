@@ -1,0 +1,38 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" 
+        Width="300" Height="300"
+        x:Class="SharedProject_IS_HeavyIndustry.Views.SheetWindow"
+        WindowStartupLocation="CenterScreen"
+        Title="선택 : 엑셀 시트 선택">
+        <DockPanel Background="LightSkyBlue" Width="300" Height="300" DockPanel.Dock="Top">
+        <TextBlock Text="엑셀 시트 선택" Margin="15, 30, 0, 20" FontSize="20" 
+                                   FontWeight="Heavy" DockPanel.Dock="Top" VerticalAlignment="Center"/>
+                        
+                        <Border Margin="5" BorderBrush="LightGray" BorderThickness="2" DockPanel.Dock="Top">
+                                <DockPanel  Background="White" DockPanel.Dock="Top">
+                                        <TextBlock Margin="5, 15" DockPanel.Dock="Top">
+                                                <Run Text="BOM 시트를 선택하세요" />
+                                                <LineBreak />
+                                                <Run Text="원하는 시트를 선택 후 '확인'을 클릭하세요"/>
+                                        </TextBlock>
+                                        <ComboBox Name="SheetList" Margin="0, 0, 0, 20" Width="280" HorizontalAlignment="Center"/>
+                                </DockPanel>
+                        </Border>
+                        
+                        <Border Margin="5" BorderBrush="LightGray" BorderThickness="2" DockPanel.Dock="Top">
+                                <StackPanel Background="White" HorizontalAlignment="Center" Orientation="Horizontal" DockPanel.Dock="Top">
+                                        <Button Click="Cancel" Width="100" Height="50" Background="Red" Margin="22">
+                                                <TextBlock Text="취소" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           FontSize="20" Foreground="White"/>
+                                        </Button>
+                                        <Button Click="Confirm" Width="100" Height="50" Background="CornflowerBlue" Margin="22">
+                                                <TextBlock Text="확인" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           FontSize="20" Foreground="White"/>
+                                        </Button>
+                                </StackPanel>
+                        </Border>        
+        </DockPanel>
+</Window>

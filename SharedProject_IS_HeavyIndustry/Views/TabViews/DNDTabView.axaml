@@ -1,0 +1,39 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:tabVIewModels="clr-namespace:SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.TabViews.DNDTabView"
+             x:DataType="tabVIewModels:DNDTabViewModel">
+    <Design.DataContext>
+        <tabVIewModels:DNDTabViewModel/>
+    </Design.DataContext>
+    
+    <DockPanel Name="ContentPanel" DockPanel.Dock="Top">
+                        
+        <Border Height="50" Background="White" Margin="4" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
+            <DockPanel>
+                <Border Margin="0,0,4,0" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left">
+                    <TextBlock VerticalAlignment="Center">아이콘</TextBlock>
+                </Border>
+                <TextBlock Padding="2" Text="{Binding Title}" FontWeight="Heavy" DockPanel.Dock="Top"/>
+                <TextBlock Padding="1" Text="{Binding SubTitle}" FontSize="12" DockPanel.Dock="Top"/>
+            </DockPanel>
+        </Border>
+                        
+        <Border  Background="White" Margin="4" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
+            <StackPanel>
+                <TextBlock Padding="2" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue">기본정보</TextBlock>
+                <TextBlock Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center">재질</TextBlock>
+            </StackPanel>
+        </Border>
+        
+        <Border BorderBrush="Gray" BorderThickness="3" Margin="4,4,4,0">
+            <DockPanel Background="White">
+                <Panel Name="WorkSpace" Background="Pink" Margin="4,4,4,0"></Panel>
+            </DockPanel>
+        </Border>
+        
+    </DockPanel>
+</UserControl>

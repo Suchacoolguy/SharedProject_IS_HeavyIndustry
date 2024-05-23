@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SharedProject_IS_HeavyIndustry.Views.StartWindow"
+        xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
+        xmlns:tabViews="clr-namespace:SharedProject_IS_HeavyIndustry.Views.TabViews"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="SharedProject_IS_HeavyIndustry">
+        
+        
+        <DockPanel Name="BasicPanel" LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
+                        <Button Content="+" Click="OpenDirectory"/>
+                        <Button Content="파트배치" Click="AddDragNDrop"></Button>
+                </StackPanel>
+                <Grid DockPanel.Dock="Top">
+                        <TabControl Name="TabFrame" Margin="0" Padding="0"/>
+                </Grid>
+        </DockPanel>
+
+</Window>

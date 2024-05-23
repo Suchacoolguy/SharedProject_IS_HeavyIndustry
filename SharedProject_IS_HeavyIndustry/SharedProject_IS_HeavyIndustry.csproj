@@ -23,4 +23,11 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
         <PackageReference Include="EPPlus" Version="7.1.2" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\TabViews\TabView.axaml.cs">
+        <DependentUpon>TabView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

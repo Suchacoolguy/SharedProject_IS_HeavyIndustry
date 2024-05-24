@@ -21,7 +21,7 @@ public class MainWindowViewModel : ViewModelBase
         BOMData = new BOMDataViewModel(bomService.GetPartList());
         
         var callDragon = new CallDragon();
-        callDragon.GoCow();
+        callDragon.GoDragon();
     }
     public BOMDataViewModel BOMData { get; }
     public DragAndDropViewModel DragAndDropData { get; }

@@ -7,9 +7,9 @@ using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
-public partial class DragAndDropView : UserControl
+public partial class DragAndDropView : TabView
 {
-    public DragAndDropView()
+    public DragAndDropView(StartWindow mainWindow)
     {
         InitializeComponent();
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);

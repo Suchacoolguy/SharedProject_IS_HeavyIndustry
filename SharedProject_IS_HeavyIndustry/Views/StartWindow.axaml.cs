@@ -19,6 +19,7 @@ public partial class StartWindow : Window
     public StartWindow()
     {
         InitializeComponent();
+        DataContext = new MainWindowViewModel();
     }
     
     private async void OpenDirectory(object sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -63,6 +64,7 @@ public partial class StartWindow : Window
             {
                 "프로젝트 정보" => new ExcelTabView(this),
                 "파트 배치" => new DNDTabView(this),
+                "sibal" => new DragAndDropView(this),
                 _ => throw new ArgumentOutOfRangeException()
             }
         };
@@ -86,5 +88,10 @@ public partial class StartWindow : Window
     private void AddDragNDrop(object? sender, RoutedEventArgs e)
     {
         AddTab("파트 배치");
+    }
+
+    private void sibal(object? sender, RoutedEventArgs e)
+    {
+        AddTab("sibal");
     }
 }

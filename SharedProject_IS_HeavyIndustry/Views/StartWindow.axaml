@@ -14,6 +14,7 @@
                 <StackPanel DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
                         <Button Content="+" Click="OpenDirectory"/>
                         <Button Content="파트배치" Click="AddDragNDrop"></Button>
+                        <Button Content="sibal" Click="sibal"></Button>
                 </StackPanel>
                 <Grid DockPanel.Dock="Top">
                         <TabControl Name="TabFrame" Margin="0" Padding="0"/>

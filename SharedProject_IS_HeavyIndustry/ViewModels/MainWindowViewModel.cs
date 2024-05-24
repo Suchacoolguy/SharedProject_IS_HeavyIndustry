@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 
@@ -19,6 +20,8 @@ public class MainWindowViewModel : ViewModelBase
         var bomService = new BOMDataService();
         BOMData = new BOMDataViewModel(bomService.GetPartList());
         
+        var callDragon = new CallDragon();
+        callDragon.GoCow();
     }
     public BOMDataViewModel BOMData { get; }
     public DragAndDropViewModel DragAndDropData { get; }

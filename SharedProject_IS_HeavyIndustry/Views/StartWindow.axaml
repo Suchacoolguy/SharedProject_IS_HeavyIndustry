@@ -7,14 +7,14 @@
         xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
         xmlns:tabViews="clr-namespace:SharedProject_IS_HeavyIndustry.Views.TabViews"
         Icon="/Assets/avalonia-logo.ico"
-        Title="SharedProject_IS_HeavyIndustry">
+        Title="쾌남 소프트">
         
         
         <DockPanel Name="BasicPanel" LastChildFill="True">
                 <StackPanel DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
-                        <Button Content="+" Click="OpenDirectory"/>
+                        <Button Content="+" Click="NewProjectWindow"/>
                         <Button Content="파트배치" Click="AddDragNDrop"></Button>
-                        <Button Content="sibal" Click="sibal"></Button>
+                        <Button Content="sibal" Click="Sibal"></Button>
                 </StackPanel>
                 <Grid DockPanel.Dock="Top">
                         <TabControl Name="TabFrame" Margin="0" Padding="0"/>

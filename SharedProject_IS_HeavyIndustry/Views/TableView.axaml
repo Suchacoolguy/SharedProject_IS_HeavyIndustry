@@ -3,19 +3,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
-             x:DataType="vm:MainWindowViewModel"
+             xmlns:models="clr-namespace:SharedProject_IS_HeavyIndustry.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="models:WorkManager"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
     
-    
 
-    <DataGrid Name="DataGrid" ItemsSource="{Binding BOMData.ListParts}"
-              Margin="20"
+    <DataGrid Name="DataGrid" ItemsSource="{Binding PartsOrigin}"
               IsReadOnly="True"
               CanUserReorderColumns="True"
               CanUserResizeColumns="True"
               CanUserSortColumns="True"
               GridLinesVisibility="All"
+              FontSize="15"
               BorderThickness="1" BorderBrush="Gray">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Assem"  Binding="{Binding Assem}"/>

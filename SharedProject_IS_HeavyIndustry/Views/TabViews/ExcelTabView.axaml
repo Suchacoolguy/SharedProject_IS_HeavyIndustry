@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:tabVIewModels="clr-namespace:SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels"
+             xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TabViews.ExcelTabView"
              x:DataType="tabVIewModels:ExcelTabViewModel">
@@ -44,7 +45,7 @@
                     <Button Background="White"/>
                 </DockPanel>
                 
-                <Panel Name="WorkSpace" Background="Pink" Margin="4,4,4,0"></Panel>
+                <Panel Name="TablePanel" Margin="4,4,4,0"/>
             </DockPanel>
         </Border>
                

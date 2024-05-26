@@ -1,4 +1,10 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Avalonia;
+using SharedProject_IS_HeavyIndustry.Models;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
@@ -6,5 +12,65 @@ public class DNDTabViewModel : AvaloniaObject
 {
     public string Title { get; } = "배치 정보";
     public string SubTitle { get; } = "블라블라블라";
+    private readonly List<Description> descriptionList = WorkManager.GetDescriptionList();
+    public ObservableCollection<string> TypeList { get; } = [];
 
+    private string selectedType;
+    public string SelectedType
+    {
+        get => selectedType;
+        set
+        {
+            if (selectedType == value) return;
+            selectedType = value;
+            OnPropertyChanged();
+            UpdateSizeList();
+        }
+    }
+    
+    private ObservableCollection<string> sizeList = [];
+    public ObservableCollection<string> SizeList
+    {
+        get => sizeList;
+        set
+        {
+            sizeList = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public DNDTabViewModel()
+    {
+        SetTypeList();
+    }
+
+    private void SetTypeList()
+    {
+        var duplicationCheckSet = new HashSet<string>();
+
+        foreach (var desc in descriptionList) // 파트 목록을 순회하며 중복되지 않은 설명을 리스트에 추가
+        {
+            if (duplicationCheckSet.Add(desc.Type)) // HashSet에 현재 파트의 설명이 없는 경우 추가
+                TypeList.Add(desc.Type);                           // HashSet에 성공적으로 추가된 경우만 리스트에 추가
+        }
+    }
+    
+    private void UpdateSizeList()
+    {
+        SizeList.Clear();
+
+        var duplicationCheckSet = new HashSet<string>();
+
+        foreach (var desc in descriptionList) // 파트 목록을 순회하며 중복되지 않은 설명을 리스트에 추가
+        {
+            if (desc.Type.Equals(selectedType) && duplicationCheckSet.Add(desc.Size)) // HashSet에 현재 파트의 설명이 없는 경우 추가
+                SizeList.Add(desc.Size);                           // HashSet에 성공적으로 추가된 경우만 리스트에 추가
+        }
+    }
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
 }

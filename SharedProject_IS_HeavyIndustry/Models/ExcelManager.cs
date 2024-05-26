@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -17,7 +18,7 @@ public class ExcelManager
 
     public ExcelManager(string filePath)
     {
-        package = ExcelDataReader.read(filePath);
+        package = ExcelDataReader.Read(filePath);
         sheets = package.Workbook.Worksheets;
     }
 
@@ -26,7 +27,7 @@ public class ExcelManager
         return sheets.Select(sh => sh.Name).ToList();
     }
 
-    public List<Part> GetPartsFromSheet(string sheetName)
+    public ObservableCollection<Part> GetPartsFromSheet(string sheetName)
     {
         return ExcelDataReader.PartListFromExcel(package.Workbook.Worksheets[sheetName]);
     }

@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using SharedProject_IS_HeavyIndustry.Models;
 using Google.OrTools.LinearSolver;
+using Newtonsoft.Json.Linq;
+
 namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class ArrangePartsService
@@ -16,7 +19,16 @@ public class ArrangePartsService
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
         
-        List<Part> partList = ExcelDataLoader.PartListFromExcel(@"/Users/suchacoolguy/Documents/BOM_test.xlsx");
+        string configFile = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "config", "config.json");
+        
+        var jsonConfig = File.ReadAllText(configFile);
+        var config = JObject.Parse(jsonConfig);
+        string filePath = config["FilePath_BOM"].ToString();
+        
+        Console.WriteLine("File Path: " + filePath);
+        
+        List<Part> partList = ExcelDataLoader.PartListFromExcel(filePath);
+        
         // sort in descending order
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order

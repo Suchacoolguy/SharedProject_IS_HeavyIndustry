@@ -1,6 +1,9 @@
 # my custom script to automate README.md updates
 auto_readme.sh
 
+# file to store the input file path
+config.json
+
 # User-specific files
 *.suo
 *.user

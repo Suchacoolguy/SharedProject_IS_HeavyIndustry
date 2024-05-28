@@ -31,9 +31,6 @@ namespace SharedProject_IS_HeavyIndustry
                     if (cellValue != null && int.TryParse(cellValue.ToString(), out int intValue))
                     {
                         Part temp = ExtractData(worksheet, row);
-                        // Console.WriteLine(temp.Desc.Type.Equals("TB"));
-                        // Console.WriteLine(temp.Desc.Size.Equals("150*100*3.2"));
-                        // Console.WriteLine(temp.Desc.Size);
                         if (temp.Desc.Type.Equals("TB") && temp.Desc.Size.Equals("150*100*3.2"))
                         {
                             for (int i = temp.Num; i > 0; i--)

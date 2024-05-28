@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SharedProject_IS_HeavyIndustry.Models
 {
-    public class RawMaterial : ObservableObject
+    public class RawMaterial
     {
         public int Length
         {

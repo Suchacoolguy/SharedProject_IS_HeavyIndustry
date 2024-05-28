@@ -24,15 +24,6 @@ public class ArrangePartsService
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
-
-        // for (int i=0; i < partList.Count; i++)
-        // {
-        //     if (partList[i].Length >= 10010)
-        //     {
-        //         _overSizeParts.Add(partList[i]);
-        //         partList.Remove(partList[i]);
-        //     }
-        // }
         
         DataModel data = new DataModel(partList, _lengthOptionsRawMaterial);
         

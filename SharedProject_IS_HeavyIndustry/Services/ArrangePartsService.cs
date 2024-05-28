@@ -18,16 +18,7 @@ public class ArrangePartsService
     public static ObservableCollection<RawMaterial> ArrangeParts()
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
-        
-        string configFile = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "config", "config.json");
-        
-        var jsonConfig = File.ReadAllText(configFile);
-        var config = JObject.Parse(jsonConfig);
-        string filePath = config["FilePath_BOM"].ToString();
-        
-        Console.WriteLine("File Path: " + filePath);
-        
-        List<Part> partList = ExcelDataLoader.PartListFromExcel(filePath);
+        List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
         
         // sort in descending order
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));

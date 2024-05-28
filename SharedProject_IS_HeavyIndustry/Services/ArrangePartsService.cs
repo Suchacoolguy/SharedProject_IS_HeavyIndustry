@@ -14,7 +14,7 @@ public class ArrangePartsService
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
         
-        List<Part> partList = ExcelDataLoader.PartListFromExcel(@"C:\ISProject\forDemo.xlsx");
+        List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
         // sort in descending order
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
@@ -24,7 +24,7 @@ public class ArrangePartsService
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");
-        solver.SetTimeLimit(5000);
+        solver.SetTimeLimit(10000);
         
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];

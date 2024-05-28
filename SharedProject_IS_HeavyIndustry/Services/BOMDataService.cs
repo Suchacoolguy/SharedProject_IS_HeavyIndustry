@@ -5,7 +5,7 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class BOMDataService
 {
-    List<Part> part_list = ExcelDataLoader.PartListFromExcel(@"C:\ISProject\forDemo.xlsx");
+    List<Part> part_list = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
     
     public List<Part> GetPartList()
     {

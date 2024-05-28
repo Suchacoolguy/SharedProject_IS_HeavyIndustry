@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using SharedProject_IS_HeavyIndustry.Models;
 using Google.OrTools.LinearSolver;
 namespace SharedProject_IS_HeavyIndustry.Services;
@@ -8,17 +9,27 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 public class ArrangePartsService
 {
     private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010, 12110};
+    private static List<Part> _overSizeParts = new List<Part>();
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed = ArrangeParts();
     
     public static ObservableCollection<RawMaterial> ArrangeParts()
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
         
-        List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
+        List<Part> partList = ExcelDataLoader.PartListFromExcel(@"/Users/suchacoolguy/Documents/BOM_test.xlsx");
         // sort in descending order
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
+
+        for (int i=0; i < partList.Count; i++)
+        {
+            if (partList[i].Length > 10010)
+            {
+                _overSizeParts.Add(partList[i]);
+                partList.Remove(partList[i]);
+            }
+        }
         
         DataModel data = new DataModel(partList, _lengthOptionsRawMaterial);
         
@@ -118,18 +129,18 @@ public class ArrangePartsService
         }
         Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
         
-        for (int i = 0; i < data.NumBins; i++)
-        {
-            int numCheck = 0;
-            for (int j = 0; j < data.NumRawMaterialOptions; j++)
-            {
-                if (y[i, j].SolutionValue() == 1)
-                {
-                    numCheck++;
-                }
-            }
-            // Console.WriteLine($"Item {i} is in {numCheck} bins.");
-        }
+        // for (int i = 0; i < data.NumBins; i++)
+        // {
+        //     int numCheck = 0;
+        //     for (int j = 0; j < data.NumRawMaterialOptions; j++)
+        //     {
+        //         if (y[i, j].SolutionValue() == 1)
+        //         {
+        //             numCheck++;
+        //         }
+        //     }
+        //     // Console.WriteLine($"Item {i} is in {numCheck} bins.");
+        // }
         // Console.WriteLine("Number of bins: " + data.NumBins);
 
         int howManyTimes = 0;

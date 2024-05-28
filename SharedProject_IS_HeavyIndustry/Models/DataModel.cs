@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SharedProject_IS_HeavyIndustry.Models;
@@ -17,5 +18,6 @@ public class DataModel
         NumItems = parts.Count;
         NumBins = parts.Count;
         NumRawMaterialOptions = lengthOptionsRawMaterial.Count;
+        Console.WriteLine("Num: " + parts.Count);
     }
 }

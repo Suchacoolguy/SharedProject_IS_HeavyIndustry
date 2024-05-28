@@ -2,30 +2,30 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using OfficeOpenXml;
 
 namespace SharedProject_IS_HeavyIndustry.Models;
 
-public class ExcelDataReader
+public static class ExcelDataReader
 {
-    private static List<Part> parts = new List<Part>();
-    public static ExcelPackage read(string filePath)
+    public static ExcelPackage Read(string filePath)
     {
         return new ExcelPackage(new FileInfo(filePath));
     }
         
-    public static List<Part> PartListFromExcel(ExcelWorksheet worksheet)
+    public static ObservableCollection<Part> PartListFromExcel(ExcelWorksheet worksheet)
     {
+        var parts = new ObservableCollection<Part>();
         var row = FindStartingRow(worksheet);
         
         while (row <= worksheet.Dimension.End.Row)
         {
             var cellValue = worksheet.Cells[row, 4].Value;
+            
             if (cellValue != null && int.TryParse(cellValue.ToString(), out int intValue))
-            {
                 parts.Add(ExtractData(worksheet, row));
-            }
 
             row++;
         }

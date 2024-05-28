@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
@@ -21,40 +22,28 @@ public partial class StartWindow : Window
         InitializeComponent();
         DataContext = new MainWindowViewModel();
     }
-    
-    private async void OpenDirectory(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    //시트 선택창 띄우기
+    public async Task OpenSheetSelectWindow()
     {
-        // 파일 탐색기를 엽니다.
-        var dialog = new OpenFileDialog();
-        var result = await dialog.ShowAsync(this);
-
-        filePath = result.FirstOrDefault();
-        // 파일이 엑셀 파일인지 확인
-        if (!IsExcelFile(filePath) && filePath != null)
-            return;
+        var miniWindow = new SheetWindow(WorkManager.GetSheetNames(), this);
+        await miniWindow.ShowDialog(this);
+        if (!string.IsNullOrEmpty(WorkManager.SheetName))
+            WorkManager.SetSheet(WorkManager.SheetName);
         
-        exm = new ExcelManager(filePath);
-        AddTab("프로젝트 정보");
     }
+    /*var result = await miniWindow.ShowDialog<bool?>(this);*/
     
-    private static DataGridTextColumn CreateColumn(string header, string bindingPath)
+    private async void NewProjectWindow(object? sender, RoutedEventArgs e)
     {
-        return new DataGridTextColumn
-        {
-            Header = header,
-            Binding = new Binding(bindingPath),
-            Width = DataGridLength.SizeToCells
-        };
-    }
-    
-    private bool IsExcelFile(string filePath)
-    {
-        // 파일 확장자 확인
-        string extension = Path.GetExtension(filePath);
-        return extension.Equals(".xls", StringComparison.OrdinalIgnoreCase) ||
-               extension.Equals(".xlsx", StringComparison.OrdinalIgnoreCase);
-    }
+        var newProjectWindow = new NewProjectWindow(this);
+        await newProjectWindow.ShowDialog(this); // 새 프로젝트 생성창 열기
+        
+        if (string.IsNullOrEmpty(WorkManager.ExcelFilePath)) return;
+        WorkManager.ReadExcelPackage();//파일 경로 확인 후 엑셀 읽기
+        AddTab("프로젝트 정보"); // 탭 추가
 
+    }
+    
     public void AddTab(string tabHeader)
     {
         var tabItem = new TabItem
@@ -73,24 +62,13 @@ public partial class StartWindow : Window
         tabPanel?.Items.Add(tabItem);
     }
 
-    //시트 선택창 띄우기
-    public async void OpenSheetSelectWindow()
-    {
-        var miniWindow = new SheetWindow(exm.GetSheetNames(), this);
-        await miniWindow.ShowDialog(this);
-        if (!string.IsNullOrEmpty(WorkManager.SheetName))
-            WorkManager.Parts = exm.GetPartsFromSheet(WorkManager.SheetName);
-        Console.WriteLine("WorkManager : " + WorkManager.SheetName);
-    }
-    /*var result = await miniWindow.ShowDialog<bool?>(this);*/
-
     //탭 패널에 드래그앤 드랍 탭 추가 
     private void AddDragNDrop(object? sender, RoutedEventArgs e)
     {
         AddTab("파트 배치");
     }
 
-    private void sibal(object? sender, RoutedEventArgs e)
+    private void Sibal(object? sender, RoutedEventArgs e)
     {
         AddTab("sibal");
     }

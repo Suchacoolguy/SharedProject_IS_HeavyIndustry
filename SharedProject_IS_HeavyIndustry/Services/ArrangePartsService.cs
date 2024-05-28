@@ -14,7 +14,7 @@ public class ArrangePartsService
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
         
-        List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
+        List<Part> partList = ExcelDataLoader.PartListFromExcel(@"C:\ISProject\forDemo.xlsx");
         // sort in descending order
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order

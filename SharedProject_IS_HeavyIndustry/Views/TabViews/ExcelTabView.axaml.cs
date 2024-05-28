@@ -22,9 +22,10 @@ public partial class ExcelTabView : TabView
         DataContext = new ExcelTabViewModel();
     }
     
-    private void ReadExcelBtn_Click(object? sender, RoutedEventArgs e)
+    private async void ReadExcelBtn_Click(object? sender, RoutedEventArgs e)
     {
-        mainWindow?.OpenSheetSelectWindow();
+        await mainWindow?.OpenSheetSelectWindow()!;
+        this.FindControl<Panel>("TablePanel")!.Children.Add(new TableView());
     }
 
     private void DnDTaskBtn_Click(object? sender, RoutedEventArgs e)

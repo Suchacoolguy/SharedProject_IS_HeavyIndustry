@@ -6,9 +6,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TabViews.DNDTabView"
              x:DataType="tabVIewModels:DNDTabViewModel">
-    <Design.DataContext>
-        <tabVIewModels:DNDTabViewModel/>
-    </Design.DataContext>
     
     <DockPanel Name="ContentPanel" DockPanel.Dock="Top">
                         
@@ -24,12 +21,18 @@
                         
         <Border  Background="White" Margin="4" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel>
-                <TextBlock Padding="2" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue">기본정보</TextBlock>
-                <TextBlock Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center">재질</TextBlock>
+                <TextBlock Text="기본정보" Padding="2" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="재질: " Margin="5,0,0,0" Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center"/>
+                    <ComboBox Name="Type" ItemsSource="{Binding TypeList}" SelectedItem="{Binding SelectedType}"
+                              Margin="3" Width="120" Background="LightGray"/>
+                    <TextBlock Text="규격: " Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <ComboBox Name="Size" ItemsSource="{Binding SizeList}" SelectionChanged="AddDragAndDrop" Margin="3" Width="170" Background="LightGray"/>
+                </StackPanel>
             </StackPanel>
         </Border>
         
-        <Border BorderBrush="Gray" BorderThickness="3" Margin="4,4,4,0">
+        <Border BorderBrush="LightGray" BorderThickness="2" Margin="4,4,4,0">
             <DockPanel Background="White">
                 <Panel Name="WorkSpace" Background="Pink" Margin="4,4,4,0"></Panel>
             </DockPanel>

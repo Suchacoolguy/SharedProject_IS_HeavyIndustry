@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using SkiaSharp;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SharedProject_IS_HeavyIndustry.Models
 {
-    public class RawMaterial
+    public class RawMaterial : ObservableObject
     {
         public int Length
         {
@@ -21,7 +24,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             set;
         }
 
-        public int remaining_length
+        public int RemainingLength
         {
             get;
             set;
@@ -30,7 +33,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         public Part insert_part(Part part)
         {
             PartsInside.Add(part);
-            remaining_length -= part.Length;
+            RemainingLength -= part.Length;
             return part;
         }
         
@@ -49,18 +52,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         {
             this.Length = length;
             this.PartsInside = new ObservableCollection<Part>();
-            this.remaining_length = length;
-        }
-
-        public void UpdateLength(int newLengthOfRawMaterial)
-        {
-            Length = newLengthOfRawMaterial;
-            remaining_length = newLengthOfRawMaterial - PartsInside.Sum(part => part.Length);
-        }
-
-        public void remove_all_parts()
-        {
-            PartsInside.Clear();
+            this.RemainingLength = length;
         }
         
         public override string ToString()
@@ -72,7 +64,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 result += "Part Length: " + part.Length + "\n";
             }
 
-            result += "Remaining Length: " + remaining_length +"\n";
+            result += "Remaining Length: " + RemainingLength +"\n";
 
             return result;
         }

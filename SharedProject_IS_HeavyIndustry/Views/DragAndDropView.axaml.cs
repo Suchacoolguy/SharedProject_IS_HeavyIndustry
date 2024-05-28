@@ -32,15 +32,6 @@ public partial class DragAndDropView : TabView
                 }
             }   
         }
-        
-        // foreach (var rawM in DragAndDropViewModel.ArrangedRawMaterials)
-        // {
-        //     foreach (var paart in rawM.PartsInside)
-        //     {
-        //         Console.WriteLine(paart);
-        //     }
-        //     Console.WriteLine("----------");
-        // }
 
         if (part != null && originalRawMaterial != null)
         {

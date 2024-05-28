@@ -8,9 +8,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="SharedProject_IS_HeavyIndustry">
     
-    
     <!-- <views:DragAndDropView/> -->
-    <views:StartWindow/>
     <!-- <views:TableView/> -->
 
 </Window>

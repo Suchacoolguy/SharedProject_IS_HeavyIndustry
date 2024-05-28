@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using SharedProject_IS_HeavyIndustry.Models;
 using Google.OrTools.LinearSolver;
 using Newtonsoft.Json.Linq;
@@ -10,37 +11,34 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class ArrangePartsService
 {
-    private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010, 12110};
+    private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010};
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed = ArrangeParts();
+    private static ObservableCollection<Part> _overSizeParts = ExcelDataLoader.GetOverSizeParts();
     
     public static ObservableCollection<RawMaterial> ArrangeParts()
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
-        string configFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config", "config.json");
-        
-        var jsonConfig = File.ReadAllText(configFile);
-        var config = JObject.Parse(jsonConfig);
-        string filePath = config["FilePath_BOM"].ToString();
-        
-        Console.WriteLine("File Path: " + filePath);
-        
-        List<Part> partList = ExcelDataLoader.PartListFromExcel(filePath);
-
-        foreach (var part in partList)
-        {
-            Console.WriteLine(part);
-        }
+        List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
         
         // sort in descending order
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
+
+        // for (int i=0; i < partList.Count; i++)
+        // {
+        //     if (partList[i].Length >= 10010)
+        //     {
+        //         _overSizeParts.Add(partList[i]);
+        //         partList.Remove(partList[i]);
+        //     }
+        // }
         
         DataModel data = new DataModel(partList, _lengthOptionsRawMaterial);
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");
-        solver.SetTimeLimit(5000);
+        solver.SetTimeLimit(10000);
         
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];
@@ -134,18 +132,18 @@ public class ArrangePartsService
         }
         Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
         
-        for (int i = 0; i < data.NumBins; i++)
-        {
-            int numCheck = 0;
-            for (int j = 0; j < data.NumRawMaterialOptions; j++)
-            {
-                if (y[i, j].SolutionValue() == 1)
-                {
-                    numCheck++;
-                }
-            }
-            // Console.WriteLine($"Item {i} is in {numCheck} bins.");
-        }
+        // for (int i = 0; i < data.NumBins; i++)
+        // {
+        //     int numCheck = 0;
+        //     for (int j = 0; j < data.NumRawMaterialOptions; j++)
+        //     {
+        //         if (y[i, j].SolutionValue() == 1)
+        //         {
+        //             numCheck++;
+        //         }
+        //     }
+        //     // Console.WriteLine($"Item {i} is in {numCheck} bins.");
+        // }
         // Console.WriteLine("Number of bins: " + data.NumBins);
 
         int howManyTimes = 0;
@@ -187,6 +185,11 @@ public class ArrangePartsService
     public ObservableCollection<RawMaterial> GetArrangedRawMaterials()
     {
         return _rawMaterialsUsed;
+    }
+    
+    public ObservableCollection<Part> GetOverSizeParts()
+    {
+        return _overSizeParts;
     }
     
     public static List<int> GetLengthOptionsRawMaterial()

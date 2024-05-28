@@ -1,3 +1,5 @@
+using System;
+
 namespace SharedProject_IS_HeavyIndustry.Models;
 
 public class Description
@@ -26,5 +28,10 @@ public class Description
     public override string ToString()
     {
         return type + size;
+    }
+
+    public bool Equals(Description desc)
+    {
+        return type.Equals(desc.Type) && size.Equals(desc.Size);
     }
 }

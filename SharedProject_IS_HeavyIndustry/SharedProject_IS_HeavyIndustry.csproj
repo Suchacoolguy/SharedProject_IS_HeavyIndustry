@@ -31,5 +31,8 @@
         <DependentUpon>TabView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\NewProjectWindow.axaml.cs">
+        <DependentUpon>NewProjectWindow.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

@@ -14,16 +14,21 @@
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
     </UserControl.Resources>
     
-     <Grid DragDrop.AllowDrop="True">
-        <TabControl Margin="5">
-            <TabItem Header="파트배치">
+    <Grid DragDrop.AllowDrop="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Existing content -->
+             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <!-- Parts arranged inside raw materials -->
                 <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True">
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropData.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Canvas Name="MyCanvas" Width="1200" Height="55">
+                                <Canvas Name="MyCanvas" Width="600" Height="55">
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
@@ -53,13 +58,11 @@
                     </ItemsControl>
                 </StackPanel>
                 </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Tab 2">
-                <views:TableView/>
-            </TabItem>
-            <TabItem Header="Tab 3">
-                <views:PartArrangementView></views:PartArrangementView>
-            </TabItem>
-        </TabControl>
     </Grid>
+
+        <!-- New window content -->
+        <views:OverSizePartsView Grid.Column="1"/>
+    </Grid>
+    
+    
 </UserControl>

@@ -1,4 +1,6 @@
-﻿using Avalonia;
+﻿using System.Collections.ObjectModel;
+using Avalonia;
+using SharedProject_IS_HeavyIndustry.Models;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
@@ -9,7 +11,6 @@ public class ExcelTabViewModel : AvaloniaObject
 
     public ExcelTabViewModel()
     {
-        
     }
     
 }

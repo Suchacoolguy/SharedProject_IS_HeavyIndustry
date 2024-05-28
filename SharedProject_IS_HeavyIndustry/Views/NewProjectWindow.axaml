@@ -1,0 +1,48 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" 
+        Width="400" Height="350"
+        x:Class="SharedProject_IS_HeavyIndustry.Views.NewProjectWindow"
+        Title="새 프로젝트 만들기">
+        <DockPanel>
+                <!-- First Panel -->
+                <StackPanel DockPanel.Dock="Top" Height="70">
+                        <TextBlock Text="새 프로젝트 만들기" FontWeight="Bold" FontSize="24" Margin="0,10"/>
+                        <TextBlock Text="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" Margin="0,10"/>
+                </StackPanel>
+        
+                <!-- Separator -->
+                <Border Background="LightGray" Height="2" HorizontalAlignment="Stretch"/>
+
+                <!-- Second Panel -->
+                <StackPanel DockPanel.Dock="Top" Height="210">
+                        <TextBlock Text="프로젝트 이름" Margin="10,0"/>
+                        <TextBox Margin="10,5" HorizontalAlignment="Stretch"/>
+
+                        <TextBlock Text="프로젝트 경로" Margin="10,20,10,0"/>
+                        <!--<DockPanel Margin="10,5">
+                <TextBox Name="FilePathBox" HorizontalAlignment="Stretch"/>
+                <Button Content="선택" Click="OpenDirectory" HorizontalAlignment="Right" Margin="5,0,0,0"/>
+            </DockPanel>-->
+                        <Grid Margin="10,5">
+                                <TextBox Name="FilePathBox" Margin="0,0,5,0" HorizontalAlignment="Stretch"/>
+                                <Button Content="선택" Click="OpenDirectory" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <!--<StackPanel Height="40%" VerticalAlignment="Stretch"/>-->
+                </StackPanel>
+
+                <!-- Separator -->
+                <Border Background="LightGray" Height="2" HorizontalAlignment="Stretch"/>
+
+                <!-- Third Panel -->
+                <DockPanel LastChildFill="False" Height="70">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                <Button Click="Cancel" Content="취소" Margin="5,0"/>
+                                <Button Click="Confirm" Content="확인" Margin="5,0"/>
+                        </StackPanel>
+                </DockPanel>
+        </DockPanel>
+</Window>

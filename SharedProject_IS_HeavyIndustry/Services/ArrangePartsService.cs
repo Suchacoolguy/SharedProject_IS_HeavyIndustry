@@ -11,9 +11,9 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class ArrangePartsService
 {
-    private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010, 12110};
-    private static List<Part> _overSizeParts = new List<Part>();
+    private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010};
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed = ArrangeParts();
+    private static ObservableCollection<Part> _overSizeParts = ExcelDataLoader.GetOverSizeParts();
     
     public static ObservableCollection<RawMaterial> ArrangeParts()
     {
@@ -25,20 +25,20 @@ public class ArrangePartsService
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
 
-        for (int i=0; i < partList.Count; i++)
-        {
-            if (partList[i].Length > 10010)
-            {
-                _overSizeParts.Add(partList[i]);
-                partList.Remove(partList[i]);
-            }
-        }
+        // for (int i=0; i < partList.Count; i++)
+        // {
+        //     if (partList[i].Length >= 10010)
+        //     {
+        //         _overSizeParts.Add(partList[i]);
+        //         partList.Remove(partList[i]);
+        //     }
+        // }
         
         DataModel data = new DataModel(partList, _lengthOptionsRawMaterial);
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");
-        solver.SetTimeLimit(5000);
+        solver.SetTimeLimit(10000);
         
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];
@@ -185,6 +185,11 @@ public class ArrangePartsService
     public ObservableCollection<RawMaterial> GetArrangedRawMaterials()
     {
         return _rawMaterialsUsed;
+    }
+    
+    public ObservableCollection<Part> GetOverSizeParts()
+    {
+        return _overSizeParts;
     }
     
     public static List<int> GetLengthOptionsRawMaterial()

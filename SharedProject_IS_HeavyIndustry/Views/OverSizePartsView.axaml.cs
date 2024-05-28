@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
-public partial class PartArrangementView : UserControl
+public partial class OverSizePartsView : UserControl
 {
-    public PartArrangementView()
+    public OverSizePartsView()
     {
         InitializeComponent();
     }

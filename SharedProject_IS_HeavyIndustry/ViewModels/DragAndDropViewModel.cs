@@ -9,11 +9,13 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels;
 public class DragAndDropViewModel
 {
     public static ObservableCollection<RawMaterial> ArrangedRawMaterials { get; set; }
+    public static ObservableCollection<Part> OverSizeParts { get; set; }
     public RawMaterial CurrentRawMaterial { get; set; }
     
-    public DragAndDropViewModel(ObservableCollection<RawMaterial> arranged_raw_materials)
+    public DragAndDropViewModel(ObservableCollection<RawMaterial> arrangedRawMaterials, ObservableCollection<Part> overSizeParts)
     {
-        ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arranged_raw_materials);
+        ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arrangedRawMaterials);
+        OverSizeParts = new ObservableCollection<Part>(overSizeParts);
     }
     
     public void UpdateRawMaterial(RawMaterial from, RawMaterial to, Part part)

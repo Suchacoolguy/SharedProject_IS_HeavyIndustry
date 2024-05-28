@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.OverSizePartsView"
+             xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
+             xmlns:converters="using:SharedProject_IS_HeavyIndustry.Converters"
+             xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
+             x:DataType="vm:MainWindowViewModel"
+             >
+    
+    <UserControl.Resources>
+        <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
+    </UserControl.Resources>
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <!-- Oversized Parts -->
+        <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True">
+            <ItemsControl ItemsSource="{Binding DragAndDropData.OverSizeParts}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Canvas Name="MyCanvas" Width="600" Height="55" Canvas.Top="5">
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood"
+                                       DragDrop.AllowDrop="True" Tag="{Binding }"/>
+                        </Border>
+                            <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
+                            </Canvas>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

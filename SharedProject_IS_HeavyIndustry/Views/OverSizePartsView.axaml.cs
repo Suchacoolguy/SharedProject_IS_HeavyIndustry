@@ -1,8 +1,10 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
@@ -11,9 +13,12 @@ public partial class OverSizePartsView : UserControl
     public OverSizePartsView()
     {
         InitializeComponent();
+        // AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
+        // AddHandler(DragDrop.);
+        AddHandler(DragDrop.DropEvent, DragAndDropViewModel.Part_Drop);
     }
 
-    private void Part_PointerPressed(object sender, PointerPressedEventArgs e)
+    private void Part__PointerPressed(object sender, PointerPressedEventArgs e)
     {
         var part = (sender as Control)?.DataContext as Part;
         

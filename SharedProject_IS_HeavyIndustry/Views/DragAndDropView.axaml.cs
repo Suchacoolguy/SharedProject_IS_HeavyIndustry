@@ -12,8 +12,8 @@ public partial class DragAndDropView : TabView
     public DragAndDropView(StartWindow mainWindow)
     {
         InitializeComponent();
-        AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
-        AddHandler(DragDrop.DropEvent, RawMaterial_Drop);
+        AddHandler(DragDrop.DragOverEvent, DragAndDropViewModel.RawMaterial_DragOver);
+        AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
     }
 
     private void Part_PointerPressed(object sender, PointerPressedEventArgs e)
@@ -44,56 +44,9 @@ public partial class DragAndDropView : TabView
         }
         
     }
-
-    private void RawMaterial_DragOver(object sender, DragEventArgs e)
-    {
-        e.DragEffects = e.DragEffects & DragDropEffects.Move;
-        e.Handled = true;
-    }
-
-    private void RawMaterial_Drop(object sender, DragEventArgs e)
-    {
-        // the part object being dragged
-        var data = e.Data as IDataObject;
-        if (data == null)
-        {
-            Console.WriteLine("Data is null");
-            return;
-        }
-
-        var part = data.Get("part") as Part;
-        var originalRawMaterial = data.Get("originalRawMaterial") as RawMaterial;
-
-        if (originalRawMaterial == null)
-        {
-            Console.WriteLine("originalRawMaterial is null");    
-        }
-        
-        // Get the RawMaterial object from the sender
-        var rawMaterial = (e.Source as Control)?.Tag as RawMaterial;
-        
-        var viewModel = DataContext as MainWindowViewModel;
-
-        if (rawMaterial != null && part != null && originalRawMaterial != null)
-        {
-            // Update the ArrangedRawMaterials collection in the ViewModel
-            
-            viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, rawMaterial, part);
-            Console.WriteLine("first conditional statement");
-        }
-        else if (rawMaterial == null && part != null && originalRawMaterial != null)
-        {
-            viewModel?.DragAndDropData.UpdateRawMaterial(originalRawMaterial, null, part);
-            Console.WriteLine("second conditional statement");
-        }
-
-        if (part != null)
-        {
-            Console.WriteLine(part);
-        }
-        if (rawMaterial == null)
-        {
-            Console.WriteLine("RawMaterial is null");
-        }
-    }
+    
+    
+    
+    
+    
 }

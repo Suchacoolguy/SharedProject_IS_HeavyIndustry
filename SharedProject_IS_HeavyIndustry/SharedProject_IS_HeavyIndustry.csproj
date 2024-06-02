@@ -21,13 +21,19 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="EPPlus" Version="7.1.2" />
+        <PackageReference Include="Google.OrTools" Version="9.10.4067" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Update="Views\TabViews\TabView.axaml.cs">
         <DependentUpon>TabView.axaml</DependentUpon>
         <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\NewProjectWindow.axaml.cs">
+        <DependentUpon>NewProjectWindow.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
 </Project>

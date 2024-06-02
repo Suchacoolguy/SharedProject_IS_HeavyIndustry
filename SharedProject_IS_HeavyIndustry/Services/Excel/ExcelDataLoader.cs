@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using SharedProject_IS_HeavyIndustry.Views;
 using OfficeOpenXml;
 using System.IO;
@@ -13,6 +14,7 @@ namespace SharedProject_IS_HeavyIndustry
     public class ExcelDataLoader
     {
         private static List<Part> parts = new List<Part>();
+        private static List<Part> overSizeParts = new List<Part>();
         private int currentNum = 0;
 
         public static List<Part> PartListFromExcel(string filePath)
@@ -31,22 +33,29 @@ namespace SharedProject_IS_HeavyIndustry
                     if (cellValue != null && int.TryParse(cellValue.ToString(), out int intValue))
                     {
                         Part temp = ExtractData(worksheet, row);
-                        // Console.WriteLine(temp.Desc.Type.Equals("TB"));
-                        // Console.WriteLine(temp.Desc.Size.Equals("150*100*3.2"));
-                        // Console.WriteLine(temp.Desc.Size);
                         if (temp.Desc.Type.Equals("TB") && temp.Desc.Size.Equals("150*100*3.2"))
                         {
                             for (int i = temp.Num; i > 0; i--)
                             {
                                 Part part = new Part(temp.Assem, temp.Mark, temp.Material, temp.Length, 1, temp.WeightOne, temp.WeightSum, temp.PArea, temp.Desc);
-                                parts.Add(part);
+                                if (part.Length <= 10010)
+                                    parts.Add(part);
+                                else
+                                    overSizeParts.Add(part);
                             }    
                         }
                     }
                     row++;
                 }
             }
+            overSizeParts.Sort((x, y) => x.Length.CompareTo(y.Length));
             return parts;
+        }
+        
+        public static ObservableCollection<Part> GetOverSizeParts()
+        {
+            ObservableCollection<Part> res = new ObservableCollection<Part>(overSizeParts);
+            return res;
         }
 
         private static int FindStartingRow(ExcelWorksheet worksheet)
@@ -113,7 +122,7 @@ namespace SharedProject_IS_HeavyIndustry
                     var rawMaterial = rawMaterials[i];
                     worksheet.Cells[currentRow, 1].Value = i + 1;
                     worksheet.Cells[currentRow, 2].Value = rawMaterial.Length;
-                    worksheet.Cells[currentRow, 9].Value = rawMaterial.remaining_length;
+                    worksheet.Cells[currentRow, 9].Value = rawMaterial.RemainingLength;
                     var range = worksheet.Cells[currentRow, 3, currentRow, 8];
                     range.Merge = true;
                     range.Style.Border.Top.Style = ExcelBorderStyle.Thin;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 
@@ -14,12 +15,17 @@ public class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel()
     {
         var service = new ArrangePartsService();
-        DragAndDropData = new DragAndDropViewModel(service.GetArrangedRawMaterials());
-
+        DragAndDropData = new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
+        
         var bomService = new BOMDataService();
         BOMData = new BOMDataViewModel(bomService.GetPartList());
-        
     }
     public BOMDataViewModel BOMData { get; }
     public DragAndDropViewModel DragAndDropData { get; }
+    
+    public void DropPartOntoRawMaterial(Part part, RawMaterial rawMaterial)
+    {
+        // Logic to add the part to the raw material
+        rawMaterial.insert_part(part);
+    }
 }

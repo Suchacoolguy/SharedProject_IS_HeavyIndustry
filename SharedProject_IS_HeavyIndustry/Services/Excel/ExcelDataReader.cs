@@ -10,7 +10,7 @@ namespace SharedProject_IS_HeavyIndustry.Models;
 
 public static class ExcelDataReader
 {
-    private const double MaxLen = 8000;
+    private const double MaxLen = 12000;
 
     public static ExcelPackage Read(string filePath)
     {

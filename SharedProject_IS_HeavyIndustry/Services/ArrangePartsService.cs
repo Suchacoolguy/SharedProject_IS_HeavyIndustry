@@ -11,7 +11,7 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class ArrangePartsService
 {
-    private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010};
+    private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010, 12110};
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
     private static ObservableCollection<Part> _overSizeParts;
     
@@ -32,6 +32,11 @@ public class ArrangePartsService
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
         
         DataModel data = new DataModel(partList, _lengthOptionsRawMaterial);
+
+        foreach (var ppp in partList)
+        {
+            Console.WriteLine(ppp.Length);
+        }
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");

@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SharedProject_IS_HeavyIndustry.Models
 {
-    public class RawMaterial
+    public class RawMaterial : INotifyPropertyChanged
     {
         public int Length
         {
@@ -24,10 +24,30 @@ namespace SharedProject_IS_HeavyIndustry.Models
             set;
         }
 
-        public int RemainingLength
+        public int _RemainingLength
         {
             get;
             set;
+        }
+        
+        public int RemainingLength
+        {
+            get { return _RemainingLength; }
+            set
+            {
+                if (_RemainingLength != value)
+                {
+                    _RemainingLength = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         
         public Part insert_part(Part part)
@@ -35,6 +55,20 @@ namespace SharedProject_IS_HeavyIndustry.Models
             PartsInside.Add(part);
             RemainingLength -= part.Length;
             return part;
+        }
+        
+        public Part remove_part(Part part)
+        {
+            PartsInside.Remove(part);
+            RemainingLength += part.Length;
+            return part;
+        }
+        
+        public void remove_part_at(int part_index)
+        {
+            int length = PartsInside[part_index].Length;
+            PartsInside.RemoveAt(part_index);
+            RemainingLength += length;
         }
         
         public int GetTotalLengthOfPartsInside()

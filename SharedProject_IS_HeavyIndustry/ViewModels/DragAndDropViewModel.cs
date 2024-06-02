@@ -40,7 +40,7 @@ public class DragAndDropViewModel
             if (index_to > -1 && index_to < ArrangedRawMaterials.Count)
             {
                 ArrangedRawMaterials[index_to].insert_part(part);
-                ArrangedRawMaterials[index_from].PartsInside.RemoveAt(index_part);
+                ArrangedRawMaterials[index_from].remove_part_at(index_part);
                 if (ArrangedRawMaterials[index_from].PartsInside.Count == 0)
                 {
                     ArrangedRawMaterials.RemoveAt(index_from);
@@ -69,7 +69,7 @@ public class DragAndDropViewModel
             RawMaterial newRawMaterial = new RawMaterial(bestLength);
             newRawMaterial.insert_part(part);
             ArrangedRawMaterials.Insert(index_from + 1, newRawMaterial);
-            ArrangedRawMaterials[index_from].PartsInside.RemoveAt(index_part);
+            ArrangedRawMaterials[index_from].remove_part_at(index_part);
             if (ArrangedRawMaterials[index_from].PartsInside.Count == 0)
             {
                 ArrangedRawMaterials.RemoveAt(index_from);
@@ -86,7 +86,7 @@ public class DragAndDropViewModel
         else if (from != null && to == null && part != null)
         {
             OverSizeParts.Add(part);
-            ArrangedRawMaterials[index_from].PartsInside.Remove(part);
+            ArrangedRawMaterials[index_from].remove_part(part);
         }
     }
     
@@ -165,7 +165,7 @@ public class DragAndDropViewModel
         }
     }
 
-public static List<int> GetLengthOptionsRawMaterial()
+    public static List<int> GetLengthOptionsRawMaterial()
     {
         return ArrangePartsService.GetLengthOptionsRawMaterial();
     }

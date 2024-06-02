@@ -17,8 +17,8 @@
               FontSize="15"
               BorderThickness="1" BorderBrush="Gray">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="*"/>
-            <DataGridTextColumn Header="규격" Width="*">
+            <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="Auto"/>
+            <DataGridTextColumn Header="규격" Width="Auto">
                 <DataGridTextColumn.Binding>
                     <MultiBinding StringFormat="{}{0}{1}">
                         <Binding Path="Desc.Type"/>

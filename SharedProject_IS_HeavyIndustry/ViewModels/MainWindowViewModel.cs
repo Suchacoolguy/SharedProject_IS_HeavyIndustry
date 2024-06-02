@@ -14,14 +14,9 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        var service = new ArrangePartsService();
-        DragAndDropData = new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
         
-        var bomService = new BOMDataService();
-        BOMData = new BOMDataViewModel(bomService.GetPartList());
     }
-    public BOMDataViewModel BOMData { get; }
-    public DragAndDropViewModel DragAndDropData { get; }
+    public static DragAndDropViewModel DragAndDropData { get; set; }
     
     public void DropPartOntoRawMaterial(Part part, RawMaterial rawMaterial)
     {

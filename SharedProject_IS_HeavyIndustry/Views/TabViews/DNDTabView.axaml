@@ -33,8 +33,7 @@
         </Border>
         
         <Border BorderBrush="LightGray" BorderThickness="2" Margin="4,4,4,0">
-            <DockPanel Background="White">
-                <Panel Name="WorkSpace" Background="Pink" Margin="4,4,4,0"></Panel>
+            <DockPanel Background="White" Name="Parent_DragAndDrop">
             </DockPanel>
         </Border>
         

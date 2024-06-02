@@ -12,14 +12,20 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 public class ArrangePartsService
 {
     private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010};
-    private static ObservableCollection<RawMaterial> _rawMaterialsUsed = ArrangeParts();
-    private static ObservableCollection<Part> _overSizeParts = ExcelDataLoader.GetOverSizeParts();
+    private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
+    private static ObservableCollection<Part> _overSizeParts;
     
-    public static ObservableCollection<RawMaterial> ArrangeParts()
+    public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts)
+    {
+        _rawMaterialsUsed = ArrangeParts(parts);
+        _overSizeParts = new ObservableCollection<Part>(overSizeParts);
+    }
+    
+    public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts)
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
-        List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
-        
+        // List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
+        List<Part> partList = parts;
         // sort in descending order
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
@@ -119,23 +125,8 @@ public class ArrangePartsService
         if (resultStatus != Solver.ResultStatus.OPTIMAL)
         {
             Console.WriteLine("The problem does not have an optimal solution!");
-            // return;
         }
         Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
-        
-        // for (int i = 0; i < data.NumBins; i++)
-        // {
-        //     int numCheck = 0;
-        //     for (int j = 0; j < data.NumRawMaterialOptions; j++)
-        //     {
-        //         if (y[i, j].SolutionValue() == 1)
-        //         {
-        //             numCheck++;
-        //         }
-        //     }
-        //     // Console.WriteLine($"Item {i} is in {numCheck} bins.");
-        // }
-        // Console.WriteLine("Number of bins: " + data.NumBins);
 
         int howManyTimes = 0;
         int TotalScrap = 0;

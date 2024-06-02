@@ -14,13 +14,10 @@ namespace SharedProject_IS_HeavyIndustry.Views;
 
 public partial class StartWindow : Window
 {
-    private string filePath;
-    private ExcelManager exm;
-    private List<Part> parts;
     public StartWindow()
     {
         InitializeComponent();
-        DataContext = new MainWindowViewModel();
+        //DataContext = new MainWindowViewModel();
     }
     //시트 선택창 띄우기
     public async Task OpenSheetSelectWindow()
@@ -65,6 +62,8 @@ public partial class StartWindow : Window
     //탭 패널에 드래그앤 드랍 탭 추가 
     private void AddDragNDrop(object? sender, RoutedEventArgs e)
     {
+        if (WorkManager.SheetName == null) return;
+        WorkManager.ClassifyParts();
         AddTab("파트 배치");
     }
 

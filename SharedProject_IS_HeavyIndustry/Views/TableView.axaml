@@ -7,9 +7,8 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="models:WorkManager"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
-    
 
-    <DataGrid Name="DataGrid" ItemsSource="{Binding PartsOrigin}"
+    <DataGrid Name="Table" ItemsSource="{Binding PartsOrigin}"
               IsReadOnly="True"
               CanUserReorderColumns="True"
               CanUserResizeColumns="True"
@@ -18,16 +17,48 @@
               FontSize="15"
               BorderThickness="1" BorderBrush="Gray">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="Assem"  Binding="{Binding Assem}"/>
-            <DataGridTextColumn Header="Mark"  Binding="{Binding Mark}"/>
-            <DataGridTextColumn Header="Material"  Binding="{Binding Material}"/>
-            <DataGridTextColumn Header="Length"  Binding="{Binding Length}"/>
-            <DataGridTextColumn Header="Num"  Binding="{Binding Num}"/>
-            <DataGridTextColumn Header="WeightOne"  Binding="{Binding WeightOne}"/>
-            <DataGridTextColumn Header="WeightSum"  Binding="{Binding WeightSum}"/>
-            <DataGridTextColumn Header="pArea"  Binding="{Binding PArea}"/>
-            <DataGridTextColumn Header="Type"  Binding="{Binding Desc.Type}"/>
-            <DataGridTextColumn Header="Size"  Binding="{Binding Desc.Size}"/>
+            <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="*"/>
+            <DataGridTextColumn Header="규격" Width="*">
+                <DataGridTextColumn.Binding>
+                    <MultiBinding StringFormat="{}{0}{1}">
+                        <Binding Path="Desc.Type"/>
+                        <Binding Path="Desc.Size"/>
+                    </MultiBinding>
+                </DataGridTextColumn.Binding>
+            </DataGridTextColumn>
+            <DataGridTextColumn Header="도면번호"  Binding="{Binding Assem}" Width="*"/>
+            <DataGridTextColumn Header="블록마크"  Binding="{Binding Mark}" Width="*"/>
+            <DataGridTextColumn Header="길이"  Binding="{Binding Length}" Width="*"/>
+            <DataGridTextColumn Header="수량"  Binding="{Binding Num}" Width="*"/>
+            <DataGridTextColumn Header="중량"  Binding="{Binding WeightOne}" Width="*"/>
+            <DataGridTextColumn Header="면적"  Binding="{Binding PArea}" Width="*"/>
+            <DataGridTextColumn Header="중량합"  Binding="{Binding WeightSum}" Width="*"/>
+            
+            <DataGridTemplateColumn Header="제외" Width="*">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding IsExcluded}" HorizontalAlignment="Center"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            
+            <DataGridTemplateColumn Header="분리" Width="*">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding NeedSeparate}" HorizontalAlignment="Center"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            
+            <DataGridTextColumn Header="분리 길이" Width="*"/>
+
+            <DataGridTemplateColumn Header="분리 필요" Width="*">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding IsOverLenth}" HorizontalAlignment="Center"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

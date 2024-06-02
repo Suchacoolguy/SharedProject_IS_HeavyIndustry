@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -24,13 +25,17 @@ public partial class DNDTabView : TabView
         var selectedType = this.FindControl<ComboBox>("Type")!.SelectedItem?.ToString();
         var selectedSize = this.FindControl<ComboBox>("Size")!.SelectedItem?.ToString();
         var panel = this.FindControl<Panel>("WorkSpace");
-        
-        List<Part> list = null;
+
+        ///////////////////////////////////////////테스트용 코드
+
+        ObservableCollection<Part> parts = null;
+        ObservableCollection<Part> partsOverLength = null;
         if (selectedType != null && selectedSize != null)
-            list =  WorkManager.FindPartsByDescription(new Description(selectedType, selectedSize));
-        foreach (var part in list)
         {
-            Console.WriteLine(part);
+            parts = WorkManager.FindPartsByDescription(new Description(selectedType, selectedSize),
+                WorkManager.PartsForTask);
+            partsOverLength = WorkManager.FindPartsByDescription(new Description(selectedType, selectedSize),
+                WorkManager.PartsForSeparate);
         }
     }
 }

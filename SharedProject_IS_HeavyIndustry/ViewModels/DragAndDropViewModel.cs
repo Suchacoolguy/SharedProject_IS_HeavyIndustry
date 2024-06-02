@@ -7,7 +7,6 @@ using Avalonia.Input;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 
-
 namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
 public class DragAndDropViewModel

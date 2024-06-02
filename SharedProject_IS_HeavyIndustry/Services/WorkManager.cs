@@ -17,7 +17,8 @@ public static class WorkManager
     public static ObservableCollection<Part> PartsForTask { get; set; } = null!;
     public static ObservableCollection<Part> PartsForSeparate { get; set; } = null!;
 
-    public static Dictionary<string, ObservableCollection<RawMaterial>> DragAndDropSet { get; set; } = null!;
+    public static Dictionary<string, ObservableCollection<RawMaterial>> RawMaterialSet { get; set; } 
+        = new Dictionary<string, ObservableCollection<RawMaterial>>();
 
     public static List<string> GetSheetNames()
     {

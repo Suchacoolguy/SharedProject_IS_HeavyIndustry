@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using DynamicData;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
@@ -31,8 +32,8 @@ public partial class DNDTabView : TabView
 
         ///////////////////////////////////////////테스트용 코드
 
-        ObservableCollection<Part> parts = null;
-        ObservableCollection<Part> partsOverLength = null;
+        ObservableCollection<Part> parts = null!;
+        ObservableCollection<Part> partsOverLength = null!;
         if (selectedType != null && selectedSize != null)
         {
             parts = WorkManager.FindPartsByDescription(new Description(selectedType, selectedSize),
@@ -44,6 +45,13 @@ public partial class DNDTabView : TabView
             MainWindowViewModel.DragAndDropData =
                 new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
             
+            var key = selectedType + selectedSize;
+            if (!WorkManager.RawMaterialSet.ContainsKey(key))
+            {
+                WorkManager.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
+            }
+        
+            WorkManager.RawMaterialSet[key].Add(service.GetArrangedRawMaterials());
             
             
             if (!dockPanel.Children.Any())

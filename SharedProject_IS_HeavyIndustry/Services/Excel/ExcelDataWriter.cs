@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using SkiaSharp;
@@ -18,32 +19,52 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _imgWidth = 0;
         public static void Write(Dictionary<string, ObservableCollection<RawMaterial>> rawMaterialSet)
         {
-            using (var package = new ExcelPackage())
+            try
             {
-                /*DirectoryCheck();*/
+                DirectoryCheck(); // 폴더 존재 여부 확인
 
-                foreach (var kvp in rawMaterialSet)
+                using (var package = new ExcelPackage())
                 {
-                    var worksheet = package.Workbook.Worksheets.Add(kvp.Key);
-                    _imgWidth = ModifyCellWidth(worksheet);
+                    string type, size;
+                    foreach (var kvp in rawMaterialSet)
+                    {
+                        _row = 13; // _row 변수 초기화
+                        var worksheet = package.Workbook.Worksheets.Add(kvp.Key);
+                        _imgWidth = ModifyCellWidth(worksheet);
+                        
+                        type = Regex.Match(kvp.Key, @"^[^\d]+").Value;
+                        size = Regex.Match(kvp.Key, @"[\d\*\.]+").Value;
+                        
+                        MakeHeader(worksheet, type, size);
+                        MakeChart(worksheet, kvp.Value);
+                    }
 
-                    MakeHeader(worksheet);
-                
-                    MakeChart(worksheet, kvp.Value);
                     // Excel 파일 저장
                     package.SaveAs(new FileInfo(filePath));
                 }
-            }
 
-            Console.WriteLine("Excel 파일이 생성되고 열렸습니다.");
+                OpenFile();
+                Console.WriteLine("Excel 파일이 생성되고 열렸습니다.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("오류: " + ex.Message);
+            }
         }
 
         public static void OpenFile()
         {
-            Process.Start(new ProcessStartInfo { FileName = filePath, UseShellExecute = true });
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = filePath, UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("오류: " + ex.Message);
+            }
         }
 
-        /*private static void DirectoryCheck()
+        private static void DirectoryCheck()
         {
             try
             {
@@ -54,9 +75,9 @@ namespace SharedProject_IS_HeavyIndustry.Models
             {
                 Console.WriteLine("오류: " + ex.Message);
             }
-        }*/
+        }
 
-        private static void MakeHeader(ExcelWorksheet worksheet)
+        private static void MakeHeader(ExcelWorksheet worksheet, string type, string size)
         {
                 // 엑셀 세로 폭 설정
                 worksheet.Row(3).Height = worksheet.DefaultRowHeight / 2;
@@ -73,8 +94,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 worksheet.Cells[1, 5].Value = "MATERIAL";
                 worksheet.Cells[1, 7].Value = "UNIT WEIGHT";
                 
-                worksheet.Cells[2, 1].Value = "각관";
-                worksheet.Cells[2, 3].Value = "150*100*3.2";
+                worksheet.Cells[2, 1].Value = type;
+                worksheet.Cells[2, 3].Value = size;
                 worksheet.Cells[2, 5].Value = "SS275";
                 worksheet.Cells[2, 7].Value = "20.1";
                 worksheet.Cells[2, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -158,7 +179,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(ms);
                 var picture = worksheet.Drawings.AddPicture("image" + row, ms);
                 picture.SetPosition(row - 1, 0, 2, 0);
-                picture.SetSize(_imgWidth, (int)mergedCellHeight);
+                //picture.SetSize(_imgWidth, (int)mergedCellHeight);
+                picture.SetSize(480, (int)mergedCellHeight);
             }
         }
         

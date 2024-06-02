@@ -14,7 +14,7 @@
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
     </UserControl.Resources>
     
-    <Grid DragDrop.AllowDrop="True">
+    <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
@@ -60,8 +60,7 @@
                 </ScrollViewer>
     </Grid>
 
-        <!-- New window content -->
-        <views:OverSizePartsView Grid.Column="1"/>
+        <!-- OverSizePartsView is added here when the PartsForSeparate list in the WorkManager has an item. -->
     </Grid>
     
     

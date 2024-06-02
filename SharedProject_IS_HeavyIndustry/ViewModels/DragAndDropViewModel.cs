@@ -169,7 +169,9 @@ public static List<int> GetLengthOptionsRawMaterial()
     {
         return ArrangePartsService.GetLengthOptionsRawMaterial();
     }
-    
-    
-    
+
+    public static ObservableCollection<Part> GetOverSizeParts()
+    {
+        return OverSizeParts;
+    }
 }

@@ -45,14 +45,17 @@ public partial class DNDTabView : TabView
                 new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
             
             
-            var dragAndDropView = new DragAndDropView(mainWindow);
+            
             if (!dockPanel.Children.Any())
             {
+                var dragAndDropView = new DragAndDropView(mainWindow);
                 dockPanel.Children.Add(dragAndDropView);
             }
             else
             {
                 dockPanel.Children.RemoveAll(dockPanel.Children);
+                
+                var dragAndDropView = new DragAndDropView(mainWindow);
                 dockPanel.Children.Add(dragAndDropView);
             }
         }

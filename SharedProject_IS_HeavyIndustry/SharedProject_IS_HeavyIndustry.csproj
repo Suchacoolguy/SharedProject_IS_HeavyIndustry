@@ -35,5 +35,9 @@
       <Compile Update="Views\NewProjectWindow.axaml.cs">
         <DependentUpon>NewProjectWindow.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\TabViews\ReportTabView.axaml.cs">
+        <DependentUpon>CuttingPlanView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

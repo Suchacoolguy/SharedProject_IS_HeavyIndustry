@@ -12,9 +12,12 @@ public static class WorkManager
     private static ExcelPackage _package = null!;
     private static ExcelWorksheet _sheet = null!;
     public static string SheetName = null!, ExcelFilePath = null!;
+    public static string? ProjectName = null!;
     public static ObservableCollection<Part> PartsOrigin { get; set; } = null!;
     public static ObservableCollection<Part> PartsForTask { get; set; } = null!;
     public static ObservableCollection<Part> PartsForSeparate { get; set; } = null!;
+
+    public static Dictionary<string, ObservableCollection<RawMaterial>> DragAndDropSet { get; set; } = null!;
 
     public static List<string> GetSheetNames()
     {

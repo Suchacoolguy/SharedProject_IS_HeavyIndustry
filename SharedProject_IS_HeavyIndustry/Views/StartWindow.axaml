@@ -12,9 +12,9 @@
         
         <DockPanel Name="BasicPanel" LastChildFill="True">
                 <StackPanel DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
-                        <Button Content="+" Click="NewProjectWindow"/>
-                        <Button Content="파트배치" Click="AddDragNDrop"></Button>
-                        <Button Content="sibal" Click="Sibal"></Button>
+                        <Button Content="+" Click="NewProjectWindow_btn_click"/>
+                        <Button Content="파트배치" Click="AddDragNDrop_btn_click"></Button>
+                        <Button Content="레포트 출력" Click="Report_btn_click"></Button>
                 </StackPanel>
                 <Grid DockPanel.Dock="Top">
                         <TabControl Name="TabFrame" Margin="0" Padding="0"/>

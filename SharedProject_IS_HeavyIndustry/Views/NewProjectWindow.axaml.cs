@@ -43,6 +43,7 @@ public partial class NewProjectWindow : Window
         if (!string.IsNullOrEmpty(filePath) && IsExcelFile())
         {
             WorkManager.ExcelFilePath = filePath;
+            WorkManager.ProjectName = this.FindControl<TextBox>("ProjectName")?.Text;
             Close();
         }
         else

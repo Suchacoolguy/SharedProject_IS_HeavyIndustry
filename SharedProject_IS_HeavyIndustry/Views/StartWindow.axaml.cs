@@ -28,9 +28,7 @@ public partial class StartWindow : Window
             WorkManager.SetSheet(WorkManager.SheetName);
         
     }
-    /*var result = await miniWindow.ShowDialog<bool?>(this);*/
-    
-    private async void NewProjectWindow(object? sender, RoutedEventArgs e)
+    private async void NewProjectWindow_btn_click(object? sender, RoutedEventArgs e)
     {
         var newProjectWindow = new NewProjectWindow(this);
         await newProjectWindow.ShowDialog(this); // 새 프로젝트 생성창 열기
@@ -38,7 +36,19 @@ public partial class StartWindow : Window
         if (string.IsNullOrEmpty(WorkManager.ExcelFilePath)) return;
         WorkManager.ReadExcelPackage();//파일 경로 확인 후 엑셀 읽기
         AddTab("프로젝트 정보"); // 탭 추가
+    }
 
+    //탭 패널에 드래그앤 드랍 탭 추가 
+    private void AddDragNDrop_btn_click(object? sender, RoutedEventArgs e)
+    {
+        if (WorkManager.SheetName == null) return;
+        WorkManager.ClassifyParts();
+        AddTab("파트 배치");
+    }
+
+    private void Report_btn_click(object? sender, RoutedEventArgs e)
+    {
+        AddTab("레포트 출력");
     }
     
     public void AddTab(string tabHeader)
@@ -50,25 +60,12 @@ public partial class StartWindow : Window
             {
                 "프로젝트 정보" => new ExcelTabView(this),
                 "파트 배치" => new DNDTabView(this),
-                "sibal" => new DragAndDropView(this),
+                "레포트 출력" => new ReportTabView(),
                 _ => throw new ArgumentOutOfRangeException()
             }
         };
 
         var tabPanel = this.FindControl<TabControl>("TabFrame");
         tabPanel?.Items.Add(tabItem);
-    }
-
-    //탭 패널에 드래그앤 드랍 탭 추가 
-    private void AddDragNDrop(object? sender, RoutedEventArgs e)
-    {
-        if (WorkManager.SheetName == null) return;
-        WorkManager.ClassifyParts();
-        AddTab("파트 배치");
-    }
-
-    private void Sibal(object? sender, RoutedEventArgs e)
-    {
-        AddTab("sibal");
     }
 }

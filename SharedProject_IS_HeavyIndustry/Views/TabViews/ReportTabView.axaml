@@ -1,0 +1,39 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:tabVIewModels="clr-namespace:SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.ReportTabView"
+             x:DataType="tabVIewModels:ReportTabViewModel">
+    <DockPanel DockPanel.Dock="Top">
+               <!--Box1-->         
+        <Border Height="50" Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
+            <DockPanel>
+                <Border Margin="0,0,4,0" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left">
+                    <TextBlock VerticalAlignment="Center">아이콘</TextBlock>
+                </Border>
+                <TextBlock Text="{Binding Title}" FontWeight="Heavy" DockPanel.Dock="Top"/>
+                <TextBlock Text="{Binding SubTitle}" FontSize="12" DockPanel.Dock="Top"/>
+            </DockPanel>
+        </Border>
+               <!--Box2-->           
+        <Border Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
+            <StackPanel>
+                <TextBlock Padding="2" Text="입력값 조사 필요" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue"/>
+                <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
+                    <Button Content="Cutting Plan 미리보기" Click="PlanReview_btn_click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left"/>
+                    <Button Content= "Cutting Plan 출력" Click="PrintPlan_btn_click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Margin="4,0,0,0" DockPanel.Dock="Left"/>
+                    <Button Background="White"/>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+               <!--Box3-->
+        <Border BorderBrush="Gray" BorderThickness="2" Margin="4,4,4,0">
+            <DockPanel Background="White">
+                <Panel Name="TablePanel" Margin="4,4,4,0"/>
+            </DockPanel>
+        </Border>
+               
+    </DockPanel>
+</UserControl>

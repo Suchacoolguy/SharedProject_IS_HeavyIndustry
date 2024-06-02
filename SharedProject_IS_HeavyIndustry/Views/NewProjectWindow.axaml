@@ -19,7 +19,7 @@
                 <!-- Second Panel -->
                 <StackPanel DockPanel.Dock="Top" Height="210">
                         <TextBlock Text="프로젝트 이름" Margin="10,0"/>
-                        <TextBox Margin="10,5" HorizontalAlignment="Stretch"/>
+                        <TextBox Name="ProjectName" Margin="10,5" HorizontalAlignment="Stretch"/>
 
                         <TextBlock Text="프로젝트 경로" Margin="10,20,10,0"/>
                         <!--<DockPanel Margin="10,5">

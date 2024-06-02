@@ -22,4 +22,10 @@ public class MainWindowViewModel : ViewModelBase
     }
     public BOMDataViewModel BOMData { get; }
     public DragAndDropViewModel DragAndDropData { get; }
+    
+    public void DropPartOntoRawMaterial(Part part, RawMaterial rawMaterial)
+    {
+        // Logic to add the part to the raw material
+        rawMaterial.insert_part(part);
+    }
 }

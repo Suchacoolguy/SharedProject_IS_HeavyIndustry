@@ -33,9 +33,6 @@ namespace SharedProject_IS_HeavyIndustry
                     if (cellValue != null && int.TryParse(cellValue.ToString(), out int intValue))
                     {
                         Part temp = ExtractData(worksheet, row);
-                        // Console.WriteLine(temp.Desc.Type.Equals("TB"));
-                        // Console.WriteLine(temp.Desc.Size.Equals("150*100*3.2"));
-                        // Console.WriteLine(temp.Desc.Size);
                         if (temp.Desc.Type.Equals("TB") && temp.Desc.Size.Equals("150*100*3.2"))
                         {
                             for (int i = temp.Num; i > 0; i--)
@@ -125,7 +122,7 @@ namespace SharedProject_IS_HeavyIndustry
                     var rawMaterial = rawMaterials[i];
                     worksheet.Cells[currentRow, 1].Value = i + 1;
                     worksheet.Cells[currentRow, 2].Value = rawMaterial.Length;
-                    worksheet.Cells[currentRow, 9].Value = rawMaterial.remaining_length;
+                    worksheet.Cells[currentRow, 9].Value = rawMaterial.RemainingLength;
                     var range = worksheet.Cells[currentRow, 3, currentRow, 8];
                     range.Merge = true;
                     range.Style.Border.Top.Style = ExcelBorderStyle.Thin;

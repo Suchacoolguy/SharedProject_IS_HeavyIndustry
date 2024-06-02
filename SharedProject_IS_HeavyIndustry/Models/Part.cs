@@ -7,6 +7,7 @@ public class Part
     private int length, num;
     private double weightOne, weightSum, pArea;
     private Description desc;
+    private bool _isOverLenth, _isExcluded, _needSeparate;
     
     public Part() {}
     
@@ -21,6 +22,9 @@ public class Part
         this.weightSum = weightSum;
         this.pArea = pArea;
         this.desc = desc;
+        _isOverLenth = false;
+        _isExcluded = false;
+        _needSeparate = false;
     }
     
     public Description Desc
@@ -75,6 +79,24 @@ public class Part
     {
         get { return pArea; }
         set { pArea = value; }
+    }
+
+    public bool IsOverLenth
+    {
+        get { return _isOverLenth; }
+        set { _isOverLenth = value; }
+    }
+    
+    public bool IsExcluded
+    {
+        get { return _isExcluded; }
+        set { _isExcluded = value; }
+    }
+    
+    public bool NeedSeparate
+    {
+        get { return _needSeparate; }
+        set { _needSeparate = value; }
     }
 
     public override string ToString()

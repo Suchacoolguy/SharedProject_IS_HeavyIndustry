@@ -10,6 +10,8 @@ namespace SharedProject_IS_HeavyIndustry.Models;
 
 public static class ExcelDataReader
 {
+    private const double MaxLen = 8000;
+
     public static ExcelPackage Read(string filePath)
     {
         return new ExcelPackage(new FileInfo(filePath));
@@ -59,7 +61,11 @@ public static class ExcelDataReader
         var type = Regex.Match(desc, @"^[^\d]+").Value;
         var size = Regex.Match(desc, @"[\d\*\.]+").Value;
         var description = new Description(type, size);
+        //분리필요로 변경된 코드 
+        var part = new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
+        if (length > MaxLen)
+            part.IsOverLenth = true;
 
-        return new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
+        return part;
     }
 }

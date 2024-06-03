@@ -64,7 +64,6 @@ public static class WorkManager
         foreach (var part in parts)
             if(part.Desc.Equals(desc))
                 list.Add(part);
-        
         return list;
     }
 

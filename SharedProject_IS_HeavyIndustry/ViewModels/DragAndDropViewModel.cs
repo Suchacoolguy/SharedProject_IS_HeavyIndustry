@@ -27,13 +27,18 @@ public class DragAndDropViewModel
         int index_from = 0;
         int index_to = 0;
         int index_part = 0;
+        int len_part = 0;
         
         if (from != null)
             index_from = ArrangedRawMaterials.IndexOf(from);
         if (to != null)
             index_to = ArrangedRawMaterials.IndexOf(to);
         if (part != null)
+        {
             index_part = ArrangedRawMaterials[index_from].PartsInside.IndexOf(part);
+            len_part = part.Length;
+        }
+            
 
         if (from != null && to != null && part != null)
         {
@@ -55,6 +60,7 @@ public class DragAndDropViewModel
             // find the best size of raw material to insert the part
 
             Console.WriteLine("UpdateRawMaterial - from: null, to: null, part: not null");
+            Console.WriteLine("여긴 뭐하는 곳인가");
             List<int> lengthOptions = GetLengthOptionsRawMaterial();
             int bestLength = Int32.MaxValue;
             foreach (var len in lengthOptions)
@@ -70,6 +76,7 @@ public class DragAndDropViewModel
             newRawMaterial.insert_part(part);
             ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
             ArrangedRawMaterials[index_from].remove_part_at(index_part);
+            
             if (ArrangedRawMaterials[index_from].PartsInside.Count == 0)
             {
                 ArrangedRawMaterials.RemoveAt(index_from);
@@ -89,6 +96,10 @@ public class DragAndDropViewModel
             OverSizeParts.Add(part);
             ArrangedRawMaterials[index_from].remove_part_at(index_part);
             Console.WriteLine("UpdateRawMaterial - from: not null, to: null, part: not null");
+        }
+        else if (from == null && to == null && part != null)
+        {
+            Console.WriteLine("여기다 여기!");
         }
     }
     
@@ -120,6 +131,15 @@ public class DragAndDropViewModel
         
         // Get the RawMaterial object from the sender
         var rawMaterialTo = (e.Source as Control)?.Tag as RawMaterial;
+        if (rawMaterialTo == null)
+        {
+            Console.WriteLine("RawMaterial_Drop - to is null");   
+        }
+
+        if (part == null)
+        {
+            Console.WriteLine("RawMaterial_Drop - part is null");
+        }
         
         // var viewModel = DataContext as MainWindowViewModel;
 
@@ -135,10 +155,43 @@ public class DragAndDropViewModel
             UpdateRawMaterial(null, rawMaterialTo, part);
             Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
         }
-        else if (rawMaterialTo == null && part != null)
+        else if (rawMaterialFrom != null && rawMaterialTo == null && part != null)
         {
-            UpdateRawMaterial(null, null, part);
+            UpdateRawMaterial(rawMaterialFrom, null, part);
             Console.WriteLine("RawMaterial_Drop - to: null, part: not null");
+        }
+        else if (rawMaterialFrom == null && rawMaterialTo == null && part != null)
+        {
+            int index_from = 0;
+            int index_to = 0;
+            int index_part = 0;
+            int len_part = 0;
+        
+            if (rawMaterialFrom != null)
+                index_from = ArrangedRawMaterials.IndexOf(rawMaterialFrom);
+            if (rawMaterialTo != null)
+                index_to = ArrangedRawMaterials.IndexOf(rawMaterialTo);
+            if (part != null)
+            {
+                index_part = OverSizeParts.IndexOf(part);
+                len_part = part.Length;
+            }
+            
+            // List<int> lengthOptions = GetLengthOptionsRawMaterial();
+            // int bestLength = Int32.MaxValue;
+            // foreach (var len in lengthOptions)
+            // {
+            //     if (len >= part.Length && len < bestLength)
+            //     {
+            //         bestLength = len;
+            //     }
+            // }
+            int bestLength = 13000;
+            // insert the new raw material beyo
+            RawMaterial newRawMaterial = new RawMaterial(bestLength);
+            newRawMaterial.insert_part(part);
+            ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
+            OverSizeParts.Remove(part);
         }
 
         if (part != null)

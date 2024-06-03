@@ -32,7 +32,7 @@
         </Border>
                <!--Box3-->
         <Border BorderBrush="Gray" BorderThickness="2" Margin="4,4,4,0">
-            <DockPanel Background="White">
+            <DockPanel Name="MyDockPanel" Background="White">
                 
                 <Border Background="DodgerBlue" DockPanel.Dock="Top">
                     <TextBlock Padding="2" VerticalAlignment="Center" Foreground="White">엑셀 입력 내용 </TextBlock>
@@ -41,9 +41,24 @@
                 <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
                     <Button Name="ReadExcelBtn" Click="ReadExcelBtn_Click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="엑셀에서 BOM 생성" DockPanel.Dock="Left"/>
                     <Button Name="DnDTaskBtn" Click="DnDTaskBtn_Click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="BOM에서 부재 생성 및 자동 배치" Margin="4,0,0,0" DockPanel.Dock="Left"/>
-                    <DropDownButton Name="DropDownBtn" Click="Toggle" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="선택/해제" DockPanel.Dock="Right">
-                        
+                    <DropDownButton Name="DropDownBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right">
+                        <Menu>
+                            <MenuItem Header="선택/해제">
+                                <MenuItem Header="표시된 항목 제외 설정" Click="MenuItem_Click"/>
+                                <MenuItem Header="표시된 항목 제외 해제" Click="MenuItem_Click"/>
+                                <MenuItem Header="표시된 항목 분리 설정" Click="Toggle"/>
+                                <MenuItem Header="표시된 항목 분리 해제" Click="MenuItem_Click"/>
+                            </MenuItem>
+                        </Menu>
                     </DropDownButton>
+                    <!-- <StackPanel Margin="20"> -->
+                    <!--     <ComboBox SelectedIndex="0" MaxDropDownHeight="100" > -->
+                    <!--         <ComboBoxItem>Text Item 1</ComboBoxItem> -->
+                    <!--         <ComboBoxItem>Text Item 2</ComboBoxItem> -->
+                    <!--         <ComboBoxItem>Text Item 3</ComboBoxItem> -->
+                    <!--         <ComboBoxItem>Text Item 4</ComboBoxItem> -->
+                    <!--     </ComboBox> -->
+                    <!-- </StackPanel> -->
                     <Button Background="White"/>
                 </DockPanel>
                 

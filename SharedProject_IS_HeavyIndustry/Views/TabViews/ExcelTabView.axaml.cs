@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -24,7 +25,9 @@ public partial class ExcelTabView : TabView
     {
         await mainWindow?.OpenSheetSelectWindow()!;
         tableView = new TableView();
-        this.FindControl<Panel>("TablePanel")!.Children.Add(tableView);
+        var tablePanel = this.FindControl<Panel>("TablePanel")!;
+        tablePanel.Children.Clear(); // Clear existing children
+        tablePanel.Children.Add(tableView);
     }
 
     private void DnDTaskBtn_Click(object? sender, RoutedEventArgs e)
@@ -35,7 +38,17 @@ public partial class ExcelTabView : TabView
 
     private void Toggle(object? sender, RoutedEventArgs e)
     {
-        tableView.Toggle(initialToggleState);
+        tableView.ToggleNeedSeperate(true);
         initialToggleState = !initialToggleState; // 다음 클릭 시 상태 반전
+    }
+
+    private void MenuItem_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var menuItem = sender as MenuItem;
+        if (menuItem != null)
+        {
+            // Do something with menuItem.Header
+            Console.WriteLine($"You clicked {menuItem.Header}");
+        }
     }
 }

@@ -49,9 +49,10 @@ public partial class DNDTabView : TabView
             if (!WorkManager.RawMaterialSet.ContainsKey(key))
             {
                 WorkManager.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
+                WorkManager.RawMaterialSet[key].Add(service.GetArrangedRawMaterials());
             }
         
-            WorkManager.RawMaterialSet[key].Add(service.GetArrangedRawMaterials());
+            
             
             
             if (!dockPanel.Children.Any())

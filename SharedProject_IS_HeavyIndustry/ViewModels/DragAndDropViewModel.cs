@@ -49,7 +49,7 @@ public class DragAndDropViewModel
 
             Console.WriteLine("UpdateRawMaterial - from: not null, to: not null, part: not null");
         }
-        else if (from == null && to == null && part != null)
+        else if (to == null && part != null)
         {
             // If the user drops the part object into an area that doesn't contain any other objects
             // find the best size of raw material to insert the part
@@ -68,7 +68,7 @@ public class DragAndDropViewModel
             // insert the new raw material beyo
             RawMaterial newRawMaterial = new RawMaterial(bestLength);
             newRawMaterial.insert_part(part);
-            ArrangedRawMaterials.Insert(index_from + 1, newRawMaterial);
+            ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
             ArrangedRawMaterials[index_from].remove_part_at(index_part);
             if (ArrangedRawMaterials[index_from].PartsInside.Count == 0)
             {
@@ -85,8 +85,10 @@ public class DragAndDropViewModel
         }
         else if (from != null && to == null && part != null)
         {
+            // when the user drags a part from a raw material to empty space
             OverSizeParts.Add(part);
-            ArrangedRawMaterials[index_from].remove_part(part);
+            ArrangedRawMaterials[index_from].remove_part_at(index_part);
+            Console.WriteLine("UpdateRawMaterial - from: not null, to: null, part: not null");
         }
     }
     
@@ -132,6 +134,11 @@ public class DragAndDropViewModel
         {
             UpdateRawMaterial(null, rawMaterialTo, part);
             Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
+        }
+        else if (rawMaterialTo == null && part != null)
+        {
+            UpdateRawMaterial(null, null, part);
+            Console.WriteLine("RawMaterial_Drop - to: null, part: not null");
         }
 
         if (part != null)

@@ -20,7 +20,7 @@ public partial class TableView : UserControl
         
     }
 
-    public void Toggle(bool value)
+    public void ToggleNeedSeperate(bool value)
     {
         var table = this.FindControl<DataGrid>("Table");
 
@@ -28,7 +28,8 @@ public partial class TableView : UserControl
         {
             foreach (var item in table.ItemsSource.Cast<Part>())
             {
-                item.IsOverLenth = value;
+                if (item.IsOverLenth)
+                    item.NeedSeparate = value;
             }
 
             // Refresh the DataGrid to reflect changes

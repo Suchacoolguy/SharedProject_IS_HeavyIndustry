@@ -1,7 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Interactivity;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
@@ -16,7 +13,7 @@ public partial class ReportTabView : TabView
     }
     private void PlanReview_btn_click(object? sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
     private void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
     {

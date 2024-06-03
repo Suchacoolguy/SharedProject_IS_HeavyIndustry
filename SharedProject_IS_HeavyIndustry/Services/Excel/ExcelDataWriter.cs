@@ -35,7 +35,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                         type = Regex.Match(kvp.Key, @"^[^\d]+").Value;
                         size = Regex.Match(kvp.Key, @"[\d\*\.]+").Value;
                         
-                        MakeHeader(worksheet, type, size);
+                        MakeHeader(worksheet, type, size, kvp.Value);
                         MakeChart(worksheet, kvp.Value);
                     }
 
@@ -77,8 +77,13 @@ namespace SharedProject_IS_HeavyIndustry.Models
             }
         }
 
-        private static void MakeHeader(ExcelWorksheet worksheet, string type, string size)
+        private static void MakeHeader(ExcelWorksheet worksheet, string type, string size, ObservableCollection<RawMaterial> rawMaterials)
         {
+            // foreach (var raw in rawMaterials)
+            // {
+            //     add codes to get the numbers for the header.
+            // }
+            
                 // 엑셀 세로 폭 설정
                 worksheet.Row(3).Height = worksheet.DefaultRowHeight / 2;
                 worksheet.Row(4).Height = worksheet.DefaultRowHeight / 2;
@@ -106,7 +111,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 worksheet.Cells[5, 4].Value = 1;
                 worksheet.Cells[5, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 worksheet.Cells[5, 6].Value = "TOTAL NUMBER OF PART : ";
-                worksheet.Cells[5, 9].Value = 14;
+                worksheet.Cells[5, 9].Value = 1;
                 worksheet.Cells[5, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
                 worksheet.Cells[6, 1].Value = "TOTAL STOCK WEIGHT = ";
@@ -180,7 +185,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 var picture = worksheet.Drawings.AddPicture("image" + row, ms);
                 picture.SetPosition(row - 1, 0, 2, 0);
                 //picture.SetSize(_imgWidth, (int)mergedCellHeight);
-                picture.SetSize(480, (int)mergedCellHeight);
+                picture.SetSize(537, (int)mergedCellHeight + 2);
             }
         }
         

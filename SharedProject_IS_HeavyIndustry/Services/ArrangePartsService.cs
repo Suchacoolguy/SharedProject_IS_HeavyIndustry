@@ -11,7 +11,7 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class ArrangePartsService
 {
-    private static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 9510, 10010, 12110};
+    public static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 8510, 9010, 10010};
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
     private static ObservableCollection<Part> _overSizeParts;
     
@@ -40,7 +40,7 @@ public class ArrangePartsService
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");
-        solver.SetTimeLimit(5000);
+        solver.SetTimeLimit(10000);
         
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];

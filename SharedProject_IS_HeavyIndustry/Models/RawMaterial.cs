@@ -57,18 +57,26 @@ namespace SharedProject_IS_HeavyIndustry.Models
             return part;
         }
         
-        public Part remove_part(Part part)
-        {
-            PartsInside.Remove(part);
-            RemainingLength += part.Length;
-            return part;
-        }
+        // public Part remove_part(Part part)
+        // {
+        //     PartsInside.Remove(part);
+        //     RemainingLength += part.Length;
+        //     return part;
+        // }
         
         public void remove_part_at(int part_index)
         {
-            int length = PartsInside[part_index].Length;
-            PartsInside.RemoveAt(part_index);
-            RemainingLength += length;
+            if (part_index >= 0 && part_index < PartsInside.Count)
+            {
+                int length = PartsInside[part_index].Length;
+                PartsInside.RemoveAt(part_index);
+                RemainingLength += length;   
+            }
+            else
+            {
+                Console.WriteLine("파트 인덱스 문제많다.");
+                Console.WriteLine("파트 인덱스: " + part_index);
+            }
         }
         
         public int GetTotalLengthOfPartsInside()

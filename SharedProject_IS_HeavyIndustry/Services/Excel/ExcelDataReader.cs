@@ -5,12 +5,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OfficeOpenXml;
+using SharedProject_IS_HeavyIndustry.ViewModels;
+using SharedProject_IS_HeavyIndustry.Services;
 
 namespace SharedProject_IS_HeavyIndustry.Models;
 
 public static class ExcelDataReader
 {
-    private const double MaxLen = 12000;
+    public static double MaxLen = ArrangePartsService._lengthOptionsRawMaterial.Max();
+    // public static double MaxLen = 8000;
+    private static List<string> HyungGangList = new List<string>(){"H", "I", "L", "C", "ㄷ", "TB"};
 
     public static ExcelPackage Read(string filePath)
     {
@@ -37,6 +41,11 @@ public static class ExcelDataReader
 
     private static int FindStartingRow(ExcelWorksheet worksheet)
     {
+        if (worksheet == null)
+        {
+            throw new ArgumentNullException(nameof(worksheet));
+        }
+        
         var row = 1;
         for (; row < worksheet.Dimension.End.Row; row++)
         {
@@ -65,6 +74,8 @@ public static class ExcelDataReader
         var part = new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
         if (length > MaxLen)
             part.IsOverLenth = true;
+        if (!HyungGangList.Contains(type))
+            part.IsExcluded = true;
 
         return part;
     }

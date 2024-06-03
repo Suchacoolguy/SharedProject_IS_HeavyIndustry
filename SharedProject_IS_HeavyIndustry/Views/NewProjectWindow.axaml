@@ -5,12 +5,11 @@
         mc:Ignorable="d" 
         Width="400" Height="350"
         x:Class="SharedProject_IS_HeavyIndustry.Views.NewProjectWindow"
-        Title="새 프로젝트 만들기">
+        Title="액셀 파일 불러오기">
         <DockPanel>
                 <!-- First Panel -->
                 <StackPanel DockPanel.Dock="Top" Height="70">
-                        <TextBlock Text="새 프로젝트 만들기" FontWeight="Bold" FontSize="24" Margin="0,10"/>
-                        <TextBlock Text="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" Margin="0,10"/>
+                        <TextBlock Text="액셀 파일 불러오기" FontWeight="Bold" FontSize="24" Margin="0,10"/>
                 </StackPanel>
         
                 <!-- Separator -->
@@ -18,17 +17,17 @@
 
                 <!-- Second Panel -->
                 <StackPanel DockPanel.Dock="Top" Height="210">
-                        <TextBlock Text="프로젝트 이름" Margin="10,0"/>
+                        <TextBlock Text="파일 이름" Margin="10,0"/>
                         <TextBox Name="ProjectName" Margin="10,5" HorizontalAlignment="Stretch"/>
 
-                        <TextBlock Text="프로젝트 경로" Margin="10,20,10,0"/>
+                        <TextBlock Text="파일 경로" Margin="10,20,10,0"/>
                         <!--<DockPanel Margin="10,5">
                 <TextBox Name="FilePathBox" HorizontalAlignment="Stretch"/>
                 <Button Content="선택" Click="OpenDirectory" HorizontalAlignment="Right" Margin="5,0,0,0"/>
             </DockPanel>-->
                         <Grid Margin="10,5">
                                 <TextBox Name="FilePathBox" Margin="0,0,5,0" HorizontalAlignment="Stretch"/>
-                                <Button Content="선택" Click="OpenDirectory" HorizontalAlignment="Right"/>
+                                <Button Content="선택" Click="OpenDirectory" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                         </Grid>
 
                         <!--<StackPanel Height="40%" VerticalAlignment="Stretch"/>-->

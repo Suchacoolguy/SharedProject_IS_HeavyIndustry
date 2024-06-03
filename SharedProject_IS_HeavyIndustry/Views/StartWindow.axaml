@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
         xmlns:tabViews="clr-namespace:SharedProject_IS_HeavyIndustry.Views.TabViews"
         Icon="/Assets/avalonia-logo.ico"
-        Title="쾌남 소프트">
+        Title="아이에스중공업 - 네스팅 소프트웨어">
         
         
         <DockPanel Name="BasicPanel" LastChildFill="True">

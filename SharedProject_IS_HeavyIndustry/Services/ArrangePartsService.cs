@@ -18,7 +18,18 @@ public class ArrangePartsService
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts)
     {
         _rawMaterialsUsed = ArrangeParts(parts);
-        _overSizeParts = new ObservableCollection<Part>(overSizeParts);
+        List<Part> replacedParts = new List<Part>();
+        foreach (var ppp in overSizeParts)
+        {
+            while (ppp.Length > Int32.Parse(ppp.lengthToBeSeperated))
+            {
+                ppp.Length -= Int32.Parse(ppp.lengthToBeSeperated);
+                Part newPart = new Part(ppp.Assem, ppp.Mark, ppp.Material, Int32.Parse(ppp.lengthToBeSeperated), ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
+                replacedParts.Add(newPart);
+                replacedParts.Add(ppp);
+            }
+        }
+        _overSizeParts = new ObservableCollection<Part>(replacedParts);
     }
     
     public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts)
@@ -40,7 +51,7 @@ public class ArrangePartsService
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");
-        solver.SetTimeLimit(10000);
+        solver.SetTimeLimit(6000);
         
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];

@@ -11,7 +11,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 public class DNDTabViewModel : AvaloniaObject
 {
     public string Title { get; } = "배치 정보";
-    public string SubTitle { get; } = "블라블라블라";
+    public string SubTitle { get; } = "최적의 조합으로 파트를 배치합니다.";
     private readonly List<Description> descriptionList = WorkManager.GetDescriptionList();
     public ObservableCollection<string> TypeList { get; } = [];
 

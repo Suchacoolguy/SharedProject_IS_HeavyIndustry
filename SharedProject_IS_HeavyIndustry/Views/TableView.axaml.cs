@@ -36,4 +36,38 @@ public partial class TableView : UserControl
             table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
         }
     }
+
+    public void SetExcludeFalse()
+    {
+        var table = this.FindControl<DataGrid>("Table");
+
+        if (table != null)
+        {
+            foreach (var item in table.ItemsSource.Cast<Part>())
+            {
+                if (item.IsExcluded)
+                    item.IsExcluded = false;
+            }
+
+            // Refresh the DataGrid to reflect changes
+            table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
+        }
+    }
+    
+    public void SetExcludeTrue()
+    {
+        var table = this.FindControl<DataGrid>("Table");
+
+        if (table != null)
+        {
+            foreach (var item in table.ItemsSource.Cast<Part>())
+            {
+                if (item.IsExcluded)
+                    item.IsExcluded = true;
+            }
+
+            // Refresh the DataGrid to reflect changes
+            table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
+        }
+    }
 }

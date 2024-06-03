@@ -50,7 +50,13 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             
-            <DataGridTextColumn Header="분리 길이" Width="*"/>
+            <DataGridTemplateColumn Header="분리 길이" Width="*">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding lengthToBeSeperated, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
 
             <DataGridTemplateColumn Header="분리 필요" Width="*">
                 <DataGridTemplateColumn.CellTemplate>

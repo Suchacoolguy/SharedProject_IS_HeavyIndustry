@@ -41,6 +41,17 @@ public partial class ExcelTabView : TabView
         tableView.ToggleNeedSeperate(true);
         initialToggleState = !initialToggleState; // 다음 클릭 시 상태 반전
     }
+    
+    private void SetExcluded(object? sender, RoutedEventArgs e)
+    {
+        tableView.SetExcludeTrue();
+    }
+    
+    private void SetNotExcluded(object? sender, RoutedEventArgs e)
+    {
+        tableView.SetExcludeFalse();
+        initialToggleState = !initialToggleState; // 다음 클릭 시 상태 반전
+    }
 
     private void MenuItem_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {

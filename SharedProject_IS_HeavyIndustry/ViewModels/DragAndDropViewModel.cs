@@ -177,16 +177,16 @@ public class DragAndDropViewModel
                 len_part = part.Length;
             }
             
-            // List<int> lengthOptions = GetLengthOptionsRawMaterial();
-            // int bestLength = Int32.MaxValue;
-            // foreach (var len in lengthOptions)
-            // {
-            //     if (len >= part.Length && len < bestLength)
-            //     {
-            //         bestLength = len;
-            //     }
-            // }
-            int bestLength = 13000;
+            List<int> lengthOptions = GetLengthOptionsRawMaterial();
+            int bestLength = Int32.MaxValue;
+            foreach (var len in lengthOptions)
+            {
+                if (len >= part.Length && len < bestLength)
+                {
+                    bestLength = len;
+                }
+            }
+            
             // insert the new raw material beyo
             RawMaterial newRawMaterial = new RawMaterial(bestLength);
             newRawMaterial.insert_part(part);

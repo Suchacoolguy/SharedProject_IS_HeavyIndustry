@@ -3,6 +3,7 @@ namespace SharedProject_IS_HeavyIndustry.Models;
 public class Part
 {
     public bool is_selected = false;
+    public string lengthToBeSeperated { get; set; }
     private string assem, mark, material;
     private int length, num;
     private double weightOne, weightSum, pArea;
@@ -25,6 +26,7 @@ public class Part
         _isOverLenth = false;
         _isExcluded = false;
         _needSeparate = false;
+        lengthToBeSeperated = "6010";
     }
     
     public Description Desc

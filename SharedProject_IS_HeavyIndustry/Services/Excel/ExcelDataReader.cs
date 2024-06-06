@@ -12,9 +12,9 @@ namespace SharedProject_IS_HeavyIndustry.Models;
 
 public static class ExcelDataReader
 {
-    public static double MaxLen = ArrangePartsService._lengthOptionsRawMaterial.Max();
+    
     // public static double MaxLen = 8000;
-    private static List<string> HyungGangList = new List<string>(){"H", "I", "L", "C", "ㄷ", "TB"};
+    
 
     public static ExcelPackage Read(string filePath)
     {
@@ -72,9 +72,9 @@ public static class ExcelDataReader
         var description = new Description(type, size);
         //분리필요로 변경된 코드 
         var part = new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
-        if (length > MaxLen)
+        if (length > SettingsViewModel.MaxLen)
             part.IsOverLenth = true;
-        if (!HyungGangList.Contains(type))
+        if (!SettingsViewModel.HyungGangList.Contains(type))
             part.IsExcluded = true;
 
         return part;

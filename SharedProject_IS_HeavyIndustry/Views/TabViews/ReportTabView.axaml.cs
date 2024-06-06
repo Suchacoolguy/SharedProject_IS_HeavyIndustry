@@ -17,7 +17,6 @@ public partial class ReportTabView : TabView
     }
     private void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
     {
-        
         ExcelDataWriter.Write(WorkManager.RawMaterialSet);
     }
     

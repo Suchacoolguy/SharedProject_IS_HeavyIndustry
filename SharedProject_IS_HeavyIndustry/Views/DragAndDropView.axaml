@@ -25,7 +25,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <!-- Parts arranged inside raw materials -->
                 <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True">
-                    <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropData.ArrangedRawMaterials}">
+                    <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Width="600" Height="55">

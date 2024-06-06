@@ -42,7 +42,7 @@ public partial class DNDTabView : TabView
                 WorkManager.PartsForSeparate);
             
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength);
-            MainWindowViewModel.DragAndDropData =
+            MainWindowViewModel.DragAndDropViewModel =
                 new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
             
             var key = selectedType + selectedSize;

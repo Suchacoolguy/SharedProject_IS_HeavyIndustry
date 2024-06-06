@@ -18,7 +18,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <!-- Oversized Parts -->
         <StackPanel Name="MyStackPanel" Orientation="Vertical">
-            <ItemsControl ItemsSource="{Binding DragAndDropData.OverSizeParts}">
+            <ItemsControl ItemsSource="{Binding DragAndDropViewModel.OverSizeParts}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>

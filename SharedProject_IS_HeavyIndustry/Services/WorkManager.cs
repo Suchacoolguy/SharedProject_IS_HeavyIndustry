@@ -20,17 +20,12 @@ public static class WorkManager
     public static Dictionary<string, ObservableCollection<RawMaterial>> RawMaterialSet { get; set; } 
         = new Dictionary<string, ObservableCollection<RawMaterial>>();
 
-    public static List<string> GetSheetNames()
+    public static List<string> GetSheetNames() // StartWindow에서 사용
     {
         return _package.Workbook.Worksheets.Select(sh => sh.Name).ToList();
     }
 
-    /*public static ObservableCollection<Part> GetPartsFromSheet(string sheetName)
-    {
-        return ExcelDataReader.PartListFromExcel(package.Workbook.Worksheets[sheetName]);
-    }*/
-
-    public static void SetSheet(string sheetName)
+    public static void SetSheet(string sheetName) // StartWindow에서 사용
     {
         if (string.IsNullOrEmpty(sheetName)) return;
         _sheet = _package.Workbook.Worksheets[sheetName];
@@ -38,12 +33,12 @@ public static class WorkManager
         PartsOrigin = ExcelDataReader.PartListFromExcel(_sheet);
     }
 
-    public static void ReadExcelPackage()
+    public static void ReadExcelPackage() // StartWindow에서 사용
     {
         _package = ExcelDataReader.Read(ExcelFilePath);
     }
     
-    public static List<Description> GetDescriptionList()
+    public static List<Description> GetDescriptionList() // DNDTabViewModel에서 사용
     {
         var duplicationCheckSet = new HashSet<string>();
         var descList = new List<Description>();
@@ -57,7 +52,7 @@ public static class WorkManager
         return descList;
     }
 
-    public static ObservableCollection<Part> FindPartsByDescription(Description desc, ObservableCollection<Part> parts)
+    public static ObservableCollection<Part> FindPartsByDescription(Description desc, ObservableCollection<Part> parts) // DNDTabView에서 사용
     {
         var list = new ObservableCollection<Part>();
         
@@ -67,7 +62,7 @@ public static class WorkManager
         return list;
     }
 
-    public static void ClassifyParts()
+    public static void ClassifyParts() // StartWindow, ExcelTabView에서 사용
     {
         PartsForTask = [];
         PartsForSeparate = [];
@@ -79,7 +74,7 @@ public static class WorkManager
         }
     }
 
-    private static void CopyPartList(Part part, ObservableCollection<Part> list)
+    private static void CopyPartList(Part part, ObservableCollection<Part> list) // ClassifyParts에서 사용
     {
         if(part.Num > 1)
             for (var i = 0; i < part.Num; i++)

@@ -18,7 +18,6 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        
     }
     
     public void DropPartOntoRawMaterial(Part part, RawMaterial rawMaterial)

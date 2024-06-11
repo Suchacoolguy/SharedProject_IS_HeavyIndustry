@@ -60,7 +60,6 @@ public class DragAndDropViewModel
             // find the best size of raw material to insert the part
 
             Console.WriteLine("UpdateRawMaterial - from: null, to: null, part: not null");
-            Console.WriteLine("여긴 뭐하는 곳인가");
             List<int> lengthOptions = GetLengthOptionsRawMaterial();
             int bestLength = Int32.MaxValue;
             foreach (var len in lengthOptions)
@@ -219,8 +218,6 @@ public class DragAndDropViewModel
 
         if (rawMaterialFrom != null && part != null)
         {
-            // var viewModel = DataContext as MainWindowViewModel;
-            // viewModel?.DropPartOntoRawMaterial(part, rawMaterial);
             UpdateRawMaterial(rawMaterialFrom, null, part);
         }
     }

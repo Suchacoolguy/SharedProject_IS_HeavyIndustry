@@ -195,7 +195,7 @@ public class ArrangePartsService
         return _lengthOptionsRawMaterial;
     }
 
-    public static void count_check(List<RawMaterial> rawMaterialUsed)
+    private static void count_check(List<RawMaterial> rawMaterialUsed)
     {
         int count = 0;
         foreach (var raw in rawMaterialUsed)

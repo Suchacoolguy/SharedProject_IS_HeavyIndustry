@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
@@ -28,13 +29,13 @@ public partial class SheetWindow : Window
 
     private void Cancel(object? sender, RoutedEventArgs e)
     {
-        WorkManager.SheetName = null;
+        BOMDataViewModel.SheetName = null;
         Close(false);
     }
 
     private void Confirm(object? sender, RoutedEventArgs e)
     {
-        WorkManager.SheetName =  (string)comboBox?.SelectedItem!;
+        BOMDataViewModel.SheetName =  (string)comboBox?.SelectedItem!;
         Close(true);
     }
 }

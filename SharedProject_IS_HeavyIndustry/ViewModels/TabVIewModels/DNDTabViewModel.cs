@@ -10,9 +10,14 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 public class DNDTabViewModel : AvaloniaObject
 {
+    public DNDTabViewModel()
+    {
+        SetTypeList();
+    }
+    
     public string Title { get; } = "배치 정보";
     public string SubTitle { get; } = "최적의 조합으로 파트를 배치합니다.";
-    private readonly List<Description> descriptionList = WorkManager.GetDescriptionList();
+    private readonly List<Description> descriptionList = BOMDataViewModel.GetDescriptionList();
     public ObservableCollection<string> TypeList { get; } = [];
 
     private string selectedType;
@@ -40,11 +45,18 @@ public class DNDTabViewModel : AvaloniaObject
     }
     
     public event PropertyChangedEventHandler PropertyChanged;
-
-    public DNDTabViewModel()
+    
+    public static ObservableCollection<Part> FindPartsByDescription(Description desc, ObservableCollection<Part> parts) // DNDTabView에서 사용
     {
-        SetTypeList();
+        var list = new ObservableCollection<Part>();
+        
+        foreach (var part in parts)
+            if(part.Desc.Equals(desc))
+                list.Add(part);
+        return list;
     }
+
+  
 
     private void SetTypeList()
     {

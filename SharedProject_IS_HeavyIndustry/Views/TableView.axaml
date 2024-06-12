@@ -5,10 +5,10 @@
              xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
              xmlns:models="clr-namespace:SharedProject_IS_HeavyIndustry.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="models:WorkManager"
+             x:DataType="vm:BOMDataViewModel"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
 
-    <DataGrid Name="Table" ItemsSource="{Binding PartsOrigin}"
+    <DataGrid Name="Table" ItemsSource="{Binding AllParts}"
               IsReadOnly="True"
               CanUserReorderColumns="True"
               CanUserResizeColumns="True"

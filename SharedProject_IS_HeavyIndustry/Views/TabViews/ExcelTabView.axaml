@@ -27,7 +27,11 @@
         <Border Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel>
                 <TextBlock Padding="2" Text="기본정보" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue"/>
-                <TextBlock Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center">프로젝트명 : 새 프로젝트 기본경로 : 데이터바인딩 필요</TextBlock>
+                <TextBlock Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center">
+                    <Run Text="프로젝트명: "/>
+                    <Run Text="엑셀파일 경로: "/>
+                    <Run Text="{Binding ExcelFilePath}"/>
+                </TextBlock>
             </StackPanel>
         </Border>
                <!--Box3-->

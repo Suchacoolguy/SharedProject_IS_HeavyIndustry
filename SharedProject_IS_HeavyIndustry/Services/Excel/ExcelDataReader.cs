@@ -21,9 +21,9 @@ public static class ExcelDataReader
         return new ExcelPackage(new FileInfo(filePath));
     }
         
-    public static ObservableCollection<Part> PartListFromExcel(ExcelWorksheet worksheet)
+    public static List<Part> PartListFromExcel(ExcelWorksheet worksheet)
     {
-        var parts = new ObservableCollection<Part>();
+        var parts = new List<Part>();
         var row = FindStartingRow(worksheet);
         
         while (row <= worksheet.Dimension.End.Row)

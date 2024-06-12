@@ -36,20 +36,20 @@ public partial class DNDTabView : TabView
         ObservableCollection<Part> partsOverLength = null!;
         if (selectedType != null && selectedSize != null)
         {
-            parts = WorkManager.FindPartsByDescription(new Description(selectedType, selectedSize),
-                WorkManager.PartsForTask);
-            partsOverLength = WorkManager.FindPartsByDescription(new Description(selectedType, selectedSize),
-                WorkManager.PartsForSeparate);
+            parts = DNDTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+                BOMDataViewModel.PartsForTask);
+            partsOverLength = DNDTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+                BOMDataViewModel.PartsToSeparate);
             
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength);
             MainWindowViewModel.DragAndDropViewModel =
                 new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
             
             var key = selectedType + selectedSize;
-            if (!WorkManager.RawMaterialSet.ContainsKey(key))
+            if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))
             {
-                WorkManager.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
-                WorkManager.RawMaterialSet[key].Add(service.GetArrangedRawMaterials());
+                MainWindowViewModel.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
+                MainWindowViewModel.RawMaterialSet[key].Add(service.GetArrangedRawMaterials());
             }
         
             

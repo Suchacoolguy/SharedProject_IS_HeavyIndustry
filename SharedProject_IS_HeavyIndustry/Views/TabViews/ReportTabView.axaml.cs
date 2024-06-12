@@ -1,5 +1,6 @@
 ﻿using Avalonia.Interactivity;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
@@ -17,7 +18,7 @@ public partial class ReportTabView : TabView
     }
     private void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
     {
-        ExcelDataWriter.Write(WorkManager.RawMaterialSet);
+        ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
     }
     
 }

@@ -15,9 +15,13 @@ public class ArrangePartsService
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
     private static ObservableCollection<Part> _overSizeParts;
     
+    // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts)
     {
+        // 파트배치 완료된 것들
+        // 
         _rawMaterialsUsed = ArrangeParts(parts);
+        
         List<Part> replacedParts = new List<Part>();
         foreach (var ppp in overSizeParts)
         {

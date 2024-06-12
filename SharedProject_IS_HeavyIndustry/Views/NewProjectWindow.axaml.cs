@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.ViewModels;
+using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
@@ -42,8 +44,8 @@ public partial class NewProjectWindow : Window
         // 파일이 엑셀 파일인지 확인
         if (!string.IsNullOrEmpty(filePath) && IsExcelFile())
         {
-            WorkManager.ExcelFilePath = filePath;
-            WorkManager.ProjectName = this.FindControl<TextBox>("ProjectName")?.Text;
+            ExcelTabViewModel.ExcelFilePath = filePath;
+            MainWindowViewModel.ProjectName = this.FindControl<TextBox>("ProjectName")?.Text;
             Close();
         }
         else

@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
@@ -32,7 +33,7 @@ public partial class ExcelTabView : TabView
 
     private void DnDTaskBtn_Click(object? sender, RoutedEventArgs e)
     {
-        WorkManager.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
+        BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
         mainWindow?.AddTab("파트 배치");
     }
 

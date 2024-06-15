@@ -55,7 +55,7 @@ public class ArrangePartsService
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");
-        solver.SetTimeLimit(6000);
+        solver.SetTimeLimit(7000);
         
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];

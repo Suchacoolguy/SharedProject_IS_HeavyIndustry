@@ -8,12 +8,12 @@ using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
-public partial class SheetWindow : Window
+public partial class SheetSelectionWindow : Window
 {
     private List<string> SheetNames { get; }
     private readonly ComboBox? comboBox;
     public string? SelectedSheet { get; private set; }
-    public SheetWindow(List<string> sheetNames, Window parent)
+    public SheetSelectionWindow(List<string> sheetNames, Window parent)
     {
         InitializeComponent();
         DataContext = this;

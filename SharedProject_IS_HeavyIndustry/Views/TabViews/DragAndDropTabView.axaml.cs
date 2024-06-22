@@ -6,6 +6,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using DynamicData;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
@@ -13,11 +15,11 @@ using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 
-public partial class DNDTabView : TabView
+public partial class DragAndDropTabView : TabView
 {
     private StartWindow mainWindow;
     
-    public DNDTabView(StartWindow mainWindow)
+    public DragAndDropTabView(StartWindow mainWindow)
     {
         InitializeComponent();
         this.mainWindow = mainWindow;
@@ -70,7 +72,9 @@ public partial class DNDTabView : TabView
         }
         else
         {
-            MessageBox.Show(mainWindow, "선택된 파트가 없습니다.", "알림", MessageBox.MessageBoxButtons.YesNoCancel);
+            var box = MessageBoxManager
+                .GetMessageBoxStandard("Error", "Please select type and size", ButtonEnum.Ok);
+            box.ShowAsync();
         }
     }
 }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:tabVIewModels="clr-namespace:SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SharedProject_IS_HeavyIndustry.Views.TabViews.DNDTabView"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.TabViews.DragAndDropTabView"
              x:DataType="tabVIewModels:DNDTabViewModel">
     
     <DockPanel Name="ContentPanel" DockPanel.Dock="Top">

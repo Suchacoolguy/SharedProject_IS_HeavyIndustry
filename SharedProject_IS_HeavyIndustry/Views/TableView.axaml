@@ -7,10 +7,9 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:BOMDataViewModel"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
-
+    
     <DataGrid Name="Table" ItemsSource="{Binding AllParts}"
-              IsReadOnly="True"
-              CanUserReorderColumns="True"
+              CanUserReorderColumns="False"
               CanUserResizeColumns="True"
               CanUserSortColumns="True"
               GridLinesVisibility="All"
@@ -26,7 +25,20 @@
                     </MultiBinding>
                 </DataGridTextColumn.Binding>
             </DataGridTextColumn>
-            <DataGridTextColumn Header="도면번호"  Binding="{Binding Assem}" Width="*"/>
+            
+            <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="*">
+                <DataGridTextColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="5,0,0,0" Click="OnFilterButtonClick">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            </Button>
+                            <TextBlock Text="도면번호" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTextColumn.HeaderTemplate>
+            </DataGridTextColumn>
+            
             <DataGridTextColumn Header="블록마크"  Binding="{Binding Mark}" Width="*"/>
             <DataGridTextColumn Header="길이"  Binding="{Binding Length}" Width="*"/>
             <DataGridTextColumn Header="수량"  Binding="{Binding Num}" Width="*"/>

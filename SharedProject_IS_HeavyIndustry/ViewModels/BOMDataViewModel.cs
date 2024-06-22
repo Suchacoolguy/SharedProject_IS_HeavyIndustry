@@ -12,6 +12,7 @@ public class BOMDataViewModel
     public static ObservableCollection<Part> AllParts { get; set; }
     public static ObservableCollection<Part> PartsForTask { get; set; } = [];
     public static ObservableCollection<Part> PartsToSeparate { get; set; } = [];
+    public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
     
     public BOMDataViewModel(List<Part> parts)
     {

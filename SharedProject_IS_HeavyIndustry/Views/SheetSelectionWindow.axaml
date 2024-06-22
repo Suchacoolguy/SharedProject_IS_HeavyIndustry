@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         Width="300" Height="300"
-        x:Class="SharedProject_IS_HeavyIndustry.Views.SheetWindow"
+        x:Class="SharedProject_IS_HeavyIndustry.Views.SheetSelectionWindow"
         WindowStartupLocation="CenterScreen"
         Title="선택 : 엑셀 시트 선택">
         <DockPanel Background="LightSkyBlue" Width="300" Height="300" DockPanel.Dock="Top">

@@ -9,13 +9,13 @@ using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 
-public partial class ExcelTabView : TabView
+public partial class BOMDataTabView : TabView
 {
     private readonly StartWindow mainWindow;
     private TableView tableView;
     private bool initialToggleState = true;
     
-    public ExcelTabView(StartWindow mainWindow)
+    public BOMDataTabView(StartWindow mainWindow)
     {
         InitializeComponent();
         this.mainWindow = mainWindow;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
@@ -15,9 +16,23 @@ public partial class TableView : UserControl
     }
     
     // FilterButton_Click
-    private void FilterButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnFilterButtonClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        
+        // Get the Button that was clicked
+        var button = sender as Button;
+
+        // Get the DataGridTextColumn from the Button's DataContext
+        var column = button?.DataContext as DataGridTextColumn;
+
+        if (column != null)
+        {
+            // Get the column header
+            var columnHeader = column.Header.ToString();
+
+            // Show a window that shows the filter options from the items in the column
+            var filterWindow = new FilterWindow(columnHeader, this);
+            
+        }
     }
 
     public void ToggleNeedSeperate(bool value)

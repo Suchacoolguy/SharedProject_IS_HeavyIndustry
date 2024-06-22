@@ -48,7 +48,7 @@ public partial class StartWindow : Window
     //시트 선택창 띄우기
     public async Task OpenSheetSelectWindow()
     {
-        var miniWindow = new SheetWindow(GetSheetNames(), this);
+        var miniWindow = new SheetSelectionWindow(GetSheetNames(), this);
         await miniWindow.ShowDialog(this);
         if (!string.IsNullOrEmpty(BOMDataViewModel.SheetName))
             SetSheet(BOMDataViewModel.SheetName);
@@ -86,8 +86,8 @@ public partial class StartWindow : Window
             Header = tabHeader,
             Content = tabHeader switch
             {
-                "프로젝트 정보" => new ExcelTabView(this),
-                "파트 배치" => new DNDTabView(this),
+                "프로젝트 정보" => new BOMDataTabView(this),
+                "파트 배치" => new DragAndDropTabView(this),
                 "레포트 출력" => new ReportTabView(),
                 _ => throw new ArgumentOutOfRangeException()
             }

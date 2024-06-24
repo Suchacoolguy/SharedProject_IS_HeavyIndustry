@@ -39,6 +39,38 @@ public static class ExcelDataReader
         return parts;
     }
 
+    public static Dictionary<string, RawLengthSet> RawLengthSettingsFromExcel(string filePath)
+    {
+        var dictionery = new Dictionary<string, RawLengthSet>();
+
+        var fileInfo = new FileInfo(filePath);
+        using var package = new ExcelPackage(fileInfo);
+        var worksheet = package.Workbook.Worksheets[0];
+
+        var rowCount = worksheet.Dimension.Rows;
+        for (var row = 1; row <= rowCount; row++) 
+        {
+            try
+            {
+                var description = worksheet.Cells[row, 2].Text;
+                var weight = double.Parse(worksheet.Cells[row, 3].Text);
+                var lengths = worksheet.Cells[row, 4].Text;
+
+                var rawMaterialLengthSetting = new RawLengthSet(description, weight, lengths);
+                dictionery.TryAdd(description, rawMaterialLengthSetting);
+            }
+            catch
+            {
+                Console.WriteLine($"읽을 수 없는 행: {row}");
+                // 예외가 발생하더라도 무시하고 다음 행을 계속 처리
+            }
+        }
+        return dictionery;
+    }
+
+    
+    
+
     private static int FindStartingRow(ExcelWorksheet worksheet)
     {
         if (worksheet == null)

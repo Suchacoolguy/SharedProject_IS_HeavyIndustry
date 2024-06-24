@@ -29,8 +29,8 @@ public partial class TableView : UserControl
             // Get the column header
             var columnHeader = column.Header.ToString();
 
-            // Show a window that shows the filter options from the items in the column
-            var filterWindow = new FilterWindow(columnHeader, this);
+            /*// Show a window that shows the filter options from the items in the column
+            var filterWindow = new FilterWindow(columnHeader, this);*/
             
         }
     }

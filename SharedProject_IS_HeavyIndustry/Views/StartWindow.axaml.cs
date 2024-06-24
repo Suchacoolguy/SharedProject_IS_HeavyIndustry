@@ -52,7 +52,6 @@ public partial class StartWindow : Window
         await miniWindow.ShowDialog(this);
         if (!string.IsNullOrEmpty(BOMDataViewModel.SheetName))
             SetSheet(BOMDataViewModel.SheetName);
-        
     }
     
     //새 프로젝트 생성창 띄우기
@@ -79,6 +78,11 @@ public partial class StartWindow : Window
         AddTab("레포트 출력");
     }
     
+    private void Standard_btn_click(object? sender, RoutedEventArgs e)
+    {
+        AddTab("규격 목록");
+    }
+    
     public void AddTab(string tabHeader)
     {
         var tabItem = new TabItem
@@ -89,6 +93,7 @@ public partial class StartWindow : Window
                 "프로젝트 정보" => new BOMDataTabView(this),
                 "파트 배치" => new DragAndDropTabView(this),
                 "레포트 출력" => new ReportTabView(),
+                "규격 목록" => new RawStandardTabView(),
                 _ => throw new ArgumentOutOfRangeException()
             }
         };

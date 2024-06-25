@@ -11,11 +11,11 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 public partial class BOMDataTabView : TabView
 {
-    private readonly StartWindow mainWindow;
+    private readonly MainWindow mainWindow;
     private TableView tableView;
     private bool initialToggleState = true;
     
-    public BOMDataTabView(StartWindow mainWindow)
+    public BOMDataTabView(MainWindow mainWindow)
     {
         InitializeComponent();
         this.mainWindow = mainWindow;

@@ -17,9 +17,9 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 public partial class DragAndDropTabView : TabView
 {
-    private StartWindow mainWindow;
+    private MainWindow mainWindow;
     
-    public DragAndDropTabView(StartWindow mainWindow)
+    public DragAndDropTabView(MainWindow mainWindow)
     {
         InitializeComponent();
         this.mainWindow = mainWindow;

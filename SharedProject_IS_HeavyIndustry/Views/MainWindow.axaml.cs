@@ -14,12 +14,12 @@ using SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
-public partial class StartWindow : Window
+public partial class MainWindow : Window
 {
     private static ExcelWorksheet _sheet = null!;
     private static ExcelPackage _package = null!;
     
-    public StartWindow()
+    public MainWindow()
     {
         InitializeComponent();
         DataContext = new MainWindowViewModel();

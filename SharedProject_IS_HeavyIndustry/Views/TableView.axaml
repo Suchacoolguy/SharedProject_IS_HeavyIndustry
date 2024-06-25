@@ -8,7 +8,7 @@
              x:DataType="vm:BOMDataViewModel"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
     
-    <DataGrid Name="Table" ItemsSource="{Binding AllParts}"
+    <DataGrid Name="Table" ItemsSource="{Binding PartsFiltered}"
               CanUserReorderColumns="False"
               CanUserResizeColumns="True"
               CanUserSortColumns="True"
@@ -30,7 +30,7 @@
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Button Margin="5,0,0,0" Click="OnFilterButtonClick">
+                            <Button Margin="5,0,0,0" >
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
                             <TextBlock Text="도면번호" VerticalAlignment="Center"/>

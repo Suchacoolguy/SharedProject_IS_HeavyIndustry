@@ -73,7 +73,7 @@ public partial class DragAndDropTabView : TabView
         else
         {
             var box = MessageBoxManager
-                .GetMessageBoxStandard("Error", "Please select type and size", ButtonEnum.Ok);
+                .GetMessageBoxStandard("알림", "Please select type and size", ButtonEnum.Ok);
             box.ShowAsync();
         }
     }

@@ -90,15 +90,15 @@ public static class ExcelDataReader
     }
     private static Part ExtractData(ExcelWorksheet worksheet, int row)
     { 
-        var assem = worksheet.Cells[row, 1].Value?.ToString() ?? string.Empty;
-        var mark = worksheet.Cells[row, 2].Value?.ToString() ?? string.Empty;
-        var desc = worksheet.Cells[row, 3].Value?.ToString() ?? string.Empty;
+        var assem = (worksheet.Cells[row, 1].Value?.ToString() ?? string.Empty).Trim();
+        var mark = (worksheet.Cells[row, 2].Value?.ToString() ?? string.Empty).Trim();
+        var desc = (worksheet.Cells[row, 3].Value?.ToString() ?? string.Empty).Trim();
         var length = Convert.ToInt32(worksheet.Cells[row, 4].Value);
         var num = Convert.ToInt32(worksheet.Cells[row, 5].Value);
         var weightOne = Convert.ToDouble(worksheet.Cells[row, 6].Value);
         var weightSum = Convert.ToDouble(worksheet.Cells[row, 7].Value);
         var pArea = Convert.ToDouble(worksheet.Cells[row, 8].Value);
-        var material = worksheet.Cells[row, 9].Value?.ToString() ?? string.Empty;
+        var material = (worksheet.Cells[row, 9].Value?.ToString() ?? string.Empty).Trim();
         var type = Regex.Match(desc, @"^[^\d]+").Value;
         var size = Regex.Match(desc, @"[\d\*\.]+").Value;
         var description = new Description(type, size);

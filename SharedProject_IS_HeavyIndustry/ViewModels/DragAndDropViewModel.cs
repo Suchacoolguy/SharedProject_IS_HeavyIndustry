@@ -38,8 +38,7 @@ public class DragAndDropViewModel
             index_part = ArrangedRawMaterials[index_from].PartsInside.IndexOf(part);
             len_part = part.Length;
         }
-            
-
+        
         if (from != null && to != null && part != null)
         {
             if (index_to > -1 && index_to < ArrangedRawMaterials.Count)
@@ -51,7 +50,6 @@ public class DragAndDropViewModel
                     ArrangedRawMaterials.RemoveAt(index_from);
                 }
             }
-
             Console.WriteLine("UpdateRawMaterial - from: not null, to: not null, part: not null");
         }
         else if (to == null && part != null)

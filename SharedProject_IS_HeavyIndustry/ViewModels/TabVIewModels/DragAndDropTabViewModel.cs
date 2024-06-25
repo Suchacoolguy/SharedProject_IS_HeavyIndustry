@@ -8,9 +8,9 @@ using SharedProject_IS_HeavyIndustry.Models;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
-public class DNDTabViewModel : AvaloniaObject
+public class DragAndDropTabViewModel : AvaloniaObject
 {
-    public DNDTabViewModel()
+    public DragAndDropTabViewModel()
     {
         SetTypeList();
     }

@@ -22,15 +22,15 @@ public partial class StartWindow : Window
     public StartWindow()
     {
         InitializeComponent();
-        //DataContext = new MainWindowViewModel();
+        DataContext = new MainWindowViewModel();
     }
     
-    public static List<string> GetSheetNames() // StartWindow에서 사용
+    public static List<string> GetSheetNames()
     {
         return _package.Workbook.Worksheets.Select(sh => sh.Name).ToList();
     }
     
-    public static void SetSheet(string sheetName) // StartWindow에서 사용
+    public static void SetSheet(string sheetName)
     {
         if (string.IsNullOrEmpty(sheetName)) return;
         _sheet = _package.Workbook.Worksheets[sheetName];
@@ -39,7 +39,7 @@ public partial class StartWindow : Window
         MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM);
     }
 
-    public static void ReadExcelPackage() // StartWindow에서 사용
+    public static void ReadExcelPackage()
     {
         _package = ExcelDataReader.Read(ExcelTabViewModel.ExcelFilePath);
     }
@@ -65,6 +65,9 @@ public partial class StartWindow : Window
         ReadExcelPackage();//파일 경로 확인 후 엑셀 읽기
         AddTab("프로젝트 정보"); // 탭 추가
     }
+    
+    // 필터링 윈도우 띄우기
+    
 
     //탭 패널에 드래그앤 드랍 탭 추가 
     private void AddDragNDrop_btn_click(object? sender, RoutedEventArgs e)

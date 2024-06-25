@@ -13,10 +13,15 @@ public class BOMDataViewModel
     public static ObservableCollection<Part> PartsForTask { get; set; } = [];
     public static ObservableCollection<Part> PartsToSeparate { get; set; } = [];
     public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
+    public static List<string> OptionsForFiltering { get; set; } = [];
     
     public BOMDataViewModel(List<Part> parts)
     {
         AllParts = new ObservableCollection<Part>(parts);
+        
+        // 그냥 = AllParts 하면 참조가 같아져서 문제가 생길라나 모르겠다는 (ㅇ..ㅇ;;)
+        // PartsFiltered = new ObservableCollection<Part>(parts);
+        PartsFiltered = AllParts;
     }
     
     public static List<Description> GetDescriptionList() // DNDTabViewModel에서 사용
@@ -32,9 +37,7 @@ public class BOMDataViewModel
 
         return descList;
     }
-
     
-
     public static void ClassifyParts() // StartWindow, ExcelTabView에서 사용
     {
         foreach (var part in AllParts)

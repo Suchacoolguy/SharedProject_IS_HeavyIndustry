@@ -23,7 +23,7 @@ public partial class DragAndDropTabView : TabView
     {
         InitializeComponent();
         this.mainWindow = mainWindow;
-        DataContext = new DNDTabViewModel();
+        DataContext = new DragAndDropTabViewModel();
     }
 
     private void AddDragAndDrop(object? sender, SelectionChangedEventArgs e)
@@ -38,9 +38,9 @@ public partial class DragAndDropTabView : TabView
         ObservableCollection<Part> partsOverLength = null!;
         if (selectedType != null && selectedSize != null)
         {
-            parts = DNDTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+            parts = DragAndDropTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
                 BOMDataViewModel.PartsForTask);
-            partsOverLength = DNDTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+            partsOverLength = DragAndDropTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
                 BOMDataViewModel.PartsToSeparate);
             
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength);
@@ -73,7 +73,7 @@ public partial class DragAndDropTabView : TabView
         else
         {
             var box = MessageBoxManager
-                .GetMessageBoxStandard("Error", "Please select type and size", ButtonEnum.Ok);
+                .GetMessageBoxStandard("알림", "Please select type and size", ButtonEnum.Ok);
             box.ShowAsync();
         }
     }

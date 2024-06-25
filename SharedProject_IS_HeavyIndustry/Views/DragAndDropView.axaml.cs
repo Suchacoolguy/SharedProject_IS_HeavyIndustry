@@ -10,7 +10,7 @@ namespace SharedProject_IS_HeavyIndustry.Views;
 
 public partial class DragAndDropView : TabView
 {
-    public DragAndDropView(StartWindow mainWindow)
+    public DragAndDropView(MainWindow mainWindow)
     {
         InitializeComponent();
         AddHandler(DragDrop.DragOverEvent, DragAndDropViewModel.RawMaterial_DragOver);

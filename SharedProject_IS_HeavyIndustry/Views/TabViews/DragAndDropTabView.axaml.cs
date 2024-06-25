@@ -17,13 +17,13 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 public partial class DragAndDropTabView : TabView
 {
-    private StartWindow mainWindow;
+    private MainWindow mainWindow;
     
-    public DragAndDropTabView(StartWindow mainWindow)
+    public DragAndDropTabView(MainWindow mainWindow)
     {
         InitializeComponent();
         this.mainWindow = mainWindow;
-        DataContext = new DNDTabViewModel();
+        DataContext = new DragAndDropTabViewModel();
     }
 
     private void AddDragAndDrop(object? sender, SelectionChangedEventArgs e)
@@ -38,9 +38,9 @@ public partial class DragAndDropTabView : TabView
         ObservableCollection<Part> partsOverLength = null!;
         if (selectedType != null && selectedSize != null)
         {
-            parts = DNDTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+            parts = DragAndDropTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
                 BOMDataViewModel.PartsForTask);
-            partsOverLength = DNDTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+            partsOverLength = DragAndDropTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
                 BOMDataViewModel.PartsToSeparate);
             
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength);

@@ -6,11 +6,13 @@ using System.Linq;
 using SharedProject_IS_HeavyIndustry.Models;
 using Google.OrTools.LinearSolver;
 using Newtonsoft.Json.Linq;
+using SharedProject_IS_HeavyIndustry.Converters;
 
 namespace SharedProject_IS_HeavyIndustry.Services;
 
-public class ArrangePartsService
+public class  ArrangePartsService
 {
+    public static Dictionary<string, List<int>> _lengthOptionSet;
     public static List<int> _lengthOptionsRawMaterial = new List<int>() {6010, 7010, 7510, 8010, 8510, 9010, 10010};
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
     private static ObservableCollection<Part> _overSizeParts;
@@ -18,6 +20,15 @@ public class ArrangePartsService
     // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts)
     {
+        try
+        {
+            _lengthOptionSet = JsonConverter.LengthSetFromJson();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"An error occurred while initializing _lengthOptionSet: {ex.Message}");
+            return;
+        }
         // 파트배치 완료된 것들
         // 
         _rawMaterialsUsed = ArrangeParts(parts);

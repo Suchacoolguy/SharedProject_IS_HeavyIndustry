@@ -4,35 +4,31 @@ using System.Linq;
 
 namespace SharedProject_IS_HeavyIndustry.Models
 {
-    public class RawLengthSet
+    public class RawLengthSet(string description, double weight, string lengths)
     {
-        public string Description { get; set; }
-        public double Weight { get; set; }
+        public string Description { get; set; } = description;
+        public double Weight { get; set; } = weight;
 
-        private string _lengths;
         public string Lengths
         {
-            get => _lengths;
+            get => lengths;
             set
             {
-                _lengths = ListToString(StringToList(value).OrderBy(x => x).ToList());
+                lengths = ListToString(StringToList(value).OrderBy(x => x).ToList());
             }
         }
-
-        // 매개변수가 있는 생성자
-        public RawLengthSet(string description, double weight, string lengths)
+        public List<int> LengthsAsIntegerList()
         {
-            Description = description;
-            Weight = weight;
-            Lengths = lengths;
+            return StringToList(lengths).Select(value => (int)(value * 1000)).ToList();
         }
-
-        private string ListToString(List<double> lengths)
+        private static string ListToString(List<double> lengths)
         {
+            if (lengths.Count == 0)
+                return "";
             return string.Join(",", lengths);
         }
 
-        private List<double> StringToList(string lengths)
+        private static List<double> StringToList(string lengths)
         {
             return lengths.Split(',').Select(double.Parse).ToList();
         }

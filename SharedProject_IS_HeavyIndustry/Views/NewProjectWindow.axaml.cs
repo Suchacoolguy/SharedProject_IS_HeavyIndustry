@@ -22,7 +22,14 @@ public partial class NewProjectWindow : Window
     private async void OpenDirectory(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         // 파일 탐색기 열기
-        var dialog = new OpenFileDialog();
+        var dialog = new OpenFileDialog
+        {
+            Title = "엑셀 파일 선택",
+            Filters =
+            [
+                new FileDialogFilter { Name = "Excel Files", Extensions = ["xlsx", "xls"] }
+            ]
+        };
         var result = await dialog.ShowAsync(this);
 
         filePath = result.FirstOrDefault();

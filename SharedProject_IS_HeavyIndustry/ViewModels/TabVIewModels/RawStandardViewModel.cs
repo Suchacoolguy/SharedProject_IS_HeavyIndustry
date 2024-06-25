@@ -1,30 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Avalonia;
-using Newtonsoft.Json;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 {
-    public class RawStandardViewModel : AvaloniaObject
+    public class RawStandardViewModel : INotifyPropertyChanged
     {
+        public string Title { get; } = "규격 설정";
+        public string SubTitle { get; } = "규격별 중량 및 원자재 길이를 정의할 수 있습니다\n규격 정보를 설정 할 수 있습니다";
         private Dictionary<string, RawLengthSet> LengthSetDictionary { get; set; }
         public ObservableCollection<RawLengthSet> LengthSetList { get; set; }
 
-        public ICommand SaveCommand { get; }
+        public ICommand SaveCommand { get; } 
+        public ICommand PasteCommand { get; }
 
         public RawStandardViewModel()
         {
-            LengthSetDictionary = ReadDictionaryFromJson() ?? new Dictionary<string, RawLengthSet>();
+            LengthSetDictionary = JsonConverter.ReadDictionaryFromJson() ?? new Dictionary<string, RawLengthSet>();
             LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
 
             SaveCommand = new RelayCommand(Save);
+            PasteCommand = new RelayCommand(Paste);
 
             LengthSetList.CollectionChanged += LengthSetList_CollectionChanged!;
         }
@@ -36,45 +44,48 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
         
         private void Save()
         {
-            WriteDictionaryToJson(LengthSetDictionary);
+            JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
         }
 
-        private static Dictionary<string, RawLengthSet>? ReadDictionaryFromJson()
+        [Obsolete("Obsolete")]
+        private async void Paste()
         {
-            try
+            var dialog = new OpenFileDialog
             {
-                var projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
-                Debug.Assert(projectRoot != null, nameof(projectRoot) + " != null");
-                var filePath = Path.Combine(projectRoot, "Assets", "RawLengthSettingInfo.json");
+                Title = "엑셀 파일 선택",
+                Filters =
+                [
+                    new FileDialogFilter { Name = "Excel Files", Extensions = new List<string> { "xlsx", "xls" } }
+                ]
+            };
 
-                var json = File.ReadAllText(filePath);
-                var dictionary = JsonConvert.DeserializeObject<Dictionary<string, RawLengthSet>>(json);
-                return dictionary;
-            }
-            catch (Exception ex)
+            var window = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+            if (window == null) return;
+
+            var result = await dialog.ShowAsync(window);
+
+            if (result != null && result.Length > 0)
             {
-                Console.WriteLine($"JSON 파일 로드 중 오류 발생: {ex.Message}");
-                Console.WriteLine("오류 발생 클래스 : RawStandardViewModel - ReadDictionaryFromJson()");
-                return null;
+                var filePath = result[0];
+                var newLengthSetDictionary = ExcelDataReader.RawLengthSettingsFromExcel(filePath);
+
+                if (newLengthSetDictionary != null)
+                {
+                    JsonConverter.WriteDictionaryToJson(newLengthSetDictionary);
+                    LengthSetDictionary = newLengthSetDictionary;
+                    LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
+
+                    // Raise PropertyChanged event to notify UI about the change
+                    OnPropertyChanged(nameof(LengthSetList));
+                }
             }
         }
 
-        private void WriteDictionaryToJson(Dictionary<string, RawLengthSet> dictionary)
-        {
-            try
-            {
-                var projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
-                Debug.Assert(projectRoot != null, nameof(projectRoot) + " != null");
-                var filePath = Path.Combine(projectRoot, "Assets", "RawLengthSettingInfo.json");
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-                var json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
-                File.WriteAllText(filePath, json);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"JSON 파일 저장 중 오류 발생: {ex.Message}");
-                Console.WriteLine("오류 발생 클래스 : RawStandardViewModel - ReadDictionaryFromJson()");
-            }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

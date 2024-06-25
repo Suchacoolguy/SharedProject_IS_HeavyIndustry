@@ -61,7 +61,7 @@ public static class ExcelDataReader
             }
             catch
             {
-                Console.WriteLine($"읽을 수 없는 행: {row}");
+                //Console.WriteLine($"에러 확인 코드 - ExcelDataReader.cs RawLengthSettingsFromExcel() 읽을 수 없는 행: {row}");
                 // 예외가 발생하더라도 무시하고 다음 행을 계속 처리
             }
         }

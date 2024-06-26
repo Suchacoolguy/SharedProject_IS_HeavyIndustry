@@ -13,6 +13,7 @@ public class DragAndDropViewModel
 {
     public static ObservableCollection<RawMaterial> ArrangedRawMaterials { get; set; }
     public static ObservableCollection<Part> OverSizeParts { get; set; }
+    public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
 
     public DragAndDropViewModel(ObservableCollection<RawMaterial> arrangedRawMaterials,

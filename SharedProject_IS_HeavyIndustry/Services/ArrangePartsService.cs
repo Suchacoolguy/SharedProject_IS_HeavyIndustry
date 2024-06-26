@@ -7,6 +7,7 @@ using SharedProject_IS_HeavyIndustry.Models;
 using Google.OrTools.LinearSolver;
 using Newtonsoft.Json.Linq;
 using SharedProject_IS_HeavyIndustry.Converters;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Services;
 
@@ -29,10 +30,22 @@ public class  ArrangePartsService
             Console.WriteLine($"An error occurred while initializing _lengthOptionSet: {ex.Message}");
             return;
         }
-        // 파트배치 완료된 것들
-        // 
-        _rawMaterialsUsed = ArrangeParts(parts);
         
+        // 최대한 적은 원자재 종류(길이)로 파트 배치
+        if (DragAndDropViewModel.ArrangementType == "Min Raw Material Type")
+        {
+            
+        }
+        // 최대한 Scrap을 줄이는 파트 배치
+        else if (DragAndDropViewModel.ArrangementType == "Min Waste")
+        {
+            
+        }
+        
+        // 파트배치 완료된 것들
+        _rawMaterialsUsed = ArrangeParts_MinWaste(parts);
+        
+        // 입력된 분리길이보다 긴 애들 따로 모아둘 리스트
         List<Part> replacedParts = new List<Part>();
         foreach (var ppp in overSizeParts)
         {
@@ -47,7 +60,9 @@ public class  ArrangePartsService
         _overSizeParts = new ObservableCollection<Part>(replacedParts);
     }
     
-    public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts)
+    
+    
+    public static ObservableCollection<RawMaterial> ArrangeParts_MinWaste(List<Part> parts)  // 최대한 Scrap을 줄이는 파트 배치
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
         // List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
@@ -160,8 +175,7 @@ public class  ArrangePartsService
         Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
 
         int howManyTimes = 0;
-        int TotalScrap = 0;
-        int BinLength = 0;
+        int binLength = 0;
         
         bool foundBin = false;
         for (int j = 0; j < data.NumBins; ++j)
@@ -172,8 +186,8 @@ public class  ArrangePartsService
                 if (y[j, i].SolutionValue() == 1)
                 {
                     
-                    BinLength = DataModel.lengthOptionsRawMaterial[i];
-                    rawMaterial = new RawMaterial(BinLength);
+                    binLength = DataModel.lengthOptionsRawMaterial[i];
+                    rawMaterial = new RawMaterial(binLength);
                 }
             }
 
@@ -194,6 +208,15 @@ public class  ArrangePartsService
         ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
         return res;
     }
+
+    public static ObservableCollection<RawMaterial> ArrangeParts_MinRawTypes(List<Part> parts) // 최대한 적은 원자재 종류(길이)로 파트 배치
+    {
+        List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
+        
+        ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
+        return res;
+    }
+
 
     public ObservableCollection<RawMaterial> GetArrangedRawMaterials()
     {

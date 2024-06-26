@@ -3,13 +3,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
-        Width="400" Height="350"
+        Width="500" Height="350"
         x:Class="SharedProject_IS_HeavyIndustry.Views.NewProjectWindow"
         Title="액셀 파일 불러오기">
         <DockPanel>
                 <!-- First Panel -->
                 <StackPanel DockPanel.Dock="Top" Height="70">
-                        <TextBlock Text="액셀 파일 불러오기" FontWeight="Bold" FontSize="24" Margin="0,10"/>
+                        <TextBlock Text="액셀 파일 불러오기" FontWeight="Bold" FontSize="24" Margin="10,20"/>
                 </StackPanel>
         
                 <!-- Separator -->
@@ -21,13 +21,9 @@
                         <TextBox Name="ProjectName" Margin="10,5" HorizontalAlignment="Stretch"/>
 
                         <TextBlock Text="파일 경로" Margin="10,20,10,0"/>
-                        <!--<DockPanel Margin="10,5">
-                <TextBox Name="FilePathBox" HorizontalAlignment="Stretch"/>
-                <Button Content="선택" Click="OpenDirectory" HorizontalAlignment="Right" Margin="5,0,0,0"/>
-            </DockPanel>-->
                         <Grid Margin="10,5">
                                 <TextBox Name="FilePathBox" Margin="0,0,5,0" HorizontalAlignment="Stretch"/>
-                                <Button Content="선택" Click="OpenDirectory" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                                <Button Content="..." Click="OpenDirectory" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                         </Grid>
 
                         <!--<StackPanel Height="40%" VerticalAlignment="Stretch"/>-->
@@ -38,9 +34,9 @@
 
                 <!-- Third Panel -->
                 <DockPanel LastChildFill="False" Height="70">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,10,0">
                                 <Button Click="Cancel" Content="취소" Margin="5,0"/>
-                                <Button Click="Confirm" Content="확인" Margin="5,0"/>
+                                <Button Click="Confirm" Content="만들기" Margin="5,0"/>
                         </StackPanel>
                 </DockPanel>
         </DockPanel>

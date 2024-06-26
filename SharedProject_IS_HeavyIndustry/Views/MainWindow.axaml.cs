@@ -22,7 +22,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        //DataContext = new MainWindowViewModel();
+        DataContext = new MainWindowViewModel();
     }
     
     public static List<string> GetSheetNames() // StartWindow에서 사용

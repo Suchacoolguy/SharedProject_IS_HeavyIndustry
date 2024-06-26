@@ -106,8 +106,12 @@ public static class ExcelDataReader
         var part = new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
         if (length > SettingsViewModel.MaxLen)
             part.IsOverLenth = true;
-        if (!SettingsViewModel.HyungGangList.Contains(type))
-            part.IsExcluded = true;
+        foreach (var HyungGangType in SettingsViewModel.HyungGangList)
+        {
+            // 형강 목록 리스트에 없으면 제외 True, 있으면 제외 False.
+            if (type.Contains(HyungGangType.Trim()))
+                part.IsExcluded = false;
+        }
 
         return part;
     }

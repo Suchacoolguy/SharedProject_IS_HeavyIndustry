@@ -24,7 +24,7 @@ public class Part
         this.pArea = pArea;
         this.desc = desc;
         _isOverLenth = false;
-        _isExcluded = false;
+        _isExcluded = true;
         _needSeparate = false;
         lengthToBeSeperated = "6010";
     }

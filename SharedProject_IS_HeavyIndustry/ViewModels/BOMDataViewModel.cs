@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using SharedProject_IS_HeavyIndustry.Models;
 
 
@@ -22,6 +23,7 @@ public class BOMDataViewModel
         // 그냥 = AllParts 하면 참조가 같아져서 문제가 생길라나 모르겠다는 (ㅇ..ㅇ;;)
         // PartsFiltered = new ObservableCollection<Part>(parts);
         PartsFiltered = AllParts;
+        OptionsForFiltering = PartsFiltered.Select(p => p.Assem).Distinct().ToList();
     }
     
     public static List<Description> GetDescriptionList() // DNDTabViewModel에서 사용

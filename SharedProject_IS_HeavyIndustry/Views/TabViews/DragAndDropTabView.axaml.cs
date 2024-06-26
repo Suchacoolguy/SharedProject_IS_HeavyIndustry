@@ -28,26 +28,26 @@ public partial class DragAndDropTabView : TabView
 
     private void AddDragAndDrop(object? sender, SelectionChangedEventArgs e)
     {
-        var selectedType = this.FindControl<ComboBox>("Type")!.SelectedItem?.ToString();
-        var selectedSize = this.FindControl<ComboBox>("Size")!.SelectedItem?.ToString();
+        var selectedMaterial = this.FindControl<ComboBox>("Material")!.SelectedItem?.ToString();
+        var selectedDescription = this.FindControl<ComboBox>("Description")!.SelectedItem?.ToString();
         var dockPanel = this.FindControl<Panel>("Parent_DragAndDrop");
 
         ///////////////////////////////////////////테스트용 코드
 
         ObservableCollection<Part> parts = null!;
         ObservableCollection<Part> partsOverLength = null!;
-        if (selectedType != null && selectedSize != null)
+        if (selectedMaterial != null && selectedDescription != null)
         {
-            parts = DragAndDropTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+            parts = BOMDataViewModel.GetFilteredParts(selectedMaterial, selectedDescription,
                 BOMDataViewModel.PartsForTask);
-            partsOverLength = DragAndDropTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
+            partsOverLength = BOMDataViewModel.GetFilteredParts(selectedMaterial, selectedDescription,
                 BOMDataViewModel.PartsToSeparate);
             
-            var service = new ArrangePartsService(new List<Part>(parts), partsOverLength);
+            var service = new ArrangePartsService(new List<Part>(parts), partsOverLength, SettingsViewModel.GetLengthOption(selectedDescription));
             MainWindowViewModel.DragAndDropViewModel =
                 new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
             
-            var key = selectedType + selectedSize;
+            var key = selectedMaterial + "," + selectedDescription;
             if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))
             {
                 MainWindowViewModel.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();

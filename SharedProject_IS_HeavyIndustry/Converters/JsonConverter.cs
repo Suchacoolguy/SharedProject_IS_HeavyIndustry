@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.Services;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Converters;
 
@@ -45,6 +47,7 @@ public static class JsonConverter
             Console.WriteLine($"JSON 파일 저장 중 오류 발생: {ex.Message}");
             Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - WriteDictionaryFromJson()");
         }
+        SettingsViewModel.Refresh();
     }
 
     public static Dictionary<string, List<int>> LengthSetFromJson()

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Models;
 
 
@@ -11,8 +12,8 @@ public class BOMDataViewModel
 {
     public static string SheetName = null!;
     public static ObservableCollection<Part> AllParts { get; set; }
-    public static ObservableCollection<Part> PartsForTask { get; set; } = [];
-    public static ObservableCollection<Part> PartsToSeparate { get; set; } = [];
+    public static ObservableCollection<Part> PartsForTask { get; set; } = []; //제외 False, 분리 False
+    public static ObservableCollection<Part> PartsToSeparate { get; set; } = []; // 제외 False, 분리 True
     public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
     public static List<string> OptionsForFiltering { get; set; } = [];
     
@@ -20,24 +21,22 @@ public class BOMDataViewModel
     {
         AllParts = new ObservableCollection<Part>(parts);
         
+        
         // 그냥 = AllParts 하면 참조가 같아져서 문제가 생길라나 모르겠다는 (ㅇ..ㅇ;;)
         // PartsFiltered = new ObservableCollection<Part>(parts);
         PartsFiltered = AllParts;
         OptionsForFiltering = PartsFiltered.Select(p => p.Assem).Distinct().ToList();
     }
     
-    public static List<Description> GetDescriptionList() // DNDTabViewModel에서 사용
+    public static ObservableCollection<Part> GetFilteredParts(string material, string desc, ObservableCollection<Part> parts)
     {
-        var duplicationCheckSet = new HashSet<string>();
-        var descList = new List<Description>();
+        var list = new ObservableCollection<Part>();
 
-        foreach (var part in AllParts) // 파트 목록을 순회하며 중복되지 않은 설명을 리스트에 추가
-        {
-            if (duplicationCheckSet.Add(part.Desc.ToString())) // HashSet에 현재 파트의 설명이 없는 경우 추가
-                descList.Add(part.Desc);                           // HashSet에 성공적으로 추가된 경우만 리스트에 추가
-        }
+        foreach (var part in parts)
+            if (part.Desc.ToString().Equals(desc) && part.Material.Equals(material))
+                list.Add(part);
 
-        return descList;
+        return list;
     }
     
     public static void ClassifyParts() // StartWindow, ExcelTabView에서 사용

@@ -24,10 +24,10 @@
                 <TextBlock Text="기본정보" Padding="2" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="재질: " Margin="5,0,0,0" Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center"/>
-                    <ComboBox Name="Type" ItemsSource="{Binding TypeList}" SelectedItem="{Binding SelectedType}"
+                    <ComboBox Name="Material" ItemsSource="{Binding MaterialList}" SelectedItem="{Binding SelectedMaterial}"
                               Margin="3" Width="120" Background="LightGray"/>
                     <TextBlock Text="규격: " Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    <ComboBox Name="Size" ItemsSource="{Binding SizeList}" SelectionChanged="AddDragAndDrop" Margin="3" Width="170" Background="LightGray"/>
+                    <ComboBox Name="Description" ItemsSource="{Binding DescriptionList}" SelectionChanged="AddDragAndDrop" Margin="3" Width="170" Background="LightGray"/>
                 </StackPanel>
             </StackPanel>
         </Border>

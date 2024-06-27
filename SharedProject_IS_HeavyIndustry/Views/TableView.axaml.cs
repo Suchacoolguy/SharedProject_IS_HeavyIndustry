@@ -28,9 +28,6 @@ public partial class TableView : UserControl
         // Get the DataGridTextColumn from the Button's DataContext
         var column = button?.DataContext as String;
         
-        // var window = new (distinctAssem);
-        // var parentWindow = this.GetVisualRoot() as Window;
-        // var result = await window.ShowDialog<ObservableCollection<bool>>(parentWindow);
     
         if (column != null)
         {

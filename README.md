@@ -37,6 +37,9 @@ Length 값대로 막대 길이 설정하면 넘 길어져서 10으로 나눌려�
 ### Services/ ###
 데이터 가져오는 애들은 여기다가 따로 빼려고 함.
 
+### FilterMenu.axaml ###
+이거 UI 미리보기용으로 만든거라 신경안써도 됨
+
 ### 드래그앤드랍 관련 파일 ###
 - DragAndDropViewModel.cs
 - DragAndDropView.axaml

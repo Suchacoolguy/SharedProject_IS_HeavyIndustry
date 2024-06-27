@@ -31,6 +31,7 @@ public partial class DragAndDropTabView : TabView
         var selectedType = this.FindControl<ComboBox>("Type")!.SelectedItem?.ToString();
         var selectedSize = this.FindControl<ComboBox>("Size")!.SelectedItem?.ToString();
         var dockPanel = this.FindControl<Panel>("Parent_DragAndDrop");
+        string arrangementType = "Min Scrap";
 
         ///////////////////////////////////////////테스트용 코드
 
@@ -43,7 +44,7 @@ public partial class DragAndDropTabView : TabView
             partsOverLength = DragAndDropTabViewModel.FindPartsByDescription(new Description(selectedType, selectedSize),
                 BOMDataViewModel.PartsToSeparate);
             
-            var service = new ArrangePartsService(new List<Part>(parts), partsOverLength);
+            var service = new ArrangePartsService(new List<Part>(parts), partsOverLength, arrangementType);
             MainWindowViewModel.DragAndDropViewModel =
                 new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
             
@@ -53,8 +54,6 @@ public partial class DragAndDropTabView : TabView
                 MainWindowViewModel.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
                 MainWindowViewModel.RawMaterialSet[key].Add(service.GetArrangedRawMaterials());
             }
-        
-            
             
             
             if (!dockPanel.Children.Any())

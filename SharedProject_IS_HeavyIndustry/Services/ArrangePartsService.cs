@@ -19,7 +19,7 @@ public class  ArrangePartsService
     private static ObservableCollection<Part> _overSizeParts;
     
     // Constructor
-    public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts)
+    public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, string arrangementType)
     {
         try
         {
@@ -43,7 +43,7 @@ public class  ArrangePartsService
         }
         
         // 파트배치 완료된 것들
-        _rawMaterialsUsed = ArrangeParts_MinWaste(parts);
+        _rawMaterialsUsed = ArrangeParts(parts, arrangementType);
         
         // 입력된 분리길이보다 긴 애들 따로 모아둘 리스트
         List<Part> replacedParts = new List<Part>();
@@ -62,7 +62,7 @@ public class  ArrangePartsService
     
     
     
-    public static ObservableCollection<RawMaterial> ArrangeParts_MinWaste(List<Part> parts)  // 최대한 Scrap을 줄이는 파트 배치
+    public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts, string arrangementType)
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
         // List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
@@ -74,10 +74,10 @@ public class  ArrangePartsService
         
         DataModel data = new DataModel(partList, _lengthOptionsRawMaterial);
 
-        foreach (var ppp in partList)
-        {
-            Console.WriteLine(ppp.Length);
-        }
+        // foreach (var ppp in partList)
+        // {
+        //     Console.WriteLine(ppp.Length);
+        // }
         
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("CP-SAT");
@@ -103,6 +103,22 @@ public class  ArrangePartsService
                 // y[i, j] is 1 if bin i has length j. otherwise 0.
                 y[i, j] = solver.MakeIntVar(0, 1, $"y_{i}_{j}");
             }    
+        }
+
+        Variable[] usedRawMaterialType = new Variable[data.NumRawMaterialOptions];
+        for (int i = 0; i < data.NumRawMaterialOptions; i++)
+        {
+            usedRawMaterialType[i] = solver.MakeIntVar(0, 1, $"usedRawMaterialType_{i}");
+        }
+        
+        // Ensure usedRawMaterialType[k] is 1 if any bin uses raw material type k
+        for (int k = 0; k < data.NumRawMaterialOptions; k++)
+        {
+            Constraint rawMaterialTypeConstraint = solver.MakeConstraint(0, 1, "");
+            for (int j = 0; j < data.NumBins; j++)
+            {
+                rawMaterialTypeConstraint.SetCoefficient(usedRawMaterialType[k], 1);
+            }
         }
         
         for (int i = 0; i < data.NumItems; i++)
@@ -143,29 +159,66 @@ public class  ArrangePartsService
                 constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
             }
         }
-
-        Objective objective = solver.Objective();
-        // set the objective to minimize the total sum of the remaining lengths of the bins.
         
-        for (int j = 0; j < data.NumBins; j++)
-        {
-            for (int k = 0; k < data.NumRawMaterialOptions; k++)
-            {
-                // Objective: minimize the total waste
-                objective.SetCoefficient(y[j, k], DataModel.lengthOptionsRawMaterial[k]);
-            }
-            for (int i = 0; i < data.NumItems; i++)
-            {
-                // Subtract the parts lengths from the total raw material length
-                objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
-            }
-        }
+        Objective objective = solver.Objective();
 
-        objective.SetMinimization();
+        // Scrap을 최소화하는 파트 배치를 선택했다면 그렇게 해주는 것이 인지상정
+        if (arrangementType == "Min Scrap")
+        {
+            // set the objective to minimize the total sum of the remaining lengths of the bins.
+            for (int j = 0; j < data.NumBins; j++)
+            {
+                for (int k = 0; k < data.NumRawMaterialOptions; k++)
+                {
+                    // Objective: minimize the total waste
+                    objective.SetCoefficient(y[j, k], DataModel.lengthOptionsRawMaterial[k]);
+                }
+                for (int i = 0; i < data.NumItems; i++)
+                {
+                    // Subtract the parts lengths from the total raw material length
+                    objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
+                }
+            }
+
+            objective.SetMinimization();
+        }
+        // 원자재 종류(길이)를 최소화하는 파트 배치를 선택했다면 그렇게 해주는 것이 인지상정
+        else if (arrangementType == "Min Raw Material Type")
+        {
+            
+            // // set the objective to minimize the total sum of the remaining lengths of the bins.
+            // for (int j = 0; j < data.NumBins; j++)
+            // {
+            //     for (int k = 0; k < data.NumRawMaterialOptions; k++)
+            //     {
+            //         // Objective: minimize the total waste
+            //         objective.SetCoefficient(y[j, k], DataModel.lengthOptionsRawMaterial[k]);
+            //     }
+            //     for (int i = 0; i < data.NumItems; i++)
+            //     {
+            //         // Subtract the parts lengths from the total raw material length
+            //         objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
+            //     }
+            // }
+            //
+            // for (int k = 0; k < data.NumRawMaterialOptions; k++)
+            // {
+            //     objective.SetCoefficient(usedRawMaterialType[k], 10000000);  // High coefficient to prioritize minimizing raw material types
+            // }
+            //
+            // objective.SetMinimization();
+        }
+        
+        
 
         Console.WriteLine("Ready to solve.");
         Solver.ResultStatus resultStatus = solver.Solve();
 
+        if (resultStatus == Solver.ResultStatus.INFEASIBLE)
+        {
+            // 다시 시도하라는 안내창 띄우기
+        }
+        
         Console.WriteLine("Solved.");
         // Check that the problem has an optimal solution.
         if (resultStatus != Solver.ResultStatus.OPTIMAL)
@@ -208,15 +261,6 @@ public class  ArrangePartsService
         ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
         return res;
     }
-
-    public static ObservableCollection<RawMaterial> ArrangeParts_MinRawTypes(List<Part> parts) // 최대한 적은 원자재 종류(길이)로 파트 배치
-    {
-        List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
-        
-        ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
-        return res;
-    }
-
 
     public ObservableCollection<RawMaterial> GetArrangedRawMaterials()
     {

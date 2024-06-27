@@ -30,7 +30,7 @@
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Button Margin="5,0,0,0" >
+                            <Button Margin="5,0,0,0" Click="OnFilterButtonClick" >
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
                             <TextBlock Text="도면번호" VerticalAlignment="Center"/>

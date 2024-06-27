@@ -56,6 +56,12 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    
+                    <!-- Our ghost rectangle -->
+                    <Border BorderBrush="Black" Width="100" BorderThickness="1" Name="GhostItem" Opacity="0.6">
+                        <Rectangle Name="PartRectangle" Height="30" Width="100" Fill="BurlyWood"
+                                   DragDrop.AllowDrop="True" Tag="{Binding }"/>
+                    </Border>
                 </StackPanel>
                 </ScrollViewer>
     </Grid>

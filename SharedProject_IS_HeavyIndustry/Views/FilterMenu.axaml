@@ -1,0 +1,33 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="300"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.FilterMenu">
+    <!--<ContextMenu Name="FilterContextMenu">
+        <TextBlock Text="{Binding Header}" FontWeight="Bold" FontSize="20" Margin="10"/>
+        <ItemsControl ItemsSource="{Binding FilterOptions}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button Content="적용" Command="{Binding ApplyCommand}" Margin="10"/>
+    </ContextMenu>-->
+    <ContextMenu Name="FilterContextMenu">
+        <TextBlock Text="필터 메뉴" FontWeight="Bold" FontSize="20" Margin="10"/>
+        <Panel Height="150">
+            <ItemsControl>
+                <CheckBox Content="체크1"/>
+                <CheckBox Content="체크2"/>
+                <CheckBox Content="체크3"/>
+                <CheckBox Content="체크4"/>
+                <CheckBox Content="체크5"/>
+                <CheckBox Content="체크6"/>
+                <CheckBox Content="체크7"/>
+            </ItemsControl>
+        </Panel>
+        <Button Content="적용" Margin="10"/>
+    </ContextMenu>
+</UserControl>

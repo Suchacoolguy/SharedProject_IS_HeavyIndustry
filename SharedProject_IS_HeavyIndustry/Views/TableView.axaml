@@ -8,6 +8,25 @@
              x:DataType="vm:BOMDataViewModel"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
     
+    <UserControl.ContextMenu>
+        <ContextMenu Name="FilterContextMenu">
+            <TextBlock>필터 항목 선택</TextBlock>
+            <Panel Height="300">
+                <ListBox Name="FilterListBox"
+                         ItemsSource="{Binding OptionsForFiltering}"
+                         SelectionMode="Multiple">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, 
+                    Path=IsSelected, Mode=TwoWay}"  Margin="0"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Panel>
+            <Button Content="적용" Click="OnFilterApply_Btn_Click"/>
+        </ContextMenu>
+    </UserControl.ContextMenu>
+    
     <DataGrid Name="Table" ItemsSource="{Binding PartsFiltered}"
               CanUserReorderColumns="False"
               CanUserResizeColumns="True"
@@ -16,8 +35,8 @@
               FontSize="15"
               BorderThickness="1" BorderBrush="Gray">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="Auto"/>
-            <DataGridTextColumn Header="규격" Width="Auto">
+            <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="1*"/>
+            <DataGridTextColumn Header="규격" Width="2*">
                 <DataGridTextColumn.Binding>
                     <MultiBinding StringFormat="{}{0}{1}">
                         <Binding Path="Desc.Type"/>
@@ -26,27 +45,27 @@
                 </DataGridTextColumn.Binding>
             </DataGridTextColumn>
             
-            <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="*">
+            <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="1*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Margin="5,0,0,0" >
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="도면번호" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                            <Button Margin="5,0,0,0" Click="FilterButton_Click" DockPanel.Dock="Right">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
-                            <TextBlock Text="도면번호" VerticalAlignment="Center"/>
-                        </StackPanel>
+                        </DockPanel>
                     </DataTemplate>
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
             
-            <DataGridTextColumn Header="블록마크"  Binding="{Binding Mark}" Width="*"/>
-            <DataGridTextColumn Header="길이"  Binding="{Binding Length}" Width="*"/>
-            <DataGridTextColumn Header="수량"  Binding="{Binding Num}" Width="*"/>
-            <DataGridTextColumn Header="중량"  Binding="{Binding WeightOne}" Width="*"/>
-            <DataGridTextColumn Header="면적"  Binding="{Binding PArea}" Width="*"/>
-            <DataGridTextColumn Header="중량합"  Binding="{Binding WeightSum}" Width="*"/>
+            <DataGridTextColumn Header="블록마크"  Binding="{Binding Mark}" Width="1*"/>
+            <DataGridTextColumn Header="길이"  Binding="{Binding Length}" Width="1*"/>
+            <DataGridTextColumn Header="수량"  Binding="{Binding Num}" Width="1*"/>
+            <DataGridTextColumn Header="중량"  Binding="{Binding WeightOne}" Width="1*"/>
+            <DataGridTextColumn Header="면적"  Binding="{Binding PArea}" Width="1*"/>
+            <DataGridTextColumn Header="중량합"  Binding="{Binding WeightSum}" Width="1*"/>
             
-            <DataGridTemplateColumn Header="제외" Width="*">
+            <DataGridTemplateColumn Header="제외" Width="1*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <CheckBox IsChecked="{Binding IsExcluded}" HorizontalAlignment="Center"/>
@@ -54,7 +73,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             
-            <DataGridTemplateColumn Header="분리" Width="*">
+            <DataGridTemplateColumn Header="분리" Width="1*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <CheckBox IsChecked="{Binding NeedSeparate}" HorizontalAlignment="Center"/>
@@ -62,7 +81,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             
-            <DataGridTemplateColumn Header="분리 길이" Width="*">
+            <DataGridTemplateColumn Header="분리 길이" Width="1*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBox Text="{Binding lengthToBeSeperated, Mode=TwoWay}"/>
@@ -70,7 +89,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Header="분리 필요" Width="*">
+            <DataGridTemplateColumn Header="분리 필요" Width="1*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <CheckBox IsChecked="{Binding IsOverLenth}" HorizontalAlignment="Center"/>

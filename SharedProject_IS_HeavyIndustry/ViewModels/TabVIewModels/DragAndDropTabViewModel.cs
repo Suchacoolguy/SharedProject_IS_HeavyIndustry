@@ -83,7 +83,7 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
 
         foreach (var part in parts) // 파트 목록을 순회하며 중복되지 않은 설명을 리스트에 추가
         {
-            if (part.Material.Equals(material) && duplicationCheckSet.Add(part.Desc.ToString())) // HashSet에 현재 파트의 설명이 없는 경우 추가
+            if (!part.IsExcluded && part.Material.Equals(material) && duplicationCheckSet.Add(part.Desc.ToString())) // HashSet에 현재 파트의 설명이 없는 경우 추가
                 descList.Add(part.Desc.ToString());           // HashSet에 성공적으로 추가된 경우만 리스트에 추가
         }
         duplicationCheckSet.Clear();

@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using SharedProject_IS_HeavyIndustry.Models;
@@ -15,12 +17,10 @@ public partial class TableView : UserControl
 {
     public TableView()
     {
-        InitializeComponent(); 
+        InitializeComponent();
     }
     
-    // FilterButton_Click
-
-    private async void OnFilterButtonClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    /*private async void OnFilterButtonClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         // Get the Button that was clicked
         var button = sender as Button;
@@ -36,7 +36,30 @@ public partial class TableView : UserControl
         {
             // 여기서 처리하자   
         }
+    }*/
+    
+    private void FilterButton_Click(object sender, RoutedEventArgs e)
+    {
+        var contextMenu = this.FindControl<ContextMenu>("FilterContextMenu");
+        contextMenu!.PlacementTarget = sender as Button;
+        contextMenu.Open();
     }
+    
+    private void OnFilterApply_Btn_Click(object sender, RoutedEventArgs e)
+    {
+        // ListBox 참조
+        var filterListBox = this.FindControl<ListBox>("FilterListBox");
+        if (filterListBox != null)
+        {
+            var selectedItems = filterListBox.SelectedItems!
+                .OfType<string>()
+                .ToList();
+
+            MainWindowViewModel.BomDataViewModel.SelectedFilterItems = new ObservableCollection<string>(selectedItems);
+        }
+    }
+
+    
     public void ToggleNeedSeperate(bool value)
     {
         var table = this.FindControl<DataGrid>("Table");
@@ -87,4 +110,19 @@ public partial class TableView : UserControl
             table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
         }
     }
+
+    /*private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var listBox = sender as ListBox;
+        var viewModel = DataContext as BOMDataViewModel;
+
+        if (listBox != null && viewModel != null)
+        {
+            viewModel.SelectedFilterItems.Clear();
+            foreach (var item in listBox.SelectedItems)
+            {
+                viewModel.SelectedFilterItems.Add(item.ToString());
+            }
+        }
+    }*/
 }

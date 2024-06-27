@@ -38,9 +38,9 @@ public partial class DragAndDropTabView : TabView
         ObservableCollection<Part> partsOverLength = null!;
         if (selectedMaterial != null && selectedDescription != null)
         {
-            parts = BOMDataViewModel.GetFilteredParts(selectedMaterial, selectedDescription,
+            parts = GetFilteredParts(selectedMaterial, selectedDescription,
                 BOMDataViewModel.PartsForTask);
-            partsOverLength = BOMDataViewModel.GetFilteredParts(selectedMaterial, selectedDescription,
+            partsOverLength = GetFilteredParts(selectedMaterial, selectedDescription,
                 BOMDataViewModel.PartsToSeparate);
             
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength, SettingsViewModel.GetLengthOption(selectedDescription));
@@ -76,5 +76,16 @@ public partial class DragAndDropTabView : TabView
                 .GetMessageBoxStandard("알림", "Please select type and size", ButtonEnum.Ok);
             box.ShowAsync();
         }
+    }
+    
+    private static ObservableCollection<Part> GetFilteredParts(string material, string desc, ObservableCollection<Part> parts)
+    {
+        var list = new ObservableCollection<Part>();
+
+        foreach (var part in parts)
+            if (part.Desc.ToString().Equals(desc) && part.Material.Equals(material))
+                list.Add(part);
+
+        return list;
     }
 }

@@ -110,7 +110,7 @@ public static class ExcelDataReader
         foreach (var hyungGangType in SettingsViewModel.HyungGangList)
         {
             // 형강 목록 리스트에 없으면 제외 True, 있으면 제외 False.
-            if (type.Contains(hyungGangType.Trim()))
+            if (type.Equals(hyungGangType.Trim()))
                 part.IsExcluded = false;
         }
         if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))

@@ -104,14 +104,17 @@ public static class ExcelDataReader
         var description = new Description(type, size);
         //분리필요로 변경된 코드 
         var part = new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
-        if (length > SettingsViewModel.GetMaxLen(description.ToString()))
-            part.IsOverLenth = true;
+        
+        Console.WriteLine(type);
+        
         foreach (var hyungGangType in SettingsViewModel.HyungGangList)
         {
             // 형강 목록 리스트에 없으면 제외 True, 있으면 제외 False.
             if (type.Contains(hyungGangType.Trim()))
                 part.IsExcluded = false;
         }
+        if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
+            part.IsOverLenth = true;
 
         return part;
     }

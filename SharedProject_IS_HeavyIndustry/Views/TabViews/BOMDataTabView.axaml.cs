@@ -45,12 +45,6 @@ public partial class BOMDataTabView : TabView
         BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
         mainWindow?.AddTab("파트 배치");
     }
-
-    private void Toggle(object? sender, RoutedEventArgs e)
-    {
-        tableView.ToggleNeedSeperate(true);
-        initialToggleState = !initialToggleState; // 다음 클릭 시 상태 반전
-    }
     
     private void SetExcludeTrue(object? sender, RoutedEventArgs e)
     {

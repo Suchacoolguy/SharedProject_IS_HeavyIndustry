@@ -37,18 +37,6 @@ public partial class TableView : UserControl
         contextMenu.PlacementTarget = button;
         contextMenu.Open(button);
     }
-    
-    public void ToggleNeedSeperate(bool value)
-    {
-        var table = this.FindControl<DataGrid>("Table");
-
-        if (table == null) return;
-        foreach (var item in table.ItemsSource.Cast<Part>())
-            if (item.IsOverLenth)
-                item.NeedSeparate = value;
-        
-        table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
-    }
 
     public void SetExclude(bool value)
     {

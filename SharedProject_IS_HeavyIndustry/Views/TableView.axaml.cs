@@ -7,14 +7,17 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.VisualTree;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
 public partial class TableView : UserControl
 {
+    private Dictionary<string, ContextMenu> filterSet = new();
     public TableView()
     {
         InitializeComponent();
@@ -38,17 +41,30 @@ public partial class TableView : UserControl
         }
     }*/
     
-    private void FilterButton_Click(object sender, RoutedEventArgs e)
+    [Obsolete("Obsolete")]
+    private void Filter_Btn_Click(object sender, RoutedEventArgs e)
     {
-        var contextMenu = this.FindControl<ContextMenu>("FilterContextMenu");
-        contextMenu!.PlacementTarget = sender as Button;
-        contextMenu.Open();
+        if (sender is not Button button) return;
+        var columnHeader = button.Tag?.ToString();
+        ContextMenu contextMenu;
+
+        if (filterSet.TryGetValue(columnHeader!, out var value))
+            contextMenu = value;
+        else
+        {
+            contextMenu = FilteringService.GenerateFilter(columnHeader!);
+            filterSet.Add(columnHeader!, contextMenu);
+        }
+
+        contextMenu.PlacementTarget = button;
+        contextMenu.Open(button);
+        Console.WriteLine($"Column header: {columnHeader}");
     }
-    
-    private void OnFilterApply_Btn_Click(object sender, RoutedEventArgs e)
+
+    private void FilterApply_Btn_Click(object? sender, RoutedEventArgs e)
     {
         // ListBox 참조
-        var filterListBox = this.FindControl<ListBox>("FilterListBox");
+        /*var filterListBox = this.FindControl<ListBox>("FilterListBox");
         if (filterListBox != null)
         {
             var selectedItems = filterListBox.SelectedItems!
@@ -56,9 +72,10 @@ public partial class TableView : UserControl
                 .ToList();
 
             MainWindowViewModel.BomDataViewModel.SelectedFilterItems = new ObservableCollection<string>(selectedItems);
-        }
+        }*/
+        Console.WriteLine("hello");
     }
-
+    
     
     public void ToggleNeedSeperate(bool value)
     {
@@ -110,19 +127,20 @@ public partial class TableView : UserControl
             table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
         }
     }
-
-    /*private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var listBox = sender as ListBox;
-        var viewModel = DataContext as BOMDataViewModel;
-
-        if (listBox != null && viewModel != null)
-        {
-            viewModel.SelectedFilterItems.Clear();
-            foreach (var item in listBox.SelectedItems)
-            {
-                viewModel.SelectedFilterItems.Add(item.ToString());
-            }
-        }
-    }*/
 }
+
+
+/*private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    var listBox = sender as ListBox;
+    var viewModel = DataContext as BOMDataViewModel;
+
+    if (listBox != null && viewModel != null)
+    {
+        viewModel.SelectedFilterItems.Clear();
+        foreach (var item in listBox.SelectedItems)
+        {
+            viewModel.SelectedFilterItems.Add(item.ToString());
+        }
+    }
+}*/

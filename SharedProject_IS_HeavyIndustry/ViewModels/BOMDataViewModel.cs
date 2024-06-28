@@ -20,26 +20,10 @@
             //필터 적용 후 파트 
             public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
             
-            //필터 아이템
-            public static List<string> OptionsForFiltering { get; set; } = [];
-
-            private ObservableCollection<string> selectedFilterItems = [];
-            
-            public ObservableCollection<string> SelectedFilterItems
-            {
-                get => selectedFilterItems;
-                set
-                {
-                    selectedFilterItems = value;
-                    ApplyFilter();
-                }
-            }
-
             public BOMDataViewModel(List<Part> parts)
             {
                 AllParts = new ObservableCollection<Part>(parts);
                 PartsFiltered = Clone(AllParts);
-                OptionsForFiltering = PartsFiltered.Select(p => p.Desc.ToString()).Distinct().ToList();
             }
 
             public static void ClassifyParts() // StartWindow, ExcelTabView에서 사용
@@ -54,28 +38,41 @@
             private static void CopyPartList(Part part, ObservableCollection<Part> list) // ClassifyParts에서 사용
             {
                 if (part.Num > 1)
-                {
                     for (var i = 0; i < part.Num; i++)
-                    {
                         list.Add(new Part(part.Assem, part.Mark, part.Material, part.Length,
                             1, part.WeightOne, part.WeightSum, part.PArea, part.Desc));
-                    }
-                }
                 else
-                {
                     list.Add(part);
-                }
             }
 
-            private void ApplyFilter()
+            public static void ApplyFilter(string type, List<string> selectedFilterItems)
             {
-                if (!SelectedFilterItems.Any())
-                    PartsFiltered.Clear();
-                else
+
+                PartsFiltered.Clear();
+                switch (type)
                 {
-                    PartsFiltered.Clear();
-                    foreach (var part in AllParts.Where(p => SelectedFilterItems.Contains(p.Desc.ToString())))
-                        PartsFiltered.Add(part);
+                    case "Description":
+                    {
+                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Desc.ToString())))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
+                    case "Assem":
+                    {
+                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Assem)))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
+                    case "Mark":
+                    {
+                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Mark)))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
+                    case "Material":
+                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Material)))
+                            PartsFiltered.Add(part);
+                        break;
                 }
             }
 

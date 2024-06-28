@@ -105,8 +105,6 @@ public static class ExcelDataReader
         //분리필요로 변경된 코드 
         var part = new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
         
-        Console.WriteLine(type);
-        
         foreach (var hyungGangType in SettingsViewModel.HyungGangList)
         {
             // 형강 목록 리스트에 없으면 제외 True, 있으면 제외 False.

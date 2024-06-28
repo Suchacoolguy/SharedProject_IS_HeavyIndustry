@@ -8,25 +8,6 @@
              x:DataType="vm:BOMDataViewModel"
              x:Class="SharedProject_IS_HeavyIndustry.Views.TableView">
     
-    <UserControl.ContextMenu>
-        <ContextMenu Name="FilterContextMenu">
-            <TextBlock>필터 항목 선택</TextBlock>
-            <Panel Height="300">
-                <ListBox Name="FilterListBox"
-                         ItemsSource="{Binding OptionsForFiltering}"
-                         SelectionMode="Multiple">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Content="{Binding}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, 
-                    Path=IsSelected, Mode=TwoWay}"  Margin="0"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Panel>
-            <Button Content="적용" Click="OnFilterApply_Btn_Click"/>
-        </ContextMenu>
-    </UserControl.ContextMenu>
-    
     <DataGrid Name="Table" ItemsSource="{Binding PartsFiltered}"
               CanUserReorderColumns="False"
               CanUserResizeColumns="True"
@@ -35,22 +16,12 @@
               FontSize="15"
               BorderThickness="1" BorderBrush="Gray">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="1*"/>
-            <DataGridTextColumn Header="규격" Width="2*">
-                <DataGridTextColumn.Binding>
-                    <MultiBinding StringFormat="{}{0}{1}">
-                        <Binding Path="Desc.Type"/>
-                        <Binding Path="Desc.Size"/>
-                    </MultiBinding>
-                </DataGridTextColumn.Binding>
-            </DataGridTextColumn>
-            
-            <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="1*">
+            <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="1*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
                         <DockPanel LastChildFill="False">
-                            <TextBlock Text="도면번호" VerticalAlignment="Center" DockPanel.Dock="Left"/>
-                            <Button Margin="5,0,0,0" Click="FilterButton_Click" DockPanel.Dock="Right">
+                            <TextBlock Text="재질" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Material" DockPanel.Dock="Right">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
                         </DockPanel>
@@ -58,7 +29,51 @@
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
             
-            <DataGridTextColumn Header="블록마크"  Binding="{Binding Mark}" Width="1*"/>
+            <DataGridTextColumn Header="규격" Width="2*">
+                <DataGridTextColumn.Binding>
+                    <MultiBinding StringFormat="{}{0}{1}">
+                        <Binding Path="Desc.Type"/>
+                        <Binding Path="Desc.Size"/>
+                    </MultiBinding>
+                </DataGridTextColumn.Binding>
+                <DataGridTextColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="규격" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                            <Button Margin="5,0,0,0" Click="Filter_Btn_Click" Tag="Description" DockPanel.Dock="Right">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            </Button>
+                        </DockPanel>
+                    </DataTemplate>
+                </DataGridTextColumn.HeaderTemplate>
+            </DataGridTextColumn>
+            
+            <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="1*">
+                <DataGridTextColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="도면번호" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Assem" DockPanel.Dock="Right">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            </Button>
+                        </DockPanel>
+                    </DataTemplate>
+                </DataGridTextColumn.HeaderTemplate>
+            </DataGridTextColumn>
+            
+            <DataGridTextColumn Header="블록마크"  Binding="{Binding Mark}" Width="1*">
+                <DataGridTextColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="블록마크" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Mark" DockPanel.Dock="Right">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            </Button>
+                        </DockPanel>
+                    </DataTemplate>
+                </DataGridTextColumn.HeaderTemplate>
+            </DataGridTextColumn>
+            
             <DataGridTextColumn Header="길이"  Binding="{Binding Length}" Width="1*"/>
             <DataGridTextColumn Header="수량"  Binding="{Binding Num}" Width="1*"/>
             <DataGridTextColumn Header="중량"  Binding="{Binding WeightOne}" Width="1*"/>

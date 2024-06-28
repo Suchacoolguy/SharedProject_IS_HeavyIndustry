@@ -10,7 +10,7 @@
         Title="FilteringWindow">
         
         
-        <StackPanel Margin="10">
+        <!--<StackPanel Margin="10">
                 <ListBox ItemsSource="{Binding OptionsForFiltering}">
                         <ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -20,7 +20,7 @@
                         </ListBox.ItemTemplate>
                 </ListBox>
                 <Button Content="OK" HorizontalAlignment="Right" Margin="0,10,0,0" />
-        </StackPanel>
+        </StackPanel>-->
         
 </Window>
 

@@ -23,7 +23,6 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
             try
             {
                 LengthOptionSet = JsonConverter.LengthSetFromJson();
-                Console.WriteLine("안녕 나 제이슨 " + LengthOptionSet.Count);
             }
             catch (Exception ex)
             {
@@ -57,12 +56,9 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
             {
                 return lengths.Max();
             }
-            else
-            {
-                Console.WriteLine($"Key not found: {desc}");
-                MissingKeys.Add(desc);
-                return 0.0; // 혹은 다른 적절한 기본값을 반환
-            }
+            Console.WriteLine($"Key not found: {desc}");
+            MissingKeys.Add(desc);
+            return 0.0; // 혹은 다른 적절한 기본값을 반환
         }
     }
 }

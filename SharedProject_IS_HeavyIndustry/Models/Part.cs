@@ -1,6 +1,8 @@
+using System.ComponentModel;
+
 namespace SharedProject_IS_HeavyIndustry.Models;
 
-public class Part
+public class Part : INotifyPropertyChanged
 {
     public bool is_selected = false;
     public string lengthToBeSeperated { get; set; }
@@ -92,13 +94,28 @@ public class Part
     public bool IsExcluded
     {
         get { return _isExcluded; }
-        set { _isExcluded = value; }
+        set
+        {
+            _isExcluded = value;
+            OnPropertyChanged(nameof(IsExcluded));
+        }
     }
     
     public bool NeedSeparate
     {
         get { return _needSeparate; }
-        set { _needSeparate = value; }
+        set
+        {
+            _needSeparate = value;
+            OnPropertyChanged(nameof(NeedSeparate));
+        }
+    }
+    
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public override string ToString()

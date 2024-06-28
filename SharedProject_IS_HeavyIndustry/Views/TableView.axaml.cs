@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
@@ -41,47 +42,29 @@ public partial class TableView : UserControl
     {
         var table = this.FindControl<DataGrid>("Table");
 
-        if (table != null)
-        {
-            foreach (var item in table.ItemsSource.Cast<Part>())
-            {
-                if (item.IsOverLenth)
-                    item.NeedSeparate = value;
-            }
-            
-            table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
-        }
+        if (table == null) return;
+        foreach (var item in table.ItemsSource.Cast<Part>())
+            if (item.IsOverLenth)
+                item.NeedSeparate = value;
+        
+        table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
     }
 
-    public void SetExcludeFalse()
+    public void SetExclude(bool value)
     {
         var table = this.FindControl<DataGrid>("Table");
 
-        if (table != null)
-        {
-            foreach (var item in table.ItemsSource.Cast<Part>())
-            {
-                if (item.IsExcluded)
-                    item.IsExcluded = false;
-            }
-            
-            table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
-        }
+        if (table == null) return;
+        foreach (var item in table.ItemsSource.Cast<Part>())
+            item.IsExcluded = value;
     }
     
-    public void SetExcludeTrue()
+    public void SetSeparate(bool value)
     {
         var table = this.FindControl<DataGrid>("Table");
 
-        if (table != null)
-        {
-            foreach (var item in table.ItemsSource.Cast<Part>())
-            {
-                if (item.IsExcluded)
-                    item.IsExcluded = true;
-            }
-            
-            table.ItemsSource = new ObservableCollection<Part>(table.ItemsSource.Cast<Part>());
-        }
+        if (table == null) return;
+        foreach (var item in table.ItemsSource.Cast<Part>())
+            item.NeedSeparate = value;
     }
 }

@@ -48,10 +48,10 @@
                     <DropDownButton Name="DropDownBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right">
                         <Menu>
                             <MenuItem Header="선택/해제">
-                                <MenuItem Header="표시된 항목 제외 설정" Click="SetExcluded"/>
-                                <MenuItem Header="표시된 항목 제외 해제" Click="SetNotExcluded"/>
-                                <MenuItem Header="표시된 항목 분리 설정" Click="Toggle"/>
-                                <MenuItem Header="표시된 항목 분리 해제" Click="MenuItem_Click"/>
+                                <MenuItem Header="표시된 항목 제외 설정" Click="SetExcludeTrue"/>
+                                <MenuItem Header="표시된 항목 제외 해제" Click="SetExcludeFalse"/>
+                                <MenuItem Header="표시된 항목 분리 설정" Click="SetSeparateTrue"/>
+                                <MenuItem Header="표시된 항목 분리 해제" Click="SetSeparateFalse"/>
                             </MenuItem>
                         </Menu>
                     </DropDownButton>

@@ -52,16 +52,27 @@ public partial class BOMDataTabView : TabView
         initialToggleState = !initialToggleState; // 다음 클릭 시 상태 반전
     }
     
-    private void SetExcluded(object? sender, RoutedEventArgs e)
+    private void SetExcludeTrue(object? sender, RoutedEventArgs e)
     {
-        tableView.SetExcludeTrue();
+        tableView.SetExclude(true);
     }
     
-    private void SetNotExcluded(object? sender, RoutedEventArgs e)
+    private void SetExcludeFalse(object? sender, RoutedEventArgs e)
     {
-        tableView.SetExcludeFalse();
-        initialToggleState = !initialToggleState; // 다음 클릭 시 상태 반전
+        tableView.SetExclude(false);
     }
+
+    private void SetSeparateTrue(object? sender, RoutedEventArgs e)
+    {
+        tableView.SetSeparate(true);
+    }
+    
+    private void SetSeparateFalse(object? sender, RoutedEventArgs e)
+    {
+        tableView.SetSeparate(false);
+    }
+    
+    
 
     private void MenuItem_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {

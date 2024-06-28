@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 
@@ -13,7 +15,11 @@ public class DragAndDropViewModel
 {
     public static ObservableCollection<RawMaterial> ArrangedRawMaterials { get; set; }
     public static ObservableCollection<Part> OverSizeParts { get; set; }
+    public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
+    public Part DraggedPart { get; set; }
+    private Point _ghostPosition = new(0,0);
+    private readonly Point _mouseOffset = new(-5, -5);
 
     public DragAndDropViewModel(ObservableCollection<RawMaterial> arrangedRawMaterials,
         ObservableCollection<Part> overSizeParts)
@@ -100,11 +106,6 @@ public class DragAndDropViewModel
         }
     }
     
-    public static void RawMaterial_DragOver(object sender, DragEventArgs e)
-    {
-        e.DragEffects = e.DragEffects & DragDropEffects.Move;
-        e.Handled = true;
-    }
     
     public static void RawMaterial_Drop(object sender, DragEventArgs e)
     {

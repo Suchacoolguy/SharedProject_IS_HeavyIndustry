@@ -19,11 +19,7 @@
             <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="1*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <Grid ColumnDefinitions="*,Auto">
                             <TextBlock Text="재질" VerticalAlignment="Center" Grid.Column="0"/>
                             <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Material" Grid.Column="1">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
@@ -59,11 +55,7 @@
             <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="1*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <Grid ColumnDefinitions="*,Auto">
                             <TextBlock Text="도면번호" VerticalAlignment="Center" Grid.Column="0"/>
                             <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Assem" Grid.Column="1">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>

@@ -18,6 +18,7 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 public partial class DragAndDropTabView : TabView
 {
     private MainWindow mainWindow;
+    private string key = "";
     
     public DragAndDropTabView(MainWindow mainWindow)
     {
@@ -38,6 +39,16 @@ public partial class DragAndDropTabView : TabView
         ObservableCollection<Part> partsOverLength = null!;
         if (selectedMaterial != null && selectedDescription != null)
         {
+            key = selectedMaterial + "," + selectedDescription;
+            //딕셔너리에 키가 존재하는지 확인 -> 존재하면 한번 DragAndDrop처리 했던것이므로 해당 값 불러와서 DragAndDropView추가 
+            if (MainWindowViewModel.RawMaterialSet.TryGetValue(key, out var arrangedRawMaterials))
+            {
+                dockPanel!.Children.RemoveAll(dockPanel.Children);
+                DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
+                dockPanel.Children.Add(new DragAndDropView(mainWindow));
+                return;
+            }
+            
             parts = GetFilteredParts(selectedMaterial, selectedDescription,
                 BOMDataViewModel.PartsForTask);
             partsOverLength = GetFilteredParts(selectedMaterial, selectedDescription,
@@ -47,11 +58,11 @@ public partial class DragAndDropTabView : TabView
             MainWindowViewModel.DragAndDropViewModel =
                 new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
             
-            var key = selectedMaterial + "," + selectedDescription;
+
             if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))
             {
-                MainWindowViewModel.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
-                MainWindowViewModel.RawMaterialSet[key].Add(service.GetArrangedRawMaterials());
+                //MainWindowViewModel.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
+                MainWindowViewModel.RawMaterialSet.TryAdd(key, service.GetArrangedRawMaterials());
             }
         
             
@@ -64,6 +75,7 @@ public partial class DragAndDropTabView : TabView
             }
             else
             {
+                UpdateRawMaterialToDictionary();
                 dockPanel.Children.RemoveAll(dockPanel.Children);
                 
                 var dragAndDropView = new DragAndDropView(mainWindow);
@@ -87,5 +99,10 @@ public partial class DragAndDropTabView : TabView
                 list.Add(part);
 
         return list;
+    }
+
+    private void UpdateRawMaterialToDictionary()
+    {
+        MainWindowViewModel.RawMaterialSet[key] = DragAndDropViewModel.ArrangedRawMaterials;
     }
 }

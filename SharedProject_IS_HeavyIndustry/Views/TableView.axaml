@@ -19,12 +19,16 @@
             <DataGridTextColumn Header="재질"  Binding="{Binding Material}" Width="1*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
-                        <DockPanel LastChildFill="False">
-                            <TextBlock Text="재질" VerticalAlignment="Center" DockPanel.Dock="Left"/>
-                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Material" DockPanel.Dock="Right">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="재질" VerticalAlignment="Center" Grid.Column="0"/>
+                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Material" Grid.Column="1">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
-                        </DockPanel>
+                        </Grid>
                     </DataTemplate>
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
@@ -38,12 +42,16 @@
                 </DataGridTextColumn.Binding>
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
-                        <DockPanel LastChildFill="False">
-                            <TextBlock Text="규격" VerticalAlignment="Center" DockPanel.Dock="Left"/>
-                            <Button Margin="5,0,0,0" Click="Filter_Btn_Click" Tag="Description" DockPanel.Dock="Right">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="규격" VerticalAlignment="Center" Grid.Column="0"/>
+                            <Button Margin="5,0,0,0" Click="Filter_Btn_Click" Tag="Description" Grid.Column="1">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
-                        </DockPanel>
+                        </Grid>
                     </DataTemplate>
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
@@ -51,12 +59,16 @@
             <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="1*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
-                        <DockPanel LastChildFill="False">
-                            <TextBlock Text="도면번호" VerticalAlignment="Center" DockPanel.Dock="Left"/>
-                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Assem" DockPanel.Dock="Right">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="도면번호" VerticalAlignment="Center" Grid.Column="0"/>
+                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Assem" Grid.Column="1">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
-                        </DockPanel>
+                        </Grid>
                     </DataTemplate>
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
@@ -64,12 +76,16 @@
             <DataGridTextColumn Header="블록마크"  Binding="{Binding Mark}" Width="1*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
-                        <DockPanel LastChildFill="False">
-                            <TextBlock Text="블록마크" VerticalAlignment="Center" DockPanel.Dock="Left"/>
-                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Mark" DockPanel.Dock="Right">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="블록마크" VerticalAlignment="Center" Grid.Column="0"/>
+                            <Button Margin="5,0,0,0" Padding="0" Click="Filter_Btn_Click" Tag="Mark" Grid.Column="1">
                                 <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
                             </Button>
-                        </DockPanel>
+                        </Grid>
                     </DataTemplate>
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
@@ -114,5 +130,3 @@
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>
-
-

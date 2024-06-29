@@ -31,12 +31,12 @@
                                 <Canvas Name="MyCanvas" Width="600" Height="55">
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="LightGray" Canvas.Left="0" Canvas.Top="5"
-                                                   DragDrop.AllowDrop="True" Tag="{Binding}" />
+                                        <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                   Fill="LightGray" Canvas.Left="0" Canvas.Top="5" DragDrop.AllowDrop="True" Tag="{Binding}" />
                                     </Border>
                                     <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
                                     <!-- Parts -->
-                                    <TextBlock Text="{Binding RemainingLength}" Canvas.Right="0" Canvas.Top="35"/>
+                                    <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" Foreground="{Binding RectangleColor}" Canvas.Right="0" Canvas.Top="35"/>
                                     <ItemsControl ItemsSource="{Binding PartsInside}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -45,9 +45,9 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border BorderBrush="Black" BorderThickness="1">
-                                                    <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood"
-                                                               PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
+                                                <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1">
+                                                    <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                               Fill="LightGoldenrodYellow" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -59,7 +59,7 @@
                     
                     <!-- Our ghost rectangle -->
                     <Border BorderBrush="Black" Width="100" BorderThickness="1" Name="GhostItem" Opacity="0.6">
-                        <Rectangle Name="PartRectangle" Height="30" Width="100" Fill="BurlyWood"
+                        <Rectangle Height="30" Width="100" Fill="LightGoldenrodYellow"
                                    DragDrop.AllowDrop="True" Tag="{Binding }"/>
                     </Border>
                 </StackPanel>

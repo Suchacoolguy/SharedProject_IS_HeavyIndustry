@@ -10,6 +10,7 @@ using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.Services;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
@@ -64,6 +65,7 @@ public partial class DragAndDropView : TabView
 
     private async void Part_PointerPressed(object sender, PointerPressedEventArgs e)
     {
+        var partRectangle = sender as Rectangle;
         var part = (sender as Control)?.DataContext as Part;
         RawMaterial originalRawMaterial = null;
         
@@ -97,13 +99,13 @@ public partial class DragAndDropView : TabView
             var offsetY = mousePos.Y - ghostPos.Y + _mouseOffset.X;
             GhostItem.RenderTransform = new TranslateTransform(offsetX, offsetY);
             
-            
             GhostItem.IsVisible = true;
 
             // Start the drag operation
             var result = await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
             GhostItem.IsVisible = false;
             
+            var rawMaterialTo = (e.Source as Control)?.Tag as RawMaterial;
         }
         
     }

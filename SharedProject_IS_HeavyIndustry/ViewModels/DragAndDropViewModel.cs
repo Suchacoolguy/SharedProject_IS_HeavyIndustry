@@ -45,6 +45,7 @@ public class DragAndDropViewModel
             len_part = part.Length;
         }
         
+        // 파트를 다른 RawMaterial로 옮기는 경우
         if (from != null && to != null && part != null)
         {
             if (index_to > -1 && index_to < ArrangedRawMaterials.Count)
@@ -58,6 +59,7 @@ public class DragAndDropViewModel
             }
             Console.WriteLine("UpdateRawMaterial - from: not null, to: not null, part: not null");
         }
+        // 파트를 빈 공간에 드랍하는 경우 원자재를 새로 생성하고, 생성된 원자재에 파트를 추가
         else if (to == null && part != null)
         {
             // If the user drops the part object into an area that doesn't contain any other objects
@@ -85,6 +87,7 @@ public class DragAndDropViewModel
                 ArrangedRawMaterials.RemoveAt(index_from);
             }
         }
+        // 오른쪽에 있는 빈 공간으로부터 파트를 가져와서 드랍하는 경우
         else if (from == null && to != null && part != null)
         {
             // for the case where the user drags a part from the overSizeParts collection
@@ -93,6 +96,7 @@ public class DragAndDropViewModel
             ArrangedRawMaterials[index_to].insert_part(part);
             OverSizeParts.Remove(part);
         }
+        // 왼쪽에서 파트 집어서 오른쪽 빈 공간으로 이동하는 경우 
         else if (from != null && to == null && part != null)
         {
             // when the user drags a part from a raw material to empty space

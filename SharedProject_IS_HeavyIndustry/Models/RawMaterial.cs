@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Avalonia.Media;
 using SkiaSharp;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -19,6 +20,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
         }
 
         public ObservableCollection<Part> PartsInside
+        {
+            get;
+            set;
+        }
+        
+        public IBrush RectangleColor
         {
             get;
             set;
@@ -38,7 +45,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 if (_RemainingLength != value)
                 {
                     _RemainingLength = value;
-                    OnPropertyChanged();
+                    if (_RemainingLength < 0)
+                        RectangleColor = new SolidColorBrush(Colors.Red);
+                    else
+                        RectangleColor = new SolidColorBrush(Colors.Black);
+                    OnPropertyChanged(nameof(RectangleColor)); // Notify that RectangleColor has changed
+                    OnPropertyChanged(nameof(RemainingLength)); // Notify that RemainingLength has changed
                 }
             }
         }

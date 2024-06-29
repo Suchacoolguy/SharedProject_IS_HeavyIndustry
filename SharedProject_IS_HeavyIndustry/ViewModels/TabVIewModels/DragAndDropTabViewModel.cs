@@ -62,7 +62,7 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
     private Dictionary<string, List<string>> GetFilterSet()
     {
         var dictionary = new Dictionary<string, List<string>>();
-        GetFilterSetFromParts(dictionary, BOMDataViewModel.PartsForTask);
+        GetFilterSetFromParts(dictionary, BOMDataViewModel.AllParts);
         return dictionary;
     }
 
@@ -70,6 +70,7 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
     {
         foreach (var part in parts)
         {
+            if (part.IsExcluded) continue;
             if (dictionary.ContainsKey(part.Material)) continue;
             var descriptions = GetDescriptionList(part.Material, parts);
             dictionary.Add(part.Material, descriptions);

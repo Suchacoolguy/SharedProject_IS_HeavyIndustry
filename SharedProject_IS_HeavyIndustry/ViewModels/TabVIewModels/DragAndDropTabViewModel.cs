@@ -100,13 +100,9 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
     private void UpdateDescriptionList()
     {
         if (filterSet.TryGetValue(SelectedMaterial, out var descriptions))
-        {
             DescriptionList = new ObservableCollection<string>(descriptions);
-        }
         else
-        {
             DescriptionList.Clear();
-        }
     }
 
     protected void OnPropertyChanged([CallerMemberName] string name = null)

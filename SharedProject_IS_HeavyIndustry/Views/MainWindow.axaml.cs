@@ -82,8 +82,41 @@ public partial class MainWindow : Window
     {
         AddTab("규격 목록");
     }
-    
+
     public void AddTab(string tabHeader)
+    {
+        var tabPanel = this.FindControl<TabControl>("TabFrame");
+        var existingTab = tabPanel?.Items.Cast<TabItem>().FirstOrDefault(item => item.Header!.ToString() == tabHeader);
+
+        if (existingTab != null)
+        {
+            existingTab.Content = CreateTabContent(tabHeader);
+        }
+        else
+        {
+            var tabItem = new TabItem
+            {
+                Header = tabHeader,
+                Content = CreateTabContent(tabHeader)
+            };
+
+            tabPanel?.Items.Add(tabItem);
+        }
+    }
+
+    private Control CreateTabContent(string tabHeader)
+    {
+        return tabHeader switch
+        {
+            "프로젝트 정보" => new BOMDataTabView(this),
+            "파트 배치" => new DragAndDropTabView(this),
+            "레포트 출력" => new ReportTabView(),
+            "규격 목록" => new RawStandardTabView(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    /*public void AddTab(string tabHeader)
     {
         var tabItem = new TabItem
         {
@@ -100,5 +133,5 @@ public partial class MainWindow : Window
 
         var tabPanel = this.FindControl<TabControl>("TabFrame");
         tabPanel?.Items.Add(tabItem);
-    }
+    }*/
 }

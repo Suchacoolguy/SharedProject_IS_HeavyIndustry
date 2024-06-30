@@ -10,7 +10,9 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
     {
         // public static double MaxLen = ArrangePartsService._lengthOptionsRawMaterial.Max();
         public static List<string> HyungGangList { get; set; } = [ "H", "I", "L", "C", "ㄷ", "TB" ];
-        private static Dictionary<string, List<int>> LengthOptionSet { get; set; } = null!;
+
+        private static Dictionary<string, List<int>> LengthOptionSet { get; set; } =
+            new Dictionary<string, List<int>>();
         public static List<string> MissingKeys { get; private set; } = [];
 
         static SettingsViewModel()

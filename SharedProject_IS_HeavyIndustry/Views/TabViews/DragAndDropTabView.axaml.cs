@@ -24,6 +24,7 @@ public partial class DragAndDropTabView : TabView
     {
         InitializeComponent();
         this.mainWindow = mainWindow;
+        MainWindowViewModel.RawMaterialSet.Clear();
         DataContext = new DragAndDropTabViewModel();
     }
 

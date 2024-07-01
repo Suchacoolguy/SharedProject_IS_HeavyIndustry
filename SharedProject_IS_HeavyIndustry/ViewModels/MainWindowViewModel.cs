@@ -28,6 +28,18 @@ public class MainWindowViewModel : ViewModelBase
         // Logic to add the part to the raw material
         rawMaterial.insert_part(part);
     }
+    
+    public static void UpdateRawMaterialSet(ObservableCollection<RawMaterial> rawMaterialSet, string key)
+    {
+        if (RawMaterialSet.ContainsKey(key))
+        {
+            RawMaterialSet[key] = rawMaterialSet;
+        }
+        else
+        {
+            RawMaterialSet.TryAdd(key, rawMaterialSet);
+        }
+    }
 
     
 }

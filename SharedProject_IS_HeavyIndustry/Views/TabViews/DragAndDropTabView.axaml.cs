@@ -24,7 +24,7 @@ public partial class DragAndDropTabView : TabView
     {
         InitializeComponent();
         this.mainWindow = mainWindow;
-        MainWindowViewModel.RawMaterialSet.Clear();
+        // MainWindowViewModel.RawMaterialSet.Clear(); // ?? 이게 필요한가 + 파트 사라지는 오류 용의자 후보 1번
         DataContext = new DragAndDropTabViewModel();
     }
 
@@ -42,7 +42,7 @@ public partial class DragAndDropTabView : TabView
         {
             key = selectedMaterial + "," + selectedDescription;
             //딕셔너리에 키가 존재하는지 확인 -> 존재하면 한번 DragAndDrop처리 했던것이므로 해당 값 불러와서 DragAndDropView추가 
-            if (MainWindowViewModel.RawMaterialSet.TryGetValue(key, out var arrangedRawMaterials))
+            if (MainWindowViewModel.RawMaterialSet.TryGetValue(key, out var arrangedRawMaterials))  // 여기!!
             {
                 dockPanel!.Children.RemoveAll(dockPanel.Children);
                 DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
@@ -57,13 +57,13 @@ public partial class DragAndDropTabView : TabView
             
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength, SettingsViewModel.GetLengthOption(selectedDescription));
             MainWindowViewModel.DragAndDropViewModel =
-                new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts());
+                new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts(), key);
             
 
-            if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))
+            if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))   // 여기!!
             {
                 //MainWindowViewModel.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
-                MainWindowViewModel.RawMaterialSet.TryAdd(key, service.GetArrangedRawMaterials());
+                MainWindowViewModel.RawMaterialSet.TryAdd(key, service.GetArrangedRawMaterials());  // 여기!!
             }
         
             
@@ -104,6 +104,6 @@ public partial class DragAndDropTabView : TabView
 
     private void UpdateRawMaterialToDictionary()
     {
-        MainWindowViewModel.RawMaterialSet[key] = DragAndDropViewModel.ArrangedRawMaterials;
+        MainWindowViewModel.RawMaterialSet[key] = DragAndDropViewModel.ArrangedRawMaterials;    // 여기!!
     }
 }

@@ -18,15 +18,17 @@ public class DragAndDropViewModel
     public static ObservableCollection<Part> OverSizeParts { get; set; }
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
+    public static string key { get; set; }
     public Part DraggedPart { get; set; }
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
 
     public DragAndDropViewModel(ObservableCollection<RawMaterial> arrangedRawMaterials,
-        ObservableCollection<Part> overSizeParts)
+        ObservableCollection<Part> overSizeParts, string key)
     {
         ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arrangedRawMaterials);
         OverSizeParts = new ObservableCollection<Part>(overSizeParts);
+        DragAndDropViewModel.key = key;
     }
 
     public static void UpdateRawMaterial(RawMaterial from, RawMaterial to, Part part)
@@ -109,6 +111,8 @@ public class DragAndDropViewModel
         {
             Console.WriteLine("여기다 여기!");
         }
+        
+        MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials, key);
     }
     
     

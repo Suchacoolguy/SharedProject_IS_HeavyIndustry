@@ -21,14 +21,22 @@
         </Grid.ColumnDefinitions>
 
         <!-- Existing content -->
-             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5" Background="Transparent">
+                 <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
                 <!-- Parts arranged inside raw materials -->
-                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True">
+                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent">
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Canvas Name="MyCanvas" Width="600" Height="55">
+                                <Canvas Name="MyCanvas" Width="600" Height="55" Background="Transparent">
+                                    
+                                    <Canvas.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuItem Header="Copy"/>
+                                            <MenuItem Header="Paste"/>
+                                        </MenuFlyout>
+                                    </Canvas.ContextFlyout>
+                                    
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
@@ -62,12 +70,19 @@
                         <Rectangle Height="30" Width="100" Fill="LightGoldenrodYellow"
                                    DragDrop.AllowDrop="True" Tag="{Binding }"/>
                     </Border>
+                    
                 </StackPanel>
                 </ScrollViewer>
     </Grid>
 
         <!-- OverSizePartsView is added here when the PartsForSeparate list in the WorkManager has an item. -->
-    </Grid>
+        <Grid Grid.Column="1" DragDrop.AllowDrop="True">
+            <Canvas>
+                
+            </Canvas>
+        </Grid>
+        
+        </Grid>
     
     
 </UserControl>

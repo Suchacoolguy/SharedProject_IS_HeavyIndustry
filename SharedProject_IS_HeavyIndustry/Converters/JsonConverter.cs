@@ -37,7 +37,11 @@ public static class JsonConverter
         {
             var projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
             Debug.Assert(projectRoot != null, nameof(projectRoot) + " != null");
-            var filePath = Path.Combine(projectRoot, "Assets", "RawLengthSettingInfo.json");
+            // var filePath = Path.Combine(projectRoot, "Assets", "RawLengthSettingInfo.json");
+            
+            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var filePath = Path.Combine(appDirectory, "Assets", "RawLengthSettingInfo.json");
+            Console.WriteLine("File Path: " + filePath);
 
             var json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
             File.WriteAllText(filePath, json);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
@@ -67,7 +68,7 @@ public class DragAndDropViewModel
 
             Console.WriteLine("UpdateRawMaterial - from: null, to: null, part: not null");
             List<int> lengthOptions = GetLengthOptionsRawMaterial();
-            int bestLength = Int32.MaxValue;
+            int bestLength = lengthOptions.Max(); 
             foreach (var len in lengthOptions)
             {
                 if (len >= part.Length && len < bestLength)
@@ -180,7 +181,7 @@ public class DragAndDropViewModel
             }
             
             List<int> lengthOptions = GetLengthOptionsRawMaterial();
-            int bestLength = Int32.MaxValue;
+            int bestLength = lengthOptions.Max();
             foreach (var len in lengthOptions)
             {
                 if (len >= part.Length && len < bestLength)

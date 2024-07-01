@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Interactivity;
 using ClosedXML.Excel;
 using SharedProject_IS_HeavyIndustry.Models;
@@ -36,8 +35,22 @@ public partial class MainWindow : Window
         _sheet = _workbook.Worksheet(sheetName);
         
         //시트를 선택하면 시트의 part정보를 뽑아옴
-        List<Part> partsFromBOM = ExcelDataReader.PartListFromExcel(_sheet);
-        MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM);
+
+        try
+        {
+            List<Part> partsFromBOM = ExcelDataReader.PartListFromExcel(_sheet);
+            MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM);    
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            // Handle the exception
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        catch (IOException ex)
+        {
+            // Handle other I/O exceptions
+            Console.WriteLine("Error: " + ex.Message);
+        }
     }
 
     public static void ReadExcelPackage() // StartWindow에서 사용

@@ -7,6 +7,7 @@
              x:Class="SharedProject_IS_HeavyIndustry.Views.TabViews.DragAndDropTabView"
              x:DataType="tabVIewModels:DragAndDropTabViewModel">
     
+    
     <DockPanel Name="ContentPanel" DockPanel.Dock="Top">
                         
         <Border Height="50" Background="White" Margin="4" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">

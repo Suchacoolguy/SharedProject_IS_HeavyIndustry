@@ -4,6 +4,9 @@ auto_readme.sh
 # file to store the input file path
 config.json
 
+*.DS_Store
+SharedProject_IS_HeavyIndustry/app.manifest
+
 # User-specific files
 *.suo
 *.user

@@ -13,7 +13,8 @@
     </Design.DataContext>
     
     <DockPanel DockPanel.Dock="Top">
-               <!--Box1-->         
+        
+        <!--Box1-->         
         <Border Height="50" Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
             <DockPanel>
                 <Border Margin="0,0,4,0" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left">

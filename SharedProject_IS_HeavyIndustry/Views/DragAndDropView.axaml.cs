@@ -32,19 +32,17 @@ public partial class DragAndDropView : TabView
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
         AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
         
-        // Add the OverSizePartsView when the PartsForSeparate list in the WorkManager is not empty.
-        if (DragAndDropViewModel.GetOverSizeParts().Count > 0)
-        {
-            var entireGrid = this.FindControl<Grid>("EntireGrid");
-            // Create a new instance of OverSizePartsView
-            var overSizePartsView = new OverSizePartsView();
-
-            // Set the Grid.Column property of the OverSizePartsView
-            Grid.SetColumn(overSizePartsView, 1);
-
-            // Add the OverSizePartsView to the Grid
-            entireGrid.Children.Add(overSizePartsView);
-        }
+        Console.WriteLine("yoyoyoyoyoyooyoyoyo");
+        var entireGrid = this.FindControl<Grid>("EntireGrid");
+        // Create a new instance of OverSizePartsView
+        var overSizePartsView = new OverSizePartsView();
+        
+        // Set the Grid.Column property of the OverSizePartsView
+        Grid.SetColumn(overSizePartsView, 1);
+        
+        // Add the OverSizePartsView to the Grid
+        entireGrid.Children.Add(overSizePartsView);
+        
     }
     
     private void RawMaterial_DragOver(object sender, DragEventArgs e)

@@ -9,7 +9,6 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="아이에스중공업 - 네스팅 소프트웨어">
         
-        
         <DockPanel Name="BasicPanel" LastChildFill="True">
                 <StackPanel DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
                         <Button Content="+" Click="NewProjectWindow_btn_click"/>

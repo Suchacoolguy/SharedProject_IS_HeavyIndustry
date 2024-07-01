@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
-using OfficeOpenXml;
+using ClosedXML.Excel;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
@@ -16,8 +16,8 @@ namespace SharedProject_IS_HeavyIndustry.Views;
 
 public partial class MainWindow : Window
 {
-    private static ExcelWorksheet _sheet = null!;
-    private static ExcelPackage _package = null!;
+    private static IXLWorksheet _sheet = null!;
+    private static XLWorkbook _workbook = null!;
     
     public MainWindow()
     {
@@ -27,13 +27,14 @@ public partial class MainWindow : Window
     
     public static List<string> GetSheetNames() // StartWindow에서 사용
     {
-        return _package.Workbook.Worksheets.Select(sh => sh.Name).ToList();
+        return _workbook.Worksheets.Select(sh => sh.Name).ToList();
     }
     
     public static void SetSheet(string sheetName) // StartWindow에서 사용
     {
         if (string.IsNullOrEmpty(sheetName)) return;
-        _sheet = _package.Workbook.Worksheets[sheetName];
+        _sheet = _workbook.Worksheet(sheetName);
+        
         //시트를 선택하면 시트의 part정보를 뽑아옴
         List<Part> partsFromBOM = ExcelDataReader.PartListFromExcel(_sheet);
         MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM);
@@ -41,7 +42,7 @@ public partial class MainWindow : Window
 
     public static void ReadExcelPackage() // StartWindow에서 사용
     {
-        _package = ExcelDataReader.Read(ExcelTabViewModel.ExcelFilePath);
+        _workbook = ExcelDataReader.Read(ExcelTabViewModel.ExcelFilePath);
     }
     
     

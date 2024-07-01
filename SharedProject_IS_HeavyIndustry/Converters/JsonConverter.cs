@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
@@ -12,14 +9,7 @@ using SharedProject_IS_HeavyIndustry.ViewModels;
 namespace SharedProject_IS_HeavyIndustry.Converters;
 
 public static class JsonConverter
-{
-    private static string GetFilePath()
-    {
-        var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        var filePath = Path.Combine(appDirectory, "Assets", "RawLengthSettingInfo.json");
-        return filePath;
-    }
-
+{ 
     public static Dictionary<string, RawLengthSet>? ReadDictionaryFromJson()
     {
         try
@@ -27,9 +17,7 @@ public static class JsonConverter
             var filePath = GetFilePath();
             if (!File.Exists(filePath))
             {
-                var box = MessageBoxManager
-                    .GetMessageBoxStandard("알림", "규격정보가 없습니다", ButtonEnum.Ok);
-                box.ShowAsync();
+                MessageService.Send("규격정보가 없습니다");
                 return null;
             }
 
@@ -59,6 +47,7 @@ public static class JsonConverter
 
             var json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
             File.WriteAllText(filePath, json);
+            MessageService.Send("성공적으로 저장되었습니다.");
         }
         catch (Exception ex)
         {
@@ -67,7 +56,14 @@ public static class JsonConverter
         }
         SettingsViewModel.Refresh();
     }
-
+    
+    private static string GetFilePath()
+    {
+        var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        var filePath = Path.Combine(appDirectory, "Assets", "RawLengthSettingInfo.json");
+        return filePath;
+    }
+    
     public static Dictionary<string, List<int>> LengthSetFromJson()
     {
         var origin = ReadDictionaryFromJson();

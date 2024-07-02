@@ -16,13 +16,8 @@ public partial class OverSizePartsView : UserControl
         // AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
         // AddHandler(DragDrop.);
         AddHandler(DragDrop.DropEvent, DragAndDropViewModel.Part_Drop);
-
-        Console.WriteLine(":::OVERSIZE PARTS:::");
-        foreach (var part in DragAndDropViewModel.OverSizeParts)
-        {
-            
-            Console.WriteLine(part);
-        }
+        
+        Console.WriteLine("Num OverSizeParts: " + DragAndDropViewModel.OverSizeParts.Count);
     }
 
     private void Part__PointerPressed(object sender, PointerPressedEventArgs e)

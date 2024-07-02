@@ -5,7 +5,7 @@ auto_readme.sh
 config.json
 
 *.DS_Store
-SharedProject_IS_HeavyIndustry/app.manifest
+/SharedProject_IS_HeavyIndustry/app.manifest
 
 # User-specific files
 *.suo

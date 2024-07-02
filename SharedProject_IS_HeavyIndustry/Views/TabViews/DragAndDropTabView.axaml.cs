@@ -76,7 +76,6 @@ public partial class DragAndDropTabView : TabView
             }
             else
             {
-                UpdateRawMaterialToDictionary();
                 dockPanel.Children.RemoveAll(dockPanel.Children);
                 
                 var dragAndDropView = new DragAndDropView(mainWindow);
@@ -96,10 +95,5 @@ public partial class DragAndDropTabView : TabView
                 list.Add(part);
 
         return list;
-    }
-
-    private void UpdateRawMaterialToDictionary()
-    {
-        MainWindowViewModel.RawMaterialSet[key] = DragAndDropViewModel.ArrangedRawMaterials;    // 여기!!
     }
 }

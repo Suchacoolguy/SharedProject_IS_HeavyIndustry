@@ -25,31 +25,29 @@
             </Style.Animations>
         </Style>
     </Window.Styles>
-    <!--<Window.Styles>
-        <Style Selector="Rectangle.Blue">
-            <Setter Property="Fill" Value="LightBlue"/>
-            <Style.Animations>
-                <Animation Duration="0:0:3" IterationCount="INFINITE">
-                    <KeyFrame Cue="0%">
-                        <Setter Property="Opacity" Value="0.0"/>
-                        <Setter Property="RotateTransform.Angle" Value="0.0"/>
-                    </KeyFrame>
-                    <KeyFrame Cue="100%"> 
-                        <Setter Property="Opacity" Value="1.0"/>
-                        <Setter Property="RotateTransform.Angle" Value="90.0"/>
-                    </KeyFrame>
-                </Animation> 
-            </Style.Animations>
-        </Style>
-    </Window.Styles>-->
-        
     <DockPanel Name="BasicPanel" LastChildFill="True">
-        <StackPanel Name="Header" DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
-            <Button Content="+" Click="NewProjectWindow_btn_click"/>
-            <Button Content="파트배치" Click="AddDragNDrop_btn_click"/>
-            <Button Content="레포트 출력" Click="Report_btn_click"/>
-            <Button Content="규격 목록" Click="Standard_btn_click"/>
-        </StackPanel>
+        <Border BorderBrush="#DFE9F5" BorderThickness="0,1.2" DockPanel.Dock="Top">
+            <StackPanel Name="Header" Height="70" Background="#ECF2F9" Orientation="Horizontal">
+                <Button Click="NewProjectWindow_btn_click" Background="Transparent">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Image Source="/Assets/folder.png" Height="30" Margin="0, 0, 0, 5"/>
+                        <TextBlock Text="새프로젝트" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </Button>
+                <Button  Click="Report_btn_click" Background="Transparent">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Image Source="/Assets/folder.png" Height="30" Margin="0, 0, 0, 5"/>
+                        <TextBlock Text="레포트 출력" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </Button>
+                <Button Click="Standard_btn_click" Background="Transparent">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Image Source="/Assets/folder.png" Height="30" Margin="0, 0, 0, 5"/>
+                        <TextBlock Text="규격 목록" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
         <Grid DockPanel.Dock="Top">
             <TabControl Name="TabFrame" Margin="0" Padding="0"/>
             <Grid Name="LoadingGrid" IsVisible="False">

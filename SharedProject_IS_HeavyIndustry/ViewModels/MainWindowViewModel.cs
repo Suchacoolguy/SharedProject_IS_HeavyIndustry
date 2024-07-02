@@ -15,7 +15,7 @@ public class MainWindowViewModel : ViewModelBase
     public static DragAndDropViewModel DragAndDropViewModel { get; set; }
     public static BOMDataViewModel BomDataViewModel { get; set; }
     //public static SettingsViewModel SettingsViewModel { get; set; }
-    public static string ProjectName { get; set; }
+    public static string ProjectName { get; set; } = "";
     public static Dictionary<string, ObservableCollection<RawMaterial>> RawMaterialSet { get; set; } 
         = new Dictionary<string, ObservableCollection<RawMaterial>>();
 

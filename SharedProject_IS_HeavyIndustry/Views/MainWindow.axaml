@@ -6,9 +6,26 @@
         x:Class="SharedProject_IS_HeavyIndustry.Views.MainWindow"
         xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
         xmlns:tabViews="clr-namespace:SharedProject_IS_HeavyIndustry.Views.TabViews"
+        xmlns:avaloniaGif="clr-namespace:AvaloniaGif;assembly=AvaloniaGif"
         Icon="/Assets/avalonia-logo.ico"
         Title="아이에스중공업 - 네스팅 소프트웨어">
     <Window.Styles>
+        <Style Selector="Image.LoadingImg">
+            <Style.Animations>
+                <Animation Duration="0:0:3" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.0"/>
+                        <Setter Property="RotateTransform.Angle" Value="0.0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%"> 
+                        <Setter Property="Opacity" Value="1.0"/>
+                        <Setter Property="RotateTransform.Angle" Value="90.0"/>
+                    </KeyFrame>
+                </Animation> 
+            </Style.Animations>
+        </Style>
+    </Window.Styles>
+    <!--<Window.Styles>
         <Style Selector="Rectangle.Blue">
             <Setter Property="Fill" Value="LightBlue"/>
             <Style.Animations>
@@ -24,10 +41,10 @@
                 </Animation> 
             </Style.Animations>
         </Style>
-    </Window.Styles>
+    </Window.Styles>-->
         
     <DockPanel Name="BasicPanel" LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
+        <StackPanel Name="Header" DockPanel.Dock="Top" Height="70" Background="LightBlue" Orientation="Horizontal">
             <Button Content="+" Click="NewProjectWindow_btn_click"/>
             <Button Content="파트배치" Click="AddDragNDrop_btn_click"/>
             <Button Content="레포트 출력" Click="Report_btn_click"/>
@@ -36,8 +53,8 @@
         <Grid DockPanel.Dock="Top">
             <TabControl Name="TabFrame" Margin="0" Padding="0"/>
             <Grid Name="LoadingGrid" IsVisible="False">
-                <Rectangle Classes="Blue" Width="100" Height="100"/>
-                <TextBlock Text="로딩중..." FontSize="20" FontWeight="Heavy" FontStyle="Oblique" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Image Classes="LoadingImg" Source="avares://SharedProject_IS_HeavyIndustry/Assets/loading.png" 
+                       Width="100" Height="100"/>
             </Grid>
         </Grid>
     </DockPanel>

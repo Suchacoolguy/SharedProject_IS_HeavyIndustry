@@ -6,13 +6,14 @@ using System.IO;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using DynamicData;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 using SkiaSharp;
 
 namespace SharedProject_IS_HeavyIndustry.Models
 {
     public class ExcelDataWriter
     {
-        private static string fileName = $"{DateTime.Now:yyyy.MM.dd} 우전 GNF C1.xlsx";
+        private static string fileName = $"{DateTime.Now:yyyy.MM.dd} {MainWindowViewModel.ProjectName}.xlsx";
         private static int _row = 13;
         private static int _imgWidth = 0;
 
@@ -35,6 +36,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             dictionary.Add("SS275,"+ part.Desc.ToString(), list);
             Write(dictionary);
         }
+
         public static void Write(Dictionary<string, ObservableCollection<RawMaterial>> rawMaterialSet)
         {
             using (var workbook = new XLWorkbook())
@@ -54,24 +56,23 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     MakeChart(worksheet, kvp.Value);
                 }
 
-                // 메모리 스트림에 엑셀 파일 저장
+                // 다운로드 폴더 경로 생성
+                var downloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                var filePath = Path.Combine(downloadFolder, fileName);
+
                 using (var memoryStream = new MemoryStream())
                 {
                     workbook.SaveAs(memoryStream);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    // 임시 파일 경로 생성
-                    File.WriteAllBytes(fileName, memoryStream.ToArray());
-
-                    // 엑셀 파일 열기
-                    OpenFile(fileName);
+                    File.WriteAllBytes(filePath, memoryStream.ToArray());
+                    OpenFile(filePath);
                 }
             }
 
             Console.WriteLine("Excel 파일이 생성되고 열렸습니다.");
         }
 
-        public static void OpenFile(string filePath)
+        private static void OpenFile(string filePath)
         {
             try
             {

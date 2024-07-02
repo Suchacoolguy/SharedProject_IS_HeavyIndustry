@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
+using DynamicData;
 using SkiaSharp;
 
 namespace SharedProject_IS_HeavyIndustry.Models
@@ -15,6 +16,25 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _row = 13;
         private static int _imgWidth = 0;
 
+        private ObservableCollection<RawMaterial> rawSet;
+
+        public static void main()
+        {
+            Part part = new Part("G", "Mark", "material", 500, 1, 300, 300, 2.5, new Description("TB", "150*150"));
+            var raw = new RawMaterial(8010);
+            raw.PartsInside.Add(part);
+            raw.PartsInside.Add(part);
+            raw.PartsInside.Add(part);
+            raw.PartsInside.Add(part);
+            raw.PartsInside.Add(part);
+            raw.PartsInside.Add(part);
+            raw.PartsInside.Add(part);
+            ObservableCollection<RawMaterial> list = new ObservableCollection<RawMaterial>();
+            list.Add(raw);
+            var dictionary = new Dictionary<string, ObservableCollection<RawMaterial>>();
+            dictionary.Add("SS275,"+ part.Desc.ToString(), list);
+            Write(dictionary);
+        }
         public static void Write(Dictionary<string, ObservableCollection<RawMaterial>> rawMaterialSet)
         {
             using (var workbook = new XLWorkbook())
@@ -153,10 +173,10 @@ namespace SharedProject_IS_HeavyIndustry.Models
         {
             worksheet.Row(row).Height = worksheet.Row(row).Height + 5; // 예시로 높이를 100으로 설정
 
-            double mergedCellWidth = worksheet.Column(3).Width;
+            //double mergedCellWidth = worksheet.Column(3).Width;
             double mergedCellHeight = worksheet.Row(row).Height;
-            Console.WriteLine("height : " + mergedCellHeight);
-            Console.WriteLine("width : " + mergedCellWidth);
+            /*Console.WriteLine("height : " + mergedCellHeight);
+            Console.WriteLine("width : " + mergedCellWidth);*/
             mergedCellHeight = (worksheet.Row(row).Height * 96 / 72);
 
             using (var ms = new MemoryStream())

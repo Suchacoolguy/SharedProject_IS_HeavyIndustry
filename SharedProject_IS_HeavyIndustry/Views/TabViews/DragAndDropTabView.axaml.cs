@@ -84,11 +84,7 @@ public partial class DragAndDropTabView : TabView
             }
         }
         else
-        {
-            var box = MessageBoxManager
-                .GetMessageBoxStandard("알림", "Please select type and size", ButtonEnum.Ok);
-            box.ShowAsync();
-        }
+            MessageService.Send("재질과 규격을 선택하세요");
     }
     
     private static ObservableCollection<Part> GetFilteredParts(string material, string desc, ObservableCollection<Part> parts)

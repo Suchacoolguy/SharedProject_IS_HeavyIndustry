@@ -6,6 +6,7 @@ config.json
 
 *.DS_Store
 /SharedProject_IS_HeavyIndustry/app.manifest
+*.xlsx
 
 # User-specific files
 *.suo

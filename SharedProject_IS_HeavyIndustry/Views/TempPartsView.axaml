@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
-             x:Class="SharedProject_IS_HeavyIndustry.Views.OverSizePartsView"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.TempPartsView"
              xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
              xmlns:converters="using:SharedProject_IS_HeavyIndustry.Converters"
              xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
@@ -29,7 +29,7 @@
                         <Canvas Name="MyCanvas" Width="600" Height="55" Canvas.Top="5">
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood"
-                                       PointerPressed="Part__PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
+                                       PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                         </Border>
                             <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
                             </Canvas>

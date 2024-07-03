@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
+using SharedProject_IS_HeavyIndustry.Views;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
@@ -18,6 +17,7 @@ public class DragAndDropViewModel
     public static ObservableCollection<Part> OverSizeParts { get; set; }
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
+    public static ObservableCollection<Part> TempPartList { get; set; } = new ObservableCollection<Part>();
     public static string key { get; set; }
     public Part DraggedPart { get; set; }
     private Point _ghostPosition = new(0,0);
@@ -138,17 +138,10 @@ public class DragAndDropViewModel
         
         // Get the RawMaterial object from the sender
         var rawMaterialTo = (e.Source as Control)?.Tag as RawMaterial;
-        if (rawMaterialTo == null)
-        {
-            Console.WriteLine("RawMaterial_Drop - to is null");   
-        }
-
-        if (part == null)
-        {
-            Console.WriteLine("RawMaterial_Drop - part is null");
-        }
         
         // var viewModel = DataContext as MainWindowViewModel;
+        
+        Console.WriteLine(e.Source);
 
         if (rawMaterialFrom != null && rawMaterialTo != null && part != null)
         {
@@ -226,7 +219,7 @@ public class DragAndDropViewModel
 
         if (rawMaterialFrom != null && part != null)
         {
-            UpdateRawMaterial(rawMaterialFrom, null, part);
+            DragAndDropViewModel.TempPartList.Add(part);
         }
     }
 

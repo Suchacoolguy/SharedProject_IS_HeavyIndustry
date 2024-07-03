@@ -29,12 +29,9 @@ public partial class DragAndDropView : TabView
     {
         InitializeComponent();
         
-        AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
-        AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
-        
         var entireGrid = this.FindControl<Grid>("EntireGrid");
         // Create a new instance of OverSizePartsView
-        var overSizePartsView = new OverSizePartsView();
+        var overSizePartsView = new TempPartsView();
         
         // Set the Grid.Column property of the OverSizePartsView
         Grid.SetColumn(overSizePartsView, 1);
@@ -42,11 +39,14 @@ public partial class DragAndDropView : TabView
         // Add the OverSizePartsView to the Grid
         entireGrid.Children.Add(overSizePartsView);
         
+        AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
+        AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
+        
     }
     
     private void RawMaterial_DragOver(object sender, DragEventArgs e)
     {
-        var currentPosition = e.GetPosition(MyStackPanel);
+        var currentPosition = e.GetPosition(EntireGrid);
 
         var offsetX = currentPosition.X - _ghostPosition.X;
         var offsetY = currentPosition.Y - _ghostPosition.Y;
@@ -62,7 +62,6 @@ public partial class DragAndDropView : TabView
 
     private async void Part_PointerPressed(object sender, PointerPressedEventArgs e)
     {
-        var partRectangle = sender as Rectangle;
         var part = (sender as Control)?.DataContext as Part;
         RawMaterial originalRawMaterial = null;
         
@@ -101,14 +100,8 @@ public partial class DragAndDropView : TabView
             // Start the drag operation
             var result = await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
             GhostItem.IsVisible = false;
-            
-            var rawMaterialTo = (e.Source as Control)?.Tag as RawMaterial;
         }
         
     }
-    
-    
-    
-    
-    
+
 }

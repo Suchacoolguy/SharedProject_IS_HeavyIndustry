@@ -17,24 +17,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _imgWidth = 0;
 
         private ObservableCollection<RawMaterial> rawSet;
-
-        public static void main()
-        {
-            Part part = new Part("G", "Mark", "material", 500, 1, 300, 300, 2.5, new Description("TB", "150*150"));
-            var raw = new RawMaterial(8010);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            ObservableCollection<RawMaterial> list = new ObservableCollection<RawMaterial>();
-            list.Add(raw);
-            var dictionary = new Dictionary<string, ObservableCollection<RawMaterial>>();
-            dictionary.Add("SS275,"+ part.Desc.ToString(), list);
-            Write(dictionary);
-        }
+        
         public static void Write(Dictionary<string, ObservableCollection<RawMaterial>> rawMaterialSet)
         {
             using (var workbook = new XLWorkbook())

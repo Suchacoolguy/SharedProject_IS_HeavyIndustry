@@ -139,6 +139,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         private Control CreateTabContent(string tabHeader)
         {
+            
             return tabHeader switch
             {
                 "프로젝트 정보" => new BOMDataTabView(this),

@@ -36,7 +36,7 @@
                 </Button>
                 <Button  Click="Report_btn_click" Background="Transparent">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Image Source="/Assets/folder.png" Height="30" Margin="0, 0, 0, 5"/>
+                        <Image Source="/Assets/Cut_Folder.png" Height="30" Margin="0, 0, 0, 5"/>
                         <TextBlock Text="레포트 출력" HorizontalAlignment="Center" FontSize="10"/>
                     </StackPanel>
                 </Button>

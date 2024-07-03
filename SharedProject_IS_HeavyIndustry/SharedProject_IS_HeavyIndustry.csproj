@@ -41,5 +41,8 @@
         <DependentUpon>CuttingPlanView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\TempPartsView.axaml.cs">
+        <DependentUpon>TempPartsView.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

@@ -35,7 +35,6 @@ public partial class DragAndDropTabView : TabView
         var dockPanel = this.FindControl<Panel>("Parent_DragAndDrop");
 
         ///////////////////////////////////////////테스트용 코드
-
         ObservableCollection<Part> parts = null!;
         ObservableCollection<Part> partsOverLength = null!;
         if (selectedMaterial != null && selectedDescription != null)
@@ -46,6 +45,7 @@ public partial class DragAndDropTabView : TabView
             {
                 dockPanel!.Children.RemoveAll(dockPanel.Children);
                 DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
+                ArrangePartsService._lengthOptionsRawMaterial = SettingsViewModel.GetLengthOption(selectedDescription);
                 dockPanel.Children.Add(new DragAndDropView(mainWindow));
                 return;
             }

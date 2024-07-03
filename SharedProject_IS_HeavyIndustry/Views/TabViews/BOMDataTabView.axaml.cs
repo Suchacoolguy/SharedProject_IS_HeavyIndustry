@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -6,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
@@ -37,11 +39,11 @@ public partial class BOMDataTabView : TabView
     {
         if (MainWindowViewModel.BomDataViewModel == null)
         {
-            var box = MessageBoxManager
-                .GetMessageBoxStandard("알림", "시트를 선택해 주세요", ButtonEnum.Ok);
-            box.ShowAsync();
+            MessageService.Send("시트를 선택해 주세요");
             return;
         }
+        if(MainWindowViewModel.RawMaterialSet.Count != 0)
+            MainWindowViewModel.RawMaterialSet.Clear();
         BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
         mainWindow?.AddTab("파트 배치");
     }

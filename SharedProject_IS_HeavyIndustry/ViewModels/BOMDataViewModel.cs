@@ -28,6 +28,8 @@
 
             public static void ClassifyParts() // StartWindow, ExcelTabView에서 사용
             {
+                if(PartsForTask.Any())
+                    PartsForTask.Clear();
                 foreach (var part in AllParts)
                 {
                     if (part.IsExcluded) continue;

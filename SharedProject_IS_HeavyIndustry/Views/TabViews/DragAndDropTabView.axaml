@@ -10,13 +10,13 @@
     
     <DockPanel Name="ContentPanel" DockPanel.Dock="Top">
                         
-        <Border Height="50" Background="White" Margin="4" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
+        <Border Background="White" Margin="4" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <DockPanel>
-                <Border Margin="0,0,4,0" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left">
-                    <TextBlock VerticalAlignment="Center">아이콘</TextBlock>
+                <Border Margin="0,0,4,0" DockPanel.Dock="Left">
+                    <Image Source="/Assets/information.png" VerticalAlignment="Center" Height="50"/>
                 </Border>
-                <TextBlock Padding="2" Text="{Binding Title}" FontWeight="Heavy" DockPanel.Dock="Top"/>
-                <TextBlock Padding="1" Text="{Binding SubTitle}" FontSize="12" DockPanel.Dock="Top"/>
+                <TextBlock Text="{Binding Title}" FontWeight="Heavy" Padding="3" DockPanel.Dock="Top"/>
+                <TextBlock Text="{Binding SubTitle}" FontSize="12" Padding="3" DockPanel.Dock="Top"/>
             </DockPanel>
         </Border>
                         

@@ -30,6 +30,11 @@ namespace SharedProject_IS_HeavyIndustry.Services
 
             var panel = new StackPanel();
 
+            // 검색 박스 추가
+            var searchTextBox = new TextBox { Margin = new Thickness(0) };
+            searchTextBox.TextChanged += (sender, args) => FilterCheckBoxes(panel, searchTextBox.Text);
+            panel.Children.Add(searchTextBox);
+
             // "모두 선택" 체크박스 추가
             var selectAllCheckbox = new CheckBox
             {
@@ -44,7 +49,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
             // 나머지 아이템들 추가
             foreach (var item in itemList)
             {
-                panel.Children.Add(new CheckBox() { Content = item, IsChecked = true});
+                panel.Children.Add(new CheckBox() { Content = item, IsChecked = true });
             }
 
             scrollViewer.Content = panel;
@@ -70,7 +75,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
                 "Assem" => BOMDataViewModel.AllParts.Select(p => p.Assem.ToString()).Distinct().ToList(),
                 "Mark" => BOMDataViewModel.AllParts.Select(p => p.Mark.ToString()).Distinct().ToList(),
                 "Material" => BOMDataViewModel.AllParts.Select(p => p.Material.ToString()).Distinct().ToList(),
-                _ => []
+                _ => new List<string>()
             };
         }
 
@@ -94,7 +99,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
                 if (child is CheckBox checkBox && checkBox != panel.Children[0]) // 첫 번째는 "모두 선택" 체크박스이므로 제외
                     checkBox.IsChecked = isChecked;
         }
-        
+
         private static void FilterApply_Btn_Click(object? sender, RoutedEventArgs e)
         {
             // 적용 버튼 클릭 시 처리할 로직 작성
@@ -102,7 +107,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
             if (applyButton.Parent?.Parent is not ContextMenu contextMenu) return;
             var scrollViewer = contextMenu.Items.OfType<ScrollViewer>().FirstOrDefault();
             var panel = scrollViewer!.Content as StackPanel;
-            
+
             var selectedItems = new List<string>();
             foreach (var child in panel!.Children)
                 if (child is CheckBox checkBox && checkBox != panel.Children[0] && checkBox.IsChecked == true)
@@ -111,6 +116,15 @@ namespace SharedProject_IS_HeavyIndustry.Services
             BOMDataViewModel.ApplyFilter(applyButton.Tag?.ToString()!, selectedItems);
         }
 
-
+        private static void FilterCheckBoxes(Panel panel, string filter)
+        {
+            foreach (var child in panel.Children)
+            {
+                if (child is CheckBox checkBox && checkBox != panel.Children[0])
+                {
+                    checkBox.IsVisible = string.IsNullOrEmpty(filter) || checkBox.Content!.ToString()!.Contains(filter, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        }
     }
 }

@@ -20,25 +20,11 @@ namespace SharedProject_IS_HeavyIndustry.Views
     {
         private static IXLWorksheet _sheet = null!;
         private static XLWorkbook _workbook = null!;
-        private RotateTransform LoadingRotateTransform;
-        private ScaleTransform LoadingScaleTransform;
-        private DispatcherTimer _animationTimer;
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-            /*LoadingRotateTransform = new RotateTransform();
-            LoadingScaleTransform = new ScaleTransform();
-            SetupLoadingAnimation();
-            var loadingEllipse = this.FindControl<Ellipse>("LoadingEllipse");
-            if (loadingEllipse != null)
-            {
-                var transformGroup = new TransformGroup();
-                transformGroup.Children.Add(LoadingRotateTransform);
-                transformGroup.Children.Add(LoadingScaleTransform);
-                loadingEllipse.RenderTransform = transformGroup;
-            }*/
         }
 
         public static List<string> GetSheetNames() // StartWindow에서 사용
@@ -149,34 +135,5 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
-
-        /*private void SetupLoadingAnimation()
-        {
-            _animationTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(16) // 약 60 FPS
-            };
-            _animationTimer.Tick += (sender, e) =>
-            {
-                LoadingRotateTransform.Angle += 6;
-                if (LoadingRotateTransform.Angle >= 360)
-                {
-                    LoadingRotateTransform.Angle = 0;
-                }
-
-                LoadingScaleTransform.ScaleX = 1.0 + 0.1 * Math.Sin(LoadingRotateTransform.Angle * Math.PI / 180);
-                LoadingScaleTransform.ScaleY = 1.0 + 0.1 * Math.Sin(LoadingRotateTransform.Angle * Math.PI / 180);
-            };
-        }*/
-
-        /*private void StartLoadingAnimation()
-        {
-            _animationTimer.Start();
-        }
-
-        private void StopLoadingAnimation()
-        {
-            _animationTimer.Stop();
-        }*/
     }
 }

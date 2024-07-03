@@ -65,9 +65,6 @@ public partial class DragAndDropTabView : TabView
                 //MainWindowViewModel.RawMaterialSet[key] = new ObservableCollection<RawMaterial>();
                 MainWindowViewModel.RawMaterialSet.TryAdd(key, service.GetArrangedRawMaterials());  // 여기!!
             }
-        
-            
-            
             
             if (!dockPanel.Children.Any())
             {

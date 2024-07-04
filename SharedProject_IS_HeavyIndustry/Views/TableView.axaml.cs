@@ -1,59 +1,61 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using DocumentFormat.OpenXml.Spreadsheet;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 
-namespace SharedProject_IS_HeavyIndustry.Views;
-
-public partial class TableView : UserControl
+namespace SharedProject_IS_HeavyIndustry.Views
 {
-    private Dictionary<string, ContextMenu> filterSet = new();
-    public TableView()
+    public partial class TableView : UserControl
     {
-        InitializeComponent();
-    }
-    
-    [Obsolete("Obsolete")]
-    private void Filter_Btn_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is not Button button) return;
-        var columnHeader = button.Tag?.ToString();
-        ContextMenu contextMenu;
-
-        if (filterSet.TryGetValue(columnHeader!, out var value))
-            contextMenu = value;
-        else
+        private Dictionary<string, FilteringService> filterSet = new();
+        public TableView()
         {
-            contextMenu = FilteringService.GenerateFilter(columnHeader!);
-            filterSet.Add(columnHeader!, contextMenu);
+            InitializeComponent();
         }
 
-        contextMenu.PlacementTarget = button;
-        contextMenu.Open(button);
-    }
+        [Obsolete("Obsolete")]
+        private void Filter_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button) return;
+            var columnHeader = button.Tag?.ToString();
+            FlyoutBase contextFlyout;
 
-    public void SetExclude(bool value)
-    {
-        var table = this.FindControl<DataGrid>("Table");
+            if (filterSet.TryGetValue(columnHeader!, out var value))
+                contextFlyout = value.FilterMenu;
+            else
+            {
+                var filteringService = new FilteringService(columnHeader!);
+                contextFlyout = filteringService.FilterMenu;
+                filterSet.Add(columnHeader!, filteringService);
+            }
 
-        if (table == null) return;
-        foreach (var item in table.ItemsSource.Cast<Part>())
-            item.IsExcluded = value;
-    }
-    
-    public void SetSeparate(bool value)
-    {
-        var table = this.FindControl<DataGrid>("Table");
+            FlyoutBase.SetAttachedFlyout(button, contextFlyout);
+            contextFlyout.ShowAt(button);
+        }
 
-        if (table == null) return;
-        foreach (var item in table.ItemsSource.Cast<Part>())
-            item.NeedSeparate = value;
+        public void SetExclude(bool value)
+        {
+            var table = this.FindControl<DataGrid>("Table");
+
+            if (table == null) return;
+            foreach (var item in table.ItemsSource.Cast<Part>())
+                item.IsExcluded = value;
+        }
+
+        public void SetSeparate(bool value)
+        {
+            var table = this.FindControl<DataGrid>("Table");
+
+            if (table == null) return;
+            foreach (var item in table.ItemsSource.Cast<Part>())
+                item.NeedSeparate = value;
+        }
     }
 }

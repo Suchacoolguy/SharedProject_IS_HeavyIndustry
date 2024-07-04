@@ -20,11 +20,13 @@ namespace SharedProject_IS_HeavyIndustry.Views
     {
         private static IXLWorksheet _sheet = null!;
         private static XLWorkbook _workbook = null!;
+        private Loading loading;
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
+            loading = this.FindControl<Loading>("LoadingControl")!;
         }
 
         public static List<string> GetSheetNames() // StartWindow에서 사용
@@ -55,15 +57,6 @@ namespace SharedProject_IS_HeavyIndustry.Views
             }
         }
 
-        public async Task ReadExcelWorkbookAsync()
-        {
-            this.FindControl<Grid>("LoadingGrid")!.IsVisible = true; // 로딩 표시 보이기
-            //StartLoadingAnimation();
-            await Task.Run(() => _workbook = ExcelDataReader.Read(ExcelTabViewModel.ExcelFilePath)); // 비동기 작업
-            //StopLoadingAnimation();
-            this.FindControl<Grid>("LoadingGrid")!.IsVisible = false; // 로딩 표시 숨기기
-        }
-
         //시트 선택창 띄우기
         public async Task OpenSheetSelectWindow()
         {
@@ -82,6 +75,13 @@ namespace SharedProject_IS_HeavyIndustry.Views
             if (string.IsNullOrEmpty(ExcelTabViewModel.ExcelFilePath)) return;
             await ReadExcelWorkbookAsync(); //파일 경로 확인 후 엑셀 읽기
             AddTab("프로젝트 정보"); // 탭 추가
+        }
+        
+        public async Task ReadExcelWorkbookAsync()
+        {
+            loading.Start(); // 로딩 시작
+            await Task.Run(() => _workbook = ExcelDataReader.Read(ExcelTabViewModel.ExcelFilePath)); // 비동기 작업
+            loading.Stop(); // 로딩 종료
         }
 
         //탭 패널에 드래그앤 드랍 탭 추가 

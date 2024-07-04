@@ -25,8 +25,8 @@
                     <DataTemplate>
                         <Grid ColumnDefinitions="*,Auto">
                             <TextBlock Text="재질" VerticalAlignment="Center" Grid.Column="0"/>
-                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Material" Grid.Column="1">
-                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Material" Background="Transparent" Grid.Column="1">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/filter.png" Width="16" Height="16"/>
                             </Button>
                         </Grid>
                     </DataTemplate>
@@ -48,8 +48,8 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="규격" VerticalAlignment="Center" Grid.Column="0"/>
-                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Description" Grid.Column="1">
-                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Description" Background="Transparent" Grid.Column="1">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/filter.png" Width="16" Height="16"/>
                             </Button>
                         </Grid>
                     </DataTemplate>
@@ -61,8 +61,8 @@
                     <DataTemplate>
                         <Grid ColumnDefinitions="*,Auto">
                             <TextBlock Text="도면번호" VerticalAlignment="Center" Grid.Column="0"/>
-                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Assem" Grid.Column="1">
-                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Assem" Background="Transparent" Grid.Column="1">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/filter.png" Width="16" Height="16"/>
                             </Button>
                         </Grid>
                     </DataTemplate>
@@ -78,8 +78,8 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="블록마크" VerticalAlignment="Center" Grid.Column="0"/>
-                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Mark" Grid.Column="1">
-                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/empty_filter.png" Width="16" Height="16"/>
+                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Mark" Background="Transparent" Grid.Column="1">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/filter.png" Width="16" Height="16"/>
                             </Button>
                         </Grid>
                     </DataTemplate>

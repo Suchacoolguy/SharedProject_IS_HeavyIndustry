@@ -12,7 +12,7 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class  ArrangePartsService
 {
-    public static List<int> _lengthOptionsRawMaterial;
+    public static List<int> _lengthOptionsRawMaterial { get; set; }
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
     private static ObservableCollection<Part> _overSizeParts;
     
@@ -20,7 +20,6 @@ public class  ArrangePartsService
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, List<int> lengthOptions)
     {
         // 파트배치 완료된 것들
-        // 
         _lengthOptionsRawMaterial = lengthOptions;
         _rawMaterialsUsed = ArrangeParts(parts);
         
@@ -140,6 +139,7 @@ public class  ArrangePartsService
         objective.SetMinimization();
 
         Console.WriteLine("Ready to solve.");
+        
         Solver.ResultStatus resultStatus = solver.Solve();
 
         Console.WriteLine("Solved.");
@@ -148,6 +148,12 @@ public class  ArrangePartsService
         {
             Console.WriteLine("The problem does not have an optimal solution!");
         }
+        else if (resultStatus == Solver.ResultStatus.INFEASIBLE)
+        {
+            // 파트가 없거나 하나밖에 없을 때 솔루션을 찾지 못하는 경우 여기로 들어옴.
+            Console.WriteLine();
+        }
+        
         Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
 
         int howManyTimes = 0;

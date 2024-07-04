@@ -60,7 +60,7 @@
                                             <DataTemplate>
                                                 <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1">
                                                     <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                               Fill="LightGoldenrodYellow" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
+                                                               Fill="#E8B989" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -89,7 +89,7 @@
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Width="600" Height="55" Canvas.Top="5" DragDrop.AllowDrop="True">
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood"
+                                        <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="#E8B989"
                                                    PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                                     </Border>
                                     <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
@@ -102,7 +102,7 @@
         </Border>
         
         <!-- Our ghost rectangle -->
-            <Rectangle Height="30" Width="100" Fill="LightGoldenrodYellow" Name="GhostItem" Opacity="0.8"
+            <Rectangle Height="30" Width="100" Fill="#E8B989" Name="GhostItem" Opacity="0.8"
                        DragDrop.AllowDrop="True" Tag="{Binding }"/>
         </Grid>
     

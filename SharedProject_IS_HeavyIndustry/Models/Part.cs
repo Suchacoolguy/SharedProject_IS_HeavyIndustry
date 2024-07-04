@@ -5,7 +5,7 @@ namespace SharedProject_IS_HeavyIndustry.Models;
 public class Part : INotifyPropertyChanged
 {
     public bool is_selected = false;
-    public string lengthToBeSeperated { get; set; }
+    public string? lengthToBeSeperated { get; set; }
     private string assem, mark, material;
     private int length, num;
     private double weightOne, weightSum, pArea;

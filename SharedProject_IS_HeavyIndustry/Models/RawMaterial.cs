@@ -68,13 +68,15 @@ namespace SharedProject_IS_HeavyIndustry.Models
             RemainingLength -= part.Length;
             return part;
         }
-        
-        // public Part remove_part(Part part)
-        // {
-        //     PartsInside.Remove(part);
-        //     RemainingLength += part.Length;
-        //     return part;
-        // }
+
+        public void removePart(Part part)
+        {
+            if (PartsInside.Contains(part))
+            {
+                PartsInside.Remove(part);
+                RemainingLength += part.Length;
+            }
+        }
         
         public void remove_part_at(int part_index)
         {

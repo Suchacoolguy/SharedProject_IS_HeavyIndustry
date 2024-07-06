@@ -42,9 +42,14 @@ public partial class TempPartsView : UserControl
 
         if (part != null)
         {
-            if (!DragAndDropViewModel.TempPartList.Contains(part))
+            if (!DragAndDropViewModel.TempPartList.Contains(part) && rawMaterialFrom != null)
             {
                 DragAndDropViewModel.TempPartList.Add(part);
+                rawMaterialFrom.removePart(part);
+                if (rawMaterialFrom.PartsInside.Count == 0)
+                {
+                    DragAndDropViewModel.ArrangedRawMaterials.Remove(rawMaterialFrom);
+                }
             }
         }
     }

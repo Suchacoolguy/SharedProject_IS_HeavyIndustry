@@ -129,11 +129,6 @@ public class DragAndDropViewModel
         }
         return bestLength;
     }
-
-    public static void DropOnPart(RawMaterial from, RawMaterial to, Part part, Part partTo)
-    {
-        
-    }
     
     public static void RawMaterial_Drop(object sender, DragEventArgs e)
     {
@@ -170,6 +165,7 @@ public class DragAndDropViewModel
                 UpdateRawMaterial(null, rawMaterialTo, part);
                 Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
             }
+            // 우측(TempPartsView)에서 좌측(DragAndDropView)의 빈 공간으로 드랍하는 경우
             else if (e.Source is StackPanel && rawMaterialTo == null && tempPart != null)
             {
                 int bestLength = FindBestSizeRawMaterial(GetLengthOptionsRawMaterial(), tempPart);
@@ -183,16 +179,41 @@ public class DragAndDropViewModel
                 }
                 // UpdateRawMaterial(rawMaterialFrom, null, tempPartpart);
             }
-            else if (rawMaterialTo == null && part != null && e.Source is StackPanel)
+            // 우측(TempPartsView)에서 좌측(DragAndDropView)의 원자재/파트 위로 드랍하는 경우
+            else if ((rawMaterialTo != null || partTo != null) && tempPart != null)
             {
-                List<int> lengthOptions = GetLengthOptionsRawMaterial();
-                int bestLength = FindBestSizeRawMaterial(lengthOptions, part);
-            
-                // insert the new raw material beyo
-                RawMaterial newRawMaterial = new RawMaterial(bestLength);
-                newRawMaterial.insert_part(part);
-                ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
-                // TempPartList.Remove(part);
+                if (rawMaterialTo != null)  // 원자재 위에다 드랍한 경우
+                {
+                    rawMaterialTo.insert_part(tempPart);
+                    if (TempPartList.Contains(tempPart))
+                    {
+                        TempPartList.Remove(tempPart);
+                    }
+                }
+                else if (partTo != null)    // 파트 위에다 드랍한 경우
+                {
+                    // 파트가 속한 원자재 찾기
+                    foreach (RawMaterial raw in ArrangedRawMaterials)
+                    {
+                        foreach (Part p in raw.PartsInside)
+                        {
+                            if (ReferenceEquals(partTo, p))
+                            {
+                                rawMaterialTo = raw;
+                                break;
+                            }
+                        }   
+                    }
+
+                    if (rawMaterialTo != null)
+                    {
+                        rawMaterialTo.insert_part(tempPart);
+                        if (TempPartList.Contains(tempPart))
+                        {
+                            TempPartList.Remove(tempPart);
+                        }
+                    }
+                }
             }
         }
         // rawMaterialFrom이 null이 아닌 경우

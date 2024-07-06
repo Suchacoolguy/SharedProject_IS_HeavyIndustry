@@ -82,7 +82,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             {
                 int length = PartsInside[part_index].Length;
                 PartsInside.RemoveAt(part_index);
-                RemainingLength += length;   
+                RemainingLength += length;
             }
             else
             {

@@ -22,6 +22,20 @@
                 <Button Content="OK" HorizontalAlignment="Right" Margin="0,10,0,0" />
         </StackPanel>-->
         
+        <!--<Button>
+                <Button.ContextFlyout>
+                        <Flyout>
+                                <StackPanel>
+                                        
+                                </StackPanel>
+                        </Flyout>
+                </Button.ContextFlyout>
+        </Button>-->
+        <StackPanel Width="100" Height="100" Background="White">
+                
+                
+        </StackPanel>
+        
 </Window>
 
 

@@ -18,36 +18,53 @@ public partial class TempPartsView : UserControl
         InitializeComponent();
 
         AddHandler(DragDrop.DropEvent, TempPart_DragOver);
-        AddHandler(DragDrop.DropEvent, DragAndDropViewModel.Part_Drop);
+        AddHandler(DragDrop.DropEvent, Part_Drop);
         
-        Console.WriteLine("Num OverSizeParts: " + DragAndDropViewModel.OverSizeParts.Count);
+        Console.WriteLine("Num OverSizeParts: " + DragAndDropViewModel.TempPartList.Count);
     }
     
     private void TempPart_DragOver(object sender, DragEventArgs e)
     {
-        var data = e.Data.Get("part");
+        var data = e.Data.Get("temp part");
         if (data is not Part part) return;
+    }
+    
+    public void Part_Drop(object sender, DragEventArgs e)
+    {
+        // var part = (sender as Control)?.DataContext as Part;
+        var data = e.Data as IDataObject;
+        if (data == null)
+        {
+            return;
+        }
+        var part = data.Get("part") as Part;
+        var rawMaterialFrom = data.Get("originalRawMaterial") as RawMaterial;
+
+        if (part != null)
+        {
+            if (!DragAndDropViewModel.TempPartList.Contains(part))
+            {
+                DragAndDropViewModel.TempPartList.Add(part);
+            }
+        }
     }
 
     private async void Part_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         Console.WriteLine("Temp Part PointerPressed is called");
         var part = (sender as Control)?.DataContext as Part;
-        
+
         var data = new DataObject();
-        data.Set("part", part);
+        data.Set("temp part", part);
         
-        if (part != null)
-            MainWindowViewModel.DragAndDropViewModel.DraggedPart = part;
-        
-        foreach (Part p in DragAndDropViewModel.TempPartList)
+        try
         {
-            if (ReferenceEquals(part, p))
-            {
-                DragAndDropViewModel.TempPartList.Remove(p);
-                break;
-            }
+            var result = await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+            Console.WriteLine($"DragDrop result: {result}");
         }
-        var result = await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+        catch (Exception ex)
+        {
+            Console.WriteLine($"DragDrop operation failed: {ex.Message}");
+        }
     }
 }

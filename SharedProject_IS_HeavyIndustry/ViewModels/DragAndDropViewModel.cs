@@ -70,15 +70,8 @@ public class DragAndDropViewModel
 
             Console.WriteLine("UpdateRawMaterial - from: null, to: null, part: not null");
             List<int> lengthOptions = GetLengthOptionsRawMaterial();
-            int bestLength = lengthOptions.Max(); 
-            foreach (var len in lengthOptions)
-            {
-                if (len >= part.Length && len < bestLength)
-                {
-                    bestLength = len;
-                }
-            }
-
+            int bestLength = FindBestSizeRawMaterial(lengthOptions, part);
+            
             // insert the new raw material beyo
             RawMaterial newRawMaterial = new RawMaterial(bestLength);
             newRawMaterial.insert_part(part);
@@ -94,16 +87,16 @@ public class DragAndDropViewModel
         else if (from == null && to != null && part != null)
         {
             // for the case where the user drags a part from the overSizeParts collection
-            Console.WriteLine("UpdateRawMaterial - from: null, to: not null, part: not null");
+            Console.WriteLine("우측에서 좌측으로 드랍");
             
-            ArrangedRawMaterials[index_to].insert_part(part);
-            OverSizeParts.Remove(part);
+            // ArrangedRawMaterials[index_to].insert_part(part);
+            // TempPartList.Remove(part);
         }
         // 왼쪽에서 파트 집어서 오른쪽 빈 공간으로 이동하는 경우 
         else if (from != null && to == null && part != null)
         {
             // when the user drags a part from a raw material to empty space
-            OverSizeParts.Add(part);
+            TempPartList.Add(part);
             ArrangedRawMaterials[index_from].remove_part_at(index_part);
             Console.WriteLine("UpdateRawMaterial - from: not null, to: null, part: not null");
         }
@@ -114,7 +107,20 @@ public class DragAndDropViewModel
         
         MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials, key);
     }
-    
+
+    public static int FindBestSizeRawMaterial(List<int> lengthOptions, Part part)
+    {
+        int bestLength = lengthOptions.Max(); 
+        foreach (var len in lengthOptions)
+        {
+            if (len >= part.Length && len < bestLength)
+            {
+                bestLength = len;
+            }
+        }
+
+        return bestLength;
+    }
     
     public static void RawMaterial_Drop(object sender, DragEventArgs e)
     {
@@ -129,70 +135,69 @@ public class DragAndDropViewModel
         }
 
         var part = data.Get("part") as Part;
+        var tempPart = data.Get("temp part") as Part;
         var rawMaterialFrom = data.Get("originalRawMaterial") as RawMaterial;
 
-        if (rawMaterialFrom == null)
-        {
-            Console.WriteLine("RawMaterial_Drop - from is null");    
-        }
+        // 좌 -> 우 이동하는 경우 | 좌에서 빈 공간에 드랍하는 경우 구분이 안됨.
+        //
         
         // Get the RawMaterial object from the sender
         var rawMaterialTo = (e.Source as Control)?.Tag as RawMaterial;
         
-        // var viewModel = DataContext as MainWindowViewModel;
+        // 드랍한 위치가 스택패널이 있는 곳, 즉 DragAndDropView인 경우
+        if (e.Source is StackPanel)
+            Console.WriteLine("DragAndDropView에 드랍함.");
         
-        Console.WriteLine(e.Source);
-
-        if (rawMaterialFrom != null && rawMaterialTo != null && part != null)
+        if (rawMaterialFrom == null)
+        {
+            Console.WriteLine("RawMaterial_Drop - from is null");    
+            
+            if (rawMaterialTo != null && part != null)
+            {
+                UpdateRawMaterial(null, rawMaterialTo, part);
+                Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
+            }
+            else if (e.Source is StackPanel && rawMaterialTo == null && tempPart != null)
+            {
+                int bestLength = FindBestSizeRawMaterial(GetLengthOptionsRawMaterial(), tempPart);
+                RawMaterial newRawMaterial = new RawMaterial(bestLength);
+                newRawMaterial.insert_part(tempPart);
+                ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
+                
+                if (TempPartList.Contains(tempPart))
+                {
+                    TempPartList.Remove(tempPart);
+                }
+                // UpdateRawMaterial(rawMaterialFrom, null, tempPartpart);
+            }
+            else if (rawMaterialTo == null && part != null && e.Source is StackPanel)
+            {
+                List<int> lengthOptions = GetLengthOptionsRawMaterial();
+                int bestLength = FindBestSizeRawMaterial(lengthOptions, part);
+            
+                // insert the new raw material beyo
+                RawMaterial newRawMaterial = new RawMaterial(bestLength);
+                newRawMaterial.insert_part(part);
+                ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
+                // TempPartList.Remove(part);
+            }
+        }
+        // rawMaterialFrom이 null이 아닌 경우
+        else if (rawMaterialTo != null && part != null)
         {
             // Update the ArrangedRawMaterials collection in the ViewModel
             
             UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
             Console.WriteLine("RawMaterial_Drop - from: not null, to: not null, part: not null");
         }
-        else if (rawMaterialFrom == null && rawMaterialTo != null && part != null)
+        else if (rawMaterialTo == null && part != null)
         {
-            UpdateRawMaterial(null, rawMaterialTo, part);
-            Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
-        }
-        else if (rawMaterialFrom != null && rawMaterialTo == null && part != null)
-        {
-            UpdateRawMaterial(rawMaterialFrom, null, part);
+            if (e.Source is StackPanel)
+                UpdateRawMaterial(rawMaterialFrom, null, part);
+            
             Console.WriteLine("RawMaterial_Drop - to: null, part: not null");
         }
-        else if (rawMaterialFrom == null && rawMaterialTo == null && part != null)
-        {
-            int index_from = 0;
-            int index_to = 0;
-            int index_part = 0;
-            int len_part = 0;
         
-            if (rawMaterialFrom != null)
-                index_from = ArrangedRawMaterials.IndexOf(rawMaterialFrom);
-            if (rawMaterialTo != null)
-                index_to = ArrangedRawMaterials.IndexOf(rawMaterialTo);
-            if (part != null)
-            {
-                index_part = OverSizeParts.IndexOf(part);
-                len_part = part.Length;
-            }
-            
-            List<int> lengthOptions = GetLengthOptionsRawMaterial();
-            int bestLength = lengthOptions.Max();
-            foreach (var len in lengthOptions)
-            {
-                if (len >= part.Length && len < bestLength)
-                {
-                    bestLength = len;
-                }
-            }
-            
-            // insert the new raw material beyo
-            RawMaterial newRawMaterial = new RawMaterial(bestLength);
-            newRawMaterial.insert_part(part);
-            ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
-            OverSizeParts.Remove(part);
-        }
 
         if (part != null)
         {
@@ -203,33 +208,9 @@ public class DragAndDropViewModel
             Console.WriteLine("RawMaterial_Drop - RawMaterial is null");
         }
     }
-    
-    public static void Part_Drop(object sender, DragEventArgs e)
-    {
-        e.Handled = true;
-        Console.WriteLine("Part_Drop Executed.");
-        // var part = (sender as Control)?.DataContext as Part;
-        var data = e.Data as IDataObject;
-        if (data == null)
-        {
-            return;
-        }
-        var part = data.Get("part") as Part;
-        var rawMaterialFrom = data.Get("originalRawMaterial") as RawMaterial;
-
-        if (rawMaterialFrom != null && part != null)
-        {
-            DragAndDropViewModel.TempPartList.Add(part);
-        }
-    }
 
     public static List<int> GetLengthOptionsRawMaterial()
     {
         return ArrangePartsService.GetLengthOptionsRawMaterial();
-    }
-
-    public static ObservableCollection<Part> GetOverSizeParts()
-    {
-        return OverSizeParts;
     }
 }

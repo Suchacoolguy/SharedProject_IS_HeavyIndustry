@@ -104,6 +104,29 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         public void AddTab(string tabHeader)
         {
+            var tabControl = this.FindControl<TabControl>("TabFrame");
+            var existingTab = tabControl?.Items.Cast<TabItem>().FirstOrDefault(item => item.Header!.ToString() == tabHeader);
+
+            if (existingTab != null)
+            {
+                existingTab.Content = CreateTabContent(tabHeader);
+                tabControl!.SelectedItem = existingTab; // 기존 탭으로 이동
+            }
+            else
+            {
+                var tabItem = new TabItem
+                {
+                    Header = tabHeader,
+                    Content = CreateTabContent(tabHeader)
+                };
+
+                tabControl?.Items.Add(tabItem);
+                tabControl!.SelectedItem = tabItem; // 새로 추가된 탭으로 이동
+            }
+        }
+
+        /*public void AddTab(string tabHeader)
+        {
             var tabPanel = this.FindControl<TabControl>("TabFrame");
             var existingTab = tabPanel?.Items.Cast<TabItem>().FirstOrDefault(item => item.Header!.ToString() == tabHeader);
 
@@ -121,7 +144,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
                 tabPanel?.Items.Add(tabItem);
             }
-        }
+        }*/
 
         private Control CreateTabContent(string tabHeader)
         {

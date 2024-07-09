@@ -52,6 +52,8 @@ public partial class TempPartsView : UserControl
                 }
             }
         }
+        
+        // 여기가 오른쪽 패널에 드랍되고 나서 실행되는 부분
     }
 
     private async void Part_PointerPressed(object sender, PointerPressedEventArgs e)

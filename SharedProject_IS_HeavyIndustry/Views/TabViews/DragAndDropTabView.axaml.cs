@@ -36,6 +36,8 @@ public partial class DragAndDropTabView : TabView
             {
                 dockPanel!.Children.RemoveAll(dockPanel.Children);
                 DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
+                // DragAndDropViewModel.TempPartList = [];
+                
                 ArrangePartsService._lengthOptionsRawMaterial = SettingsViewModel.GetLengthOption(selectedDescription);
                 if (MainWindowViewModel.TempPartSet.TryGetValue(_key, out var value))
                     DragAndDropViewModel.TempPartList = value;

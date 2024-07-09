@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Media;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.Views;
@@ -268,6 +270,10 @@ public class DragAndDropViewModel
         {
             Console.WriteLine("RawMaterial_Drop - RawMaterial is null");
         }
+        
+        var partRectangle = data.Get("partRectangle");
+        if (partRectangle is Rectangle rect)
+            rect.Fill = Brushes.YellowGreen;
         
         // 여기에 RawMaterialSet, TempPartsSet 업데이트 코드 추가 안 해도 되는가??
     }

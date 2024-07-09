@@ -63,6 +63,7 @@ public partial class DragAndDropView : TabView
     private async void Part_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         var part = (sender as Control)?.DataContext as Part;
+        var PartRectangle = (sender as Rectangle);
         RawMaterial originalRawMaterial = null;
         
         if (part != null)
@@ -99,6 +100,9 @@ public partial class DragAndDropView : TabView
 
             // Start the drag operation
             var result = await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+            
+            if (PartRectangle != null)
+                PartRectangle.Fill = Brushes.YellowGreen;
             GhostItem.IsVisible = false;
         }
         

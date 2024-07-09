@@ -207,9 +207,11 @@ public class DragAndDropViewModel
 
                     if (rawMaterialTo != null)
                     {
+                        // 해당 원자재에다 추가
                         rawMaterialTo.insert_part(tempPart);
                         if (TempPartList.Contains(tempPart))
                         {
+                            // 이동한 원자재는 원래 있던 곳에서 제거
                             TempPartList.Remove(tempPart);
                         }
                     }
@@ -266,6 +268,8 @@ public class DragAndDropViewModel
         {
             Console.WriteLine("RawMaterial_Drop - RawMaterial is null");
         }
+        
+        // 여기에 RawMaterialSet, TempPartsSet 업데이트 코드 추가 안 해도 되는가??
     }
 
     public static List<int> GetLengthOptionsRawMaterial()

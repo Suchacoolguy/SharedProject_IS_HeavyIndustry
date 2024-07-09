@@ -18,6 +18,9 @@ public class MainWindowViewModel : ViewModelBase
     public static string ProjectName { get; set; } = "";
     public static Dictionary<string, ObservableCollection<RawMaterial>> RawMaterialSet { get; set; } 
         = new Dictionary<string, ObservableCollection<RawMaterial>>();
+    
+    public static Dictionary<string, ObservableCollection<Part>> TempPartSet { get; set; } 
+        = new Dictionary<string, ObservableCollection<Part>>();
 
     public MainWindowViewModel()
     {
@@ -38,6 +41,18 @@ public class MainWindowViewModel : ViewModelBase
         else
         {
             RawMaterialSet.TryAdd(key, rawMaterialSet);
+        }
+    }
+    
+    public static void UpdateTempPartSet(ObservableCollection<Part> tempPartSet, string key)
+    {
+        if (TempPartSet.ContainsKey(key))
+        {
+            TempPartSet[key] = tempPartSet;
+        }
+        else
+        {
+            TempPartSet.TryAdd(key, tempPartSet);
         }
     }
 

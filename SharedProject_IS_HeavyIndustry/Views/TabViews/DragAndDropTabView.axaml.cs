@@ -74,10 +74,14 @@ public partial class DragAndDropTabView : TabView
             SettingsViewModel.GetLengthOption(selectedDescription));
         MainWindowViewModel.DragAndDropViewModel =
             new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts(), _key);
-            
 
-        if (!MainWindowViewModel.RawMaterialSet.ContainsKey(_key))   // 여기!!
-            MainWindowViewModel.RawMaterialSet.TryAdd(_key, service.GetArrangedRawMaterials());  // 여기!!
+
+        if (!MainWindowViewModel.RawMaterialSet.ContainsKey(_key))
+        {
+            MainWindowViewModel.RawMaterialSet.TryAdd(_key, service.GetArrangedRawMaterials());
+            // MainWindowViewModel.TempPartSet.TryAdd(_key, DragAndDropViewModel.TempPartList);
+        }
+            
     }
     
     private static ObservableCollection<Part> GetFilteredParts(string material, string desc, ObservableCollection<Part> parts)

@@ -87,6 +87,7 @@ public partial class DragAndDropView : TabView
             var data = new DataObject();
             data.Set("part", part);
             data.Set("originalRawMaterial", originalRawMaterial);
+            data.Set("partRectangle", PartRectangle);
             
             var ghostPos = GhostItem.Bounds.Position;
             _ghostPosition = new Point(ghostPos.X + _mouseOffset.X, ghostPos.Y + _mouseOffset.Y);
@@ -101,8 +102,7 @@ public partial class DragAndDropView : TabView
             // Start the drag operation
             var result = await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
             
-            if (PartRectangle != null)
-                PartRectangle.Fill = Brushes.YellowGreen;
+            
             GhostItem.IsVisible = false;
         }
         

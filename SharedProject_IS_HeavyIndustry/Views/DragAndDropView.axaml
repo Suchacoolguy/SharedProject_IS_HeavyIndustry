@@ -27,8 +27,10 @@
                 <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent">
                     <StackPanel.ContextFlyout>
                         <MenuFlyout>
-                            <MenuItem Header="원자재 길이순으로 오름차순" Click="SortByRawMaterialLength_Ascending"/>
-                            <MenuItem Header="원자재 길이순으로 내림차순" Click="SortByRawMaterialLength_Descending"/>
+                            <MenuItem Header="원자재 길이 기준 오름차순" Click="SortByRawMaterialLength_Ascending"/>
+                            <MenuItem Header="원자재 길이 기준 내림차순" Click="SortByRawMaterialLength_Descending"/>
+                            <MenuItem Header="잔량 기준 오름차순" Click="SortByScrapAscending"/>
+                            <MenuItem Header="잔량 기준 내림차순" Click="SortByScrapDescending"/>
                         </MenuFlyout>
                     </StackPanel.ContextFlyout>
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">

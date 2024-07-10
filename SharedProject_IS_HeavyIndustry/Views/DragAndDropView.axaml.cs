@@ -131,7 +131,52 @@ public partial class DragAndDropView : TabView
     
     private void SortByRawMaterialLength_Descending(object? sender, RoutedEventArgs e)
     {
-        Console.WriteLine("Sort By Raw Material in Descending Activated.");
+        MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
+        if (rawMaterials != null)
+        {
+            List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => y.Length.CompareTo(x.Length));
+
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            foreach (var raw in rawList)
+            {
+                DragAndDropViewModel.ArrangedRawMaterials.Add(raw);
+            }
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+        }
     }
     
+    private void SortByScrapAscending(object? sender, RoutedEventArgs e)
+    {
+        MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
+        if (rawMaterials != null)
+        {
+            List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => x.RemainingLength.CompareTo(y.RemainingLength));
+
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            foreach (var raw in rawList)
+            {
+                DragAndDropViewModel.ArrangedRawMaterials.Add(raw);
+            }
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+        }
+    }
+    
+    private void SortByScrapDescending(object? sender, RoutedEventArgs e)
+    {
+        MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
+        if (rawMaterials != null)
+        {
+            List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => y.RemainingLength.CompareTo(x.RemainingLength));
+
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            foreach (var raw in rawList)
+            {
+                DragAndDropViewModel.ArrangedRawMaterials.Add(raw);
+            }
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+        }
+    }
 }

@@ -13,7 +13,7 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 public partial class DragAndDropTabView : TabView
 {
     private MainWindow mainWindow;
-    private string _key = "";
+    // private string _key = "";
     
     public DragAndDropTabView(MainWindow mainWindow)
     {
@@ -30,16 +30,17 @@ public partial class DragAndDropTabView : TabView
         
         if (selectedMaterial != null && selectedDescription != null)
         {
-            _key = selectedMaterial + "," + selectedDescription;
+            // _key = selectedMaterial + "," + selectedDescription;
+            MainWindowViewModel.SelectedKey = selectedMaterial + "," + selectedDescription;
             //딕셔너리에 키가 존재하는지 확인 -> 존재하면 한번 DragAndDrop처리 했던것이므로 해당 값 불러와서 DragAndDropView추가 
-            if (MainWindowViewModel.RawMaterialSet.TryGetValue(_key, out var arrangedRawMaterials))  // 여기!!
+            if (MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var arrangedRawMaterials))  // 여기!!
             {
                 dockPanel!.Children.RemoveAll(dockPanel.Children);
                 DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
                 // DragAndDropViewModel.TempPartList = [];
                 
                 ArrangePartsService._lengthOptionsRawMaterial = SettingsViewModel.GetLengthOption(selectedDescription);
-                if (MainWindowViewModel.TempPartSet.TryGetValue(_key, out var value))
+                if (MainWindowViewModel.TempPartSet.TryGetValue(MainWindowViewModel.SelectedKey, out var value))
                     DragAndDropViewModel.TempPartList = value;
                 dockPanel.Children.Add(new DragAndDropView(mainWindow));
                 return;
@@ -77,14 +78,14 @@ public partial class DragAndDropTabView : TabView
         var service = new ArrangePartsService(new List<Part>(parts), partsOverLength,
             SettingsViewModel.GetLengthOption(selectedDescription));
         MainWindowViewModel.DragAndDropViewModel =
-            new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts(), _key);
+            new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts(), MainWindowViewModel.SelectedKey);
         DragAndDropViewModel.TempPartList = [];
 
 
-        if (!MainWindowViewModel.RawMaterialSet.ContainsKey(_key))
+        if (!MainWindowViewModel.RawMaterialSet.ContainsKey(MainWindowViewModel.SelectedKey))
         {
-            MainWindowViewModel.RawMaterialSet.TryAdd(_key, service.GetArrangedRawMaterials());
-            MainWindowViewModel.TempPartSet.TryAdd(_key, DragAndDropViewModel.TempPartList);
+            MainWindowViewModel.RawMaterialSet.TryAdd(MainWindowViewModel.SelectedKey, service.GetArrangedRawMaterials());
+            MainWindowViewModel.TempPartSet.TryAdd(MainWindowViewModel.SelectedKey, DragAndDropViewModel.TempPartList);
         }
             
     }

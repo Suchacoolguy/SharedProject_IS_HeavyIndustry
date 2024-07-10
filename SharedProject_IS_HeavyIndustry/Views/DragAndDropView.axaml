@@ -27,21 +27,14 @@
                 <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent">
                     <StackPanel.ContextFlyout>
                         <MenuFlyout>
-                            <MenuItem Header="Copy"/>
-                            <MenuItem Header="Paste"/>
+                            <MenuItem Header="원자재 길이순으로 오름차순" Click="SortByRawMaterialLength_Ascending"/>
+                            <MenuItem Header="원자재 길이순으로 내림차순" Click="SortByRawMaterialLength_Descending"/>
                         </MenuFlyout>
                     </StackPanel.ContextFlyout>
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Width="600" Height="55" Background="Transparent">
-                                    <Canvas.ContextFlyout>
-                                        <MenuFlyout>
-                                            <MenuItem Header="Copy"/>
-                                            <MenuItem Header="Paste"/>
-                                        </MenuFlyout>
-                                    </Canvas.ContextFlyout>
-                                    
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"

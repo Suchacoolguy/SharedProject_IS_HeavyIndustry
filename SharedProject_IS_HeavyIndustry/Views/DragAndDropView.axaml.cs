@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -11,6 +14,7 @@ using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.Services;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 
 namespace SharedProject_IS_HeavyIndustry.Views;
 
@@ -107,5 +111,24 @@ public partial class DragAndDropView : TabView
         }
         
     }
+    
+    private void SortByRawMaterialLength_Ascending(object? sender, RoutedEventArgs e)
+    {
+        MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
+        if (rawMaterials != null)
+        {
+            List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => x.Length.CompareTo(y.Length));
 
+            // ObservableCollection<RawMaterial> sortedRawMaterialList = new ObservableCollection<RawMaterial>(rawList);
+            DragAndDropViewModel.ArrangedRawMaterials = new ObservableCollection<RawMaterial>(rawList);;
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+        }
+    }
+    
+    private void SortByRawMaterialLength_Descending(object? sender, RoutedEventArgs e)
+    {
+        Console.WriteLine("Sort By Raw Material in Descending Activated.");
+    }
+    
 }

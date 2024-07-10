@@ -1,8 +1,7 @@
-    using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
@@ -207,14 +206,14 @@ namespace SharedProject_IS_HeavyIndustry.Models
             range.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
         }
 
-        /*private static void InsertImage(IXLWorksheet worksheet, SKBitmap image, int row)
+        private static void InsertImage(IXLWorksheet worksheet, SKBitmap image, int row)
         {
             worksheet.Row(row).Height = worksheet.Row(row).Height + 10; // 예시로 높이를 100으로 설정
 
             //double mergedCellWidth = worksheet.Column(3).Width;
             var mergedCellHeight = worksheet.Row(row).Height;
             /*Console.WriteLine("height : " + mergedCellHeight);
-            Console.WriteLine("width : " + mergedCellWidth);#1#
+            Console.WriteLine("width : " + mergedCellWidth);*/
             mergedCellHeight = (worksheet.Row(row).Height * 96 / 72);
 
             using (var ms = new MemoryStream())
@@ -223,20 +222,6 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 var picture = worksheet.AddPicture(ms).MoveTo(worksheet.Cell(row, 3));
                 picture.ScaleWidth(1.0);
                 picture.ScaleHeight((mergedCellHeight + 2) / picture.Height);
-            }
-        }*/
-        
-        private static void InsertImage(IXLWorksheet worksheet, SKBitmap image, int row)
-        {
-            using (var ms = new MemoryStream())
-            {
-                image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(ms);
-                var picture = worksheet.AddPicture(ms).MoveTo(worksheet.Cell(row, 3));
-                var cellWidth = worksheet.ColumnWidth * 6;
-                var cellHeight = worksheet.RowHeight;
-                var scaleFactor = Math.Min(cellWidth / image.Width, cellHeight / image.Height);
-                picture.Width *= (int)scaleFactor;
-                picture.Height *= (int)scaleFactor;
             }
         }
 

@@ -120,8 +120,11 @@ public partial class DragAndDropView : TabView
             List<RawMaterial> rawList = rawMaterials.ToList();
             rawList.Sort((x, y) => x.Length.CompareTo(y.Length));
 
-            // ObservableCollection<RawMaterial> sortedRawMaterialList = new ObservableCollection<RawMaterial>(rawList);
-            DragAndDropViewModel.ArrangedRawMaterials = new ObservableCollection<RawMaterial>(rawList);;
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            foreach (var raw in rawList)
+            {
+                DragAndDropViewModel.ArrangedRawMaterials.Add(raw);
+            }
             MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
         }
     }

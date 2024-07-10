@@ -276,6 +276,7 @@ public class DragAndDropViewModel
             rect.Fill = Brushes.YellowGreen;
         
         // 여기에 RawMaterialSet, TempPartsSet 업데이트 코드 추가 안 해도 되는가??
+        MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials, key);
     }
 
     public static List<int> GetLengthOptionsRawMaterial()

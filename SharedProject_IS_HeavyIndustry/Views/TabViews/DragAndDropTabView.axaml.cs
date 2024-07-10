@@ -39,6 +39,8 @@ public partial class DragAndDropTabView : TabView
                 // DragAndDropViewModel.TempPartList = [];
                 
                 ArrangePartsService._lengthOptionsRawMaterial = SettingsViewModel.GetLengthOption(selectedDescription);
+                if (MainWindowViewModel.TempPartSet.TryGetValue(_key, out var value))
+                    DragAndDropViewModel.TempPartList = value;
                 dockPanel.Children.Add(new DragAndDropView(mainWindow));
                 return;
             }
@@ -76,12 +78,13 @@ public partial class DragAndDropTabView : TabView
             SettingsViewModel.GetLengthOption(selectedDescription));
         MainWindowViewModel.DragAndDropViewModel =
             new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts(), _key);
+        DragAndDropViewModel.TempPartList = [];
 
 
         if (!MainWindowViewModel.RawMaterialSet.ContainsKey(_key))
         {
             MainWindowViewModel.RawMaterialSet.TryAdd(_key, service.GetArrangedRawMaterials());
-            // MainWindowViewModel.TempPartSet.TryAdd(_key, DragAndDropViewModel.TempPartList);
+            MainWindowViewModel.TempPartSet.TryAdd(_key, DragAndDropViewModel.TempPartList);
         }
             
     }

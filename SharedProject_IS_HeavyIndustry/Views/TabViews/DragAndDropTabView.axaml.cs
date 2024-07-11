@@ -83,7 +83,7 @@ public partial class DragAndDropTabView : TabView
         var service = new ArrangePartsService(new List<Part>(parts), partsOverLength,
             SettingsViewModel.GetLengthOption(selectedDescription));
         MainWindowViewModel.DragAndDropViewModel =
-            new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts(), MainWindowViewModel.SelectedKey);
+            new DragAndDropViewModel(service.GetArrangedRawMaterials(), MainWindowViewModel.SelectedKey);
         DragAndDropViewModel.TempPartList = [];
 
 

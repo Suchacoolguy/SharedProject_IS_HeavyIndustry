@@ -7,9 +7,6 @@ using ClosedXML.Excel;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.Views;
-using Excel = Microsoft.Office.Interop.Excel;
-
-
 
 namespace SharedProject_IS_HeavyIndustry;
 

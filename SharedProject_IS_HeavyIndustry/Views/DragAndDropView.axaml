@@ -53,10 +53,14 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1">
-                                                    <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                               Fill="#E8B989" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
-                                                </Border>
+                                                <Grid>
+                                                    <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1">
+                                                        <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                                   Fill="#E8B989" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
+                                                    </Border>
+                                                    <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                           HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

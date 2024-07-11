@@ -16,7 +16,6 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels;
 public class DragAndDropViewModel
 {
     public static ObservableCollection<RawMaterial> ArrangedRawMaterials { get; set; }
-    public static ObservableCollection<Part> OverSizeParts { get; set; }
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
     public static ObservableCollection<Part> TempPartList { get; set; } = new ObservableCollection<Part>();
@@ -25,11 +24,9 @@ public class DragAndDropViewModel
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
 
-    public DragAndDropViewModel(ObservableCollection<RawMaterial> arrangedRawMaterials,
-        ObservableCollection<Part> overSizeParts, string key)
+    public DragAndDropViewModel(ObservableCollection<RawMaterial> arrangedRawMaterials, string key)
     {
         ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arrangedRawMaterials);
-        OverSizeParts = new ObservableCollection<Part>(overSizeParts);
         DragAndDropViewModel.key = key;
     }
 

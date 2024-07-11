@@ -14,19 +14,19 @@ public class  ArrangePartsService
 {
     public static List<int> _lengthOptionsRawMaterial { get; set; }
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
-    private static ObservableCollection<Part> _overSizeParts;
+    private static List<Part> _overSizeParts;
     
     // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, List<int> lengthOptions)
     {
         // 파트배치 완료된 것들
         _lengthOptionsRawMaterial = lengthOptions;
-        _rawMaterialsUsed = ArrangeParts(parts);
+        
         
         List<Part> replacedParts = new List<Part>();
         foreach (var ppp in overSizeParts)
         {
-            while (ppp.Length > Int32.Parse(ppp.lengthToBeSeperated))
+            while (ppp.Length > Convert.ToInt32(ppp.lengthToBeSeperated))
             {
                 ppp.Length -= Int32.Parse(ppp.lengthToBeSeperated);
                 Part newPart = new Part(ppp.Assem, ppp.Mark, ppp.Material, Int32.Parse(ppp.lengthToBeSeperated), ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
@@ -34,7 +34,10 @@ public class  ArrangePartsService
                 replacedParts.Add(ppp);
             }
         }
-        _overSizeParts = new ObservableCollection<Part>(replacedParts);
+        _overSizeParts = replacedParts;
+        parts.AddRange(_overSizeParts);
+        _rawMaterialsUsed = ArrangeParts(parts);
+        
     }
     
     public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts)
@@ -197,7 +200,7 @@ public class  ArrangePartsService
         return _rawMaterialsUsed;
     }
     
-    public ObservableCollection<Part> GetOverSizeParts()
+    public List<Part> GetOverSizeParts()
     {
         return _overSizeParts;
     }

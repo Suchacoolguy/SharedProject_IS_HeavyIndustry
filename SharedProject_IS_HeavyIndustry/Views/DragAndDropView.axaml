@@ -16,7 +16,7 @@
     
     <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -24,7 +24,7 @@
              <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5" Background="Transparent">
                  <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
                 <!-- Parts arranged inside raw materials -->
-                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent">
+                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent" HorizontalAlignment="Center">
                     <StackPanel.ContextFlyout>
                         <MenuFlyout>
                             <MenuItem Header="원자재 길이 기준 오름차순" Click="SortByRawMaterialLength_Ascending"/>
@@ -38,12 +38,12 @@
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Width="600" Height="55" Background="Transparent">
                                     <!-- Raw material -->
-                                    <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="0" Canvas.Top="35" DragDrop.AllowDrop="True">
+                                    <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="0" Canvas.Top="0" DragDrop.AllowDrop="True">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
                                                    Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" />
                                     </Border>
-                                    <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="0"/>
-                                    <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" Foreground="{Binding RectangleColor}" Canvas.Right="0" Canvas.Top="0"/>
+                                    <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
+                                    <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" Foreground="{Binding RectangleColor}" Canvas.Right="0" Canvas.Top="35"/>
                                     
                                     
                                     
@@ -58,7 +58,7 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True">
+                                                    <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" >
                                                         <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
                                                                    Fill="#E8B989" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                                                     </Border>

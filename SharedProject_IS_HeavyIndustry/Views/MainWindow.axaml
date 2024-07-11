@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
         xmlns:tabViews="clr-namespace:SharedProject_IS_HeavyIndustry.Views.TabViews"
         xmlns:avaloniaGif="clr-namespace:AvaloniaGif;assembly=AvaloniaGif"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/logo.ico"
         Title="아이에스중공업 - 네스팅 소프트웨어">
    
 

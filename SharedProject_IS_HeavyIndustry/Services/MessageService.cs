@@ -3,7 +3,7 @@ using MsBox.Avalonia.Enums;
 
 namespace SharedProject_IS_HeavyIndustry.Services;
 
-public class MessageService
+public static class MessageService
 {
     public static void Send(string msg)
     {

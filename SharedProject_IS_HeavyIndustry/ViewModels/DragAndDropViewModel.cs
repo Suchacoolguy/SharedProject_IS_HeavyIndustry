@@ -227,7 +227,7 @@ public class DragAndDropViewModel
         }
         else if ((partTo != null || rawMaterialTo == null) && part != null)
         {
-            if (e.Source is StackPanel)
+            if (e.Source is not Rectangle)
             {
                 if (rawMaterialTo == null)
                 {

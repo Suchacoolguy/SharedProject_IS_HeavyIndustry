@@ -27,8 +27,10 @@
                 <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent">
                     <StackPanel.ContextFlyout>
                         <MenuFlyout>
-                            <MenuItem Header="Copy"/>
-                            <MenuItem Header="Paste"/>
+                            <MenuItem Header="원자재 길이 기준 오름차순" Click="SortByRawMaterialLength_Ascending"/>
+                            <MenuItem Header="원자재 길이 기준 내림차순" Click="SortByRawMaterialLength_Descending"/>
+                            <MenuItem Header="잔량 기준 오름차순" Click="SortByScrapAscending"/>
+                            <MenuItem Header="잔량 기준 내림차순" Click="SortByScrapDescending"/>
                         </MenuFlyout>
                     </StackPanel.ContextFlyout>
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">
@@ -43,13 +45,17 @@
                                     </Canvas.ContextFlyout>
                                     
                                     <!-- Raw material -->
-                                    <Border BorderBrush="Black" BorderThickness="1">
+                                    <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="0" Canvas.Top="0">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                   Fill="LightGray" Canvas.Left="0" Canvas.Top="5" DragDrop.AllowDrop="True" Tag="{Binding}" />
+                                                   Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" />
                                     </Border>
                                     <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
-                                    <!-- Parts -->
                                     <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" Foreground="{Binding RectangleColor}" Canvas.Right="0" Canvas.Top="35"/>
+                                    
+                                    
+                                    
+                                    <!-- Parts -->
+                                    
                                     <ItemsControl ItemsSource="{Binding PartsInside}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -59,12 +65,12 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1">
+                                                    <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1" PointerPressed="Part_PointerPressed">
                                                         <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                                   Fill="#E8B989" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
+                                                                   Fill="#E8B989" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                                                     </Border>
                                                     <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                           HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                           HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -77,33 +83,8 @@
                 </StackPanel>
                 </ScrollViewer>
     </Grid>
-
-        <!-- OverSizePartsView is added here when the PartsForSeparate list in the WorkManager has an item. -->
-        <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1" DragDrop.AllowDrop="True">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" DragDrop.AllowDrop="True">
-                <!-- Oversized Parts -->
-                <StackPanel Name="SecondStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True">
-                    <ItemsControl ItemsSource="{Binding DragAndDropViewModel.TempPartList}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Canvas Name="MyCanvas" Width="600" Height="55" Canvas.Top="5" DragDrop.AllowDrop="True">
-                                    <Border BorderBrush="Black" BorderThickness="1">
-                                        <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="#E8B989"
-                                                   PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
-                                    </Border>
-                                    <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
-                                </Canvas>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </ScrollViewer>
-        </Border>
+        
+        <views:TempPartsView Grid.Column="1" DataContext="{Binding}"/>
         
         <!-- Our ghost rectangle -->
             <Rectangle Height="30" Width="100" Fill="#E8B989" Name="GhostItem" Opacity="0.8"

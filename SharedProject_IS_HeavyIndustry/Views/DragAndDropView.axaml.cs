@@ -67,7 +67,7 @@ public partial class DragAndDropView : TabView
     private async void Part_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         var part = (sender as Control)?.DataContext as Part;
-        var PartRectangle = (sender as Rectangle);
+        var PartRectangle = (sender as Border);
         RawMaterial originalRawMaterial = null;
         
         if (part != null)

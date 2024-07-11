@@ -30,15 +30,15 @@ public class  ArrangePartsService
             while (length > Convert.ToInt32(ppp.lengthToBeSeperated))
             {
                 length -= Convert.ToInt32(ppp.lengthToBeSeperated);
-                // 여기에서 도면번호에 J 붙이는 코드 추가해야함.
-                Part newPart = new Part(ppp.Assem, ppp.Mark, ppp.Material, Convert.ToInt32(ppp.lengthToBeSeperated), ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
+                // 여기에서 블록마크에 J 붙이는 코드 추가해야함.
+                Part newPart = new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material, Convert.ToInt32(ppp.lengthToBeSeperated), ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
                 replacedParts.Add(newPart);
             }
 
             if (length > 0)
             {
-                // 여기에서 도면번호에 J 붙이는 코드 추가해야함.
-                Part restPart = new Part(ppp.Assem, ppp.Mark, ppp.Material, length, ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
+                // 여기에서 블록마크에 J 붙이는 코드 추가해야함.
+                Part restPart = new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material, length, ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
                 replacedParts.Add(restPart);
             }
         }

@@ -140,7 +140,7 @@ public class  ArrangePartsService
             
             
             Solver solver = Solver.CreateSolver("SCIP");
-            solver.SetTimeLimit(15000);
+            solver.SetTimeLimit(40000);
         
             // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
             Variable[,] x = new Variable[data.NumItems, data.NumBins];
@@ -215,6 +215,10 @@ public class  ArrangePartsService
             {
                 // 파트가 없거나 하나밖에 없을 때 솔루션을 찾지 못하는 경우 여기로 들어옴.
                 Console.WriteLine("여기에 들어오는감??");
+            }
+            else if (resultStatus == Solver.ResultStatus.NOT_SOLVED || resultStatus == Solver.ResultStatus.ABNORMAL)
+            {
+                Console.WriteLine("Not Solved or Abnormal (ㅇ..ㅇ;;) ");   
             }
             else
             {

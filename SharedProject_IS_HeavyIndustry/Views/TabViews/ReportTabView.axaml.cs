@@ -2,6 +2,7 @@
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
@@ -16,15 +17,15 @@ public partial class ReportTabView : TabView
     }
     private async void PlanReview_btn_click(object? sender, RoutedEventArgs e)
     {
-        var box = MessageBoxManager
-            .GetMessageBoxStandard("Caption", "Are you sure you would like to delete appender_replace_page_1?",
-                ButtonEnum.Ok);
-
-        var result = await box.ShowAsync();
-        // throw new System.NotImplementedException();
+        MessageService.Send("아직 구현되지 않은 페이지 입니다");
     }
     private void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
     {
+        if (MainWindowViewModel.RawMaterialSet.Count < 1)
+        {
+            MessageService.Send("작업된 항목이 없습니다");
+            return;
+        }
         ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
     }
     

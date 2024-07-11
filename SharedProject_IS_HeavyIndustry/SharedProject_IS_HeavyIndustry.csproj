@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+		<OutputType>WinExe</OutputType>
+    	<TargetFramework>net8.0</TargetFramework>
+    	<Nullable>enable</Nullable>
+    	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    	<ApplicationManifest>app.manifest</ApplicationManifest>
+    	<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+        <PackageReference Include="Avalonia_Gif" Version="1.0.0" />
+        <PackageReference Include="ClosedXML" Version="0.104.0-preview2" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Google.OrTools" Version="9.10.4067" />
+        <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\TabViews\TabView.axaml.cs">
+        <DependentUpon>TabView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\NewProjectWindow.axaml.cs">
+        <DependentUpon>NewProjectWindow.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\TabViews\ReportTabView.axaml.cs">
+        <DependentUpon>CuttingPlanView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\TempPartsView.axaml.cs">
+        <DependentUpon>TempPartsView.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\TabViews\HyungGangTabView.axaml.cs">
+        <DependentUpon>HyungGangTabView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+</Project>

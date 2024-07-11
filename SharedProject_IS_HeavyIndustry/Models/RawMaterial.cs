@@ -125,6 +125,64 @@ namespace SharedProject_IS_HeavyIndustry.Models
             return result;
         }
         
+        /*public Image GenerateBarChartImage()
+        {
+            int width = 480;
+            int height = 27;
+            SKBitmap skBitmap = new SKBitmap(width, height);
+
+            int totalLength = Length;
+
+            using (SKCanvas canvas = new SKCanvas(skBitmap))
+            {
+                canvas.Clear(SKColors.Transparent);
+                SKPaint paint = new SKPaint
+                {
+                    Color = SKColors.Black,
+                    StrokeWidth = 3,
+                    Style = SKPaintStyle.Stroke
+                };
+                canvas.DrawRect(0, 0, width - 1, height - 1, paint);
+            }
+
+            using (SKCanvas canvas = new SKCanvas(skBitmap))
+            {
+                SKPaint paint = new SKPaint
+                {
+                    Color = SKColors.Black,
+                    StrokeWidth = 2
+                };
+
+                int accumulatedLength = 0;
+                int i = 1;
+                int lineX = 0;
+
+                foreach (var part in PartsInside)
+                {
+                    accumulatedLength += part.Length;
+
+                    string label = i.ToString();
+                    using (SKPaint textPaint = new SKPaint { TextSize = 10, IsAntialias = true, Color = SKColors.Black })
+                    {
+                        float x = lineX - textPaint.MeasureText(label) / 2 + 10;
+                        float y = height / 2;
+                        canvas.DrawText(label, x, y, textPaint);
+                    }
+
+                    lineX = (int)Math.Round((double)accumulatedLength / totalLength * (width - 2));
+                    canvas.DrawLine(lineX, 0, lineX, height - 1, paint);
+
+                    i++;
+                }
+            }
+
+            // SKBitmap을 Image로 변환
+            ImageConverter converter = new ImageConverter();
+            Image image = (Image)converter.ConvertFrom(skBitmap.Bytes)!;
+
+            return image;
+        }*/
+        
         public SKBitmap GenerateBarChartImage()
         {
             int width = 480;

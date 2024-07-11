@@ -76,7 +76,7 @@ public class DragAndDropViewModel
                 {
                     // 빈 공간에 파트를 드랍했을 때 새로운 원자재를 생성해서 그곳으로 파트를 이동
                     
-                    Console.WriteLine("UpdateRawMaterial - from: null, to: null, part: not null");
+                    Console.WriteLine("UpdateRawMaterial - from: not null, to: null, part: not null");
                     List<int> lengthOptions = GetLengthOptionsRawMaterial();
                     int bestLength = FindBestSizeRawMaterial(lengthOptions, part);
             
@@ -151,10 +151,6 @@ public class DragAndDropViewModel
         // 파트 위에다 드랍하는 경우 이 변수에 그 파트가 저장될 것
         var partTo = (e.Source as Control)?.DataContext as Part;
         
-        // 드랍한 위치가 스택패널이 있는 곳, 즉 DragAndDropView인 경우
-        if (e.Source is StackPanel)
-            Console.WriteLine("DragAndDropView에 드랍함.");
-        
         if (rawMaterialFrom == null)
         {
             Console.WriteLine("RawMaterial_Drop - from is null");    
@@ -227,7 +223,7 @@ public class DragAndDropViewModel
         }
         else if ((partTo != null || rawMaterialTo == null) && part != null)
         {
-            if (e.Source is not Rectangle)
+            if (e.Source is not Rectangle && e.Source is not Border)
             {
                 if (rawMaterialTo == null)
                 {

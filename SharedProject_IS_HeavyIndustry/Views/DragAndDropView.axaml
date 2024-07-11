@@ -37,6 +37,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Width="600" Height="55" Background="Transparent">
+                                    
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="0" Canvas.Top="0" DragDrop.AllowDrop="True">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
@@ -44,8 +45,7 @@
                                     </Border>
                                     <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
                                     <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" Foreground="{Binding RectangleColor}" Canvas.Right="0" Canvas.Top="35"/>
-                                    
-                                    
+
                                     
                                     <!-- Parts -->
                                     

@@ -65,7 +65,7 @@ public static class JsonConverter
             if (!File.Exists(filePath))
             {
                 MessageService.Send("형강정보가 없습니다");
-                return null;
+                return new Dictionary<string, string>();
             }
 
             var json = File.ReadAllText(filePath);
@@ -76,7 +76,7 @@ public static class JsonConverter
         {
             Console.WriteLine($"JSON 파일 로드 중 오류 발생: {ex.Message}");
             Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - ReadHyungGangSetFromJson()");
-            return null;
+            return new Dictionary<string, string>();
         }
     }
     public static void WriteDictionaryToJson(Dictionary<string, string> dictionary)
@@ -122,6 +122,7 @@ public static class JsonConverter
 
         return result;
     }
+    
 }
 
 /*using System;

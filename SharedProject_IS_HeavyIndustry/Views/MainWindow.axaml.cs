@@ -38,6 +38,8 @@ namespace SharedProject_IS_HeavyIndustry.Views
         {
             if (string.IsNullOrEmpty(sheetName)) return;
             _sheet = _workbook.Worksheet(sheetName);
+            
+            SettingsViewModel.Refresh();
 
             //시트를 선택하면 시트의 part정보를 뽑아옴
             try

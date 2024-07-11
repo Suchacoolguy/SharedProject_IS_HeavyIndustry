@@ -76,20 +76,24 @@ namespace SharedProject_IS_HeavyIndustry.Services
             // "모두 선택" 체크박스 추가
             var selectAllCheckbox = new CheckBox
             {
+                IsThreeState = true,
                 Content = "모두 선택",
                 Margin = new Thickness(3, 0, 0, 5),
                 IsChecked = true
             };
             selectAllCheckbox.Checked += SelectAllCheckbox_Checked!;
             selectAllCheckbox.Unchecked += SelectAllCheckbox_Unchecked!;
-
+            
             border.Child = selectAllCheckbox;
             panel.Children.Add(border);
 
             // 나머지 아이템들 추가
             foreach (var item in itemList)
             {
-                panel.Children.Add(new CheckBox() { Content = item, IsChecked = true, Margin = new Thickness(3,0)});
+                var checkBox = new CheckBox() { Content = item, IsChecked = true, Margin = new Thickness(3,0)};
+                checkBox.Checked += CheckBox_StateChanged;
+                checkBox.Unchecked += CheckBox_StateChanged;
+                panel.Children.Add(checkBox);
             }
 
             scrollViewer.Content = panel;
@@ -108,6 +112,22 @@ namespace SharedProject_IS_HeavyIndustry.Services
             };
         }
 
+
+        private void CheckBox_StateChanged(object? sender, RoutedEventArgs e)
+        {
+            if (sender is not CheckBox checkBox) return;
+            if (checkBox.Parent is not StackPanel panel) return;
+            var allCheckBox = panel.Children.OfType<Border>().FirstOrDefault()!.Child as CheckBox;
+            if(checkBox.IsChecked == false && allCheckBox!.IsChecked == true)
+                allCheckBox!.IsChecked = null;
+            else
+            {
+                var allChecked = panel.Children.OfType<CheckBox>().Where(cb => cb != allCheckBox).All(cb => cb.IsChecked == true);
+                if (allChecked)
+                    allCheckBox!.IsChecked = true;
+            }
+        }
+
         private List<string> GetFilteringOptions()
         {
             return _tag switch
@@ -122,23 +142,27 @@ namespace SharedProject_IS_HeavyIndustry.Services
 
         private void SelectAllCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox checkBox)
-                // 체크된 경우, 모든 하위 체크박스를 체크 처리
-                SetAllCheckBoxesChecked((checkBox.Parent!.Parent as Panel)!, true);
+            if (sender is not CheckBox checkBox) return;
+            // 체크된 경우, 모든 하위 체크박스를 체크 처리
+            SetAllCheckBoxesChecked((checkBox.Parent!.Parent as Panel)!, true); 
         }
 
         private void SelectAllCheckbox_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox checkBox)
-                // 체크 해제된 경우, 모든 하위 체크박스를 체크 해제 처리
-                SetAllCheckBoxesChecked((checkBox.Parent!.Parent as Panel)!, false);
+            if (sender is not CheckBox checkBox) return;
+            checkBox.IsThreeState = false;
+            // 체크 해제된 경우, 모든 하위 체크박스를 체크 해제 처리
+            SetAllCheckBoxesChecked((checkBox.Parent!.Parent as Panel)!, false);
         }
 
         private void SetAllCheckBoxesChecked(Panel panel, bool isChecked)
         {
             foreach (var child in panel.Children)
                 if (child is CheckBox checkBox && checkBox != panel.Children[0]) // 첫 번째는 "모두 선택" 체크박스이므로 제외
+                {
+                    checkBox.IsThreeState = false;
                     checkBox.IsChecked = isChecked;
+                }
         }
 
         private void FilterApply_Btn_Click(object? sender, RoutedEventArgs e)

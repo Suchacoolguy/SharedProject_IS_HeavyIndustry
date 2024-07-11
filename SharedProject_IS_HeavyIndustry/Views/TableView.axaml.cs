@@ -33,6 +33,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
             {
                 var filteringService = new FilteringService(columnHeader!);
                 contextFlyout = filteringService.FilterMenu;
+                filterSet.Clear(); //이건 임시방편 나중에 지워야함
                 filterSet.Add(columnHeader!, filteringService);
             }
 

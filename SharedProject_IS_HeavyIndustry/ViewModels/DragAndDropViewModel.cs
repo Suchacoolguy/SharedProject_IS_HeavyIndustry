@@ -86,7 +86,7 @@ public class DragAndDropViewModel
                     ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
                     
                     // 원래 파트가 있던 원자재에서 파트를 제거.
-                    from.remove_part_at(index_part);
+                    from.removePart(part);
                     // 파트 제거 후 남은 파트가 없다면 해당 원자재 제거
                     if (from.PartsInside.Count == 0)
                     {
@@ -103,7 +103,7 @@ public class DragAndDropViewModel
                 else    // part != null일 때
                 {
                     to.insert_part(part);
-                    from.remove_part_at(index_part);
+                    from.removePart(part);
                     if (from.PartsInside.Count == 0)
                     {
                         ArrangedRawMaterials.Remove(from);

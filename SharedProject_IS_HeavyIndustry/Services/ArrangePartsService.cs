@@ -57,150 +57,234 @@ public class  ArrangePartsService
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
-        
-        DataModel data = new DataModel(partList, _lengthOptionsRawMaterial);
 
-        foreach (var ppp in partList)
+        int selectedRawMaterialLength = 0;
+        int totalPartsLength = GetTotalPartsLength(partList);
+        foreach (var len in _lengthOptionsRawMaterial)
         {
-            Console.WriteLine(ppp.Length);
-        }
-        
-        // Create the linear solver with the SCIP backend.
-        Solver solver = Solver.CreateSolver("CP-SAT");
-        solver.SetTimeLimit(7000);
-        
-        // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
-        Variable[,] x = new Variable[data.NumItems, data.NumBins];
-        for (int i = 0; i < data.NumItems; i++)
-        {
-            for (int j = 0; j < data.NumBins; j++)
+            if (totalPartsLength <= len)
             {
-                // x[i, j] is 1 if item i is packed in bin j. otherwise 0.
-                x[i, j] = solver.MakeIntVar(0, 1, $"x_{i}_{j}");
-            }
-        }
-        
-        // row i represents the i-th bin and column j represents the length of the bin.
-        Variable[,] y = new Variable[data.NumBins, data.NumRawMaterialOptions];
-        for (int i = 0; i < data.NumBins; i++)
-        {
-            for (int j = 0; j < data.NumRawMaterialOptions; j++)
-            {
-                // y[i, j] is 1 if bin i has length j. otherwise 0.
-                y[i, j] = solver.MakeIntVar(0, 1, $"y_{i}_{j}");
-            }    
-        }
-        
-        for (int i = 0; i < data.NumItems; i++)
-        {
-            // each item is in exactly one bin. every item must be in one bin.
-            Constraint constraint = solver.MakeConstraint(1, 1, "");
-            for (int j = 0; j < data.NumBins; j++)
-            {
-                constraint.SetCoefficient(x[i, j], 1);
+                selectedRawMaterialLength = len;
             }
         }
 
-        for (int i = 0; i < data.NumBins; i++)
+        int longestPartLength = -1;
+        if (selectedRawMaterialLength == 0)
         {
-            // each bin has exactly one length. every bin must have one length.
-            Constraint constraint = solver.MakeConstraint(0, 1, "");
-            for (int j = 0; j < data.NumRawMaterialOptions; j++)
+            longestPartLength = FindLongestPartLength(partList);
+            if (longestPartLength != -1)
             {
-                constraint.SetCoefficient(y[i, j], 1);
-            }
-        }
-
-        // the sum of the lengths of the items in each bin must be less than or equal to the bin's capacity.
-        for (int j = 0; j < data.NumBins; j++)
-        {
-            Constraint constraint = solver.MakeConstraint(0, Double.PositiveInfinity, "");
-            
-            // get the length of the bin.
-            for (int i = 0; i < data.NumRawMaterialOptions; i++)
-            {
-                constraint.SetCoefficient(y[j, i], DataModel.lengthOptionsRawMaterial[i]);
-            }
-            
-            // BinCapacity - (Sum of the lengths of the items in the bin) >= 0
-            // since we set the lower bound to 0, the sum of the lengths of the items in the bin must be less than or equal to the bin's capacity.
-            for (int i = 0; i < data.NumItems; i++)
-            {
-                constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
-            }
-        }
-
-        Objective objective = solver.Objective();
-        // set the objective to minimize the total sum of the remaining lengths of the bins.
-        
-        for (int j = 0; j < data.NumBins; j++)
-        {
-            for (int k = 0; k < data.NumRawMaterialOptions; k++)
-            {
-                // Objective: minimize the total waste
-                objective.SetCoefficient(y[j, k], DataModel.lengthOptionsRawMaterial[k]);
-            }
-            for (int i = 0; i < data.NumItems; i++)
-            {
-                // Subtract the parts lengths from the total raw material length
-                objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
-            }
-        }
-
-        objective.SetMinimization();
-
-        Console.WriteLine("Ready to solve.");
-        
-        Solver.ResultStatus resultStatus = solver.Solve();
-
-        Console.WriteLine("Solved.");
-        // Check that the problem has an optimal solution.
-        if (resultStatus != Solver.ResultStatus.OPTIMAL)
-        {
-            Console.WriteLine("The problem does not have an optimal solution!");
-        }
-        else if (resultStatus == Solver.ResultStatus.INFEASIBLE)
-        {
-            // 파트가 없거나 하나밖에 없을 때 솔루션을 찾지 못하는 경우 여기로 들어옴.
-            Console.WriteLine();
-        }
-        
-        Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
-
-        int howManyTimes = 0;
-        int TotalScrap = 0;
-        int BinLength = 0;
-        
-        bool foundBin = false;
-        for (int j = 0; j < data.NumBins; ++j)
-        {
-            RawMaterial rawMaterial = null;
-            for (int i = 0; i < data.NumRawMaterialOptions; i++)
-            {
-                if (y[j, i].SolutionValue() == 1)
+                foreach (var rawLength in _lengthOptionsRawMaterial)
                 {
+                    if (rawLength >= longestPartLength)
+                        selectedRawMaterialLength = rawLength;
+                }    
+            }
+        }
+        
+        if (selectedRawMaterialLength == 0)
+        {
+            MessageService.Send("배치 가능한 원자재 길이가 없습니다. 규격 설정 및 분리길이 설정을 확인해주세요.");
+            return new ObservableCollection<RawMaterial>();
+        }
+        else
+        {
+            DataModel data;
+            
+            int avgPartsLength = totalPartsLength / partList.Count;
+            Console.WriteLine("Avg Parts Length: " + avgPartsLength);
+            Console.WriteLine("Median: " + partList[partList.Count / 2].Length);
+            Console.WriteLine("Selected Raw Material Length: " + selectedRawMaterialLength);
+            if (longestPartLength != -1)
+            {
+                if (avgPartsLength < selectedRawMaterialLength * 0.1)
+                {
+                    Console.WriteLine("옳거니! 제곱근");
+                    data = new DataModel(partList, _lengthOptionsRawMaterial, Convert.ToInt32(Math.Sqrt(selectedRawMaterialLength)));
+                }
+                else if (partList[partList.Count / 2].Length < selectedRawMaterialLength * 0.1 && partList.Count > 200)
+                {
+                    Console.WriteLine("파트는 많지만 제곱근으로 줄이면 배치 불가넝 (ㅇ..ㅇ;;) ");
+                    data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count / 5);
+                }
+                else if (avgPartsLength < selectedRawMaterialLength / 2 && partList[partList.Count / 2].Length < selectedRawMaterialLength / 2)
+                {
+                    Console.WriteLine("옳거니! 2분의 1");
+                    data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count / 2);
+                }
+                else if (partList[partList.Count / 2].Length > selectedRawMaterialLength / 2)
+                {
+                    if (avgPartsLength > selectedRawMaterialLength * 0.75 &&
+                        partList[partList.Count / 2].Length > selectedRawMaterialLength * 0.75)
+                    {
+                        Console.WriteLine("작은 원자재 길이 쓰면 딱 맞을듯^^");
+                        data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count);
+                    }
+                    else
+                    {
+                        Console.WriteLine("중간값이 2분의 1보다 큼");
+                        selectedRawMaterialLength = _lengthOptionsRawMaterial[0];
+                        data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count);    
+                    }
                     
-                    BinLength = DataModel.lengthOptionsRawMaterial[i];
-                    rawMaterial = new RawMaterial(BinLength);
+                }
+                else
+                {
+                    data = new DataModel(partList, _lengthOptionsRawMaterial);
+                }
+            }
+            else
+            {
+                data = new DataModel(partList, _lengthOptionsRawMaterial);    
+            }
+            
+            
+            Solver solver = Solver.CreateSolver("SCIP");
+            solver.SetTimeLimit(15000);
+        
+            // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
+            Variable[,] x = new Variable[data.NumItems, data.NumBins];
+            for (int i = 0; i < data.NumItems; i++)
+            {
+                for (int j = 0; j < data.NumBins; j++)
+                {
+                    // x[i, j] is 1 if item i is packed in bin j. otherwise 0.
+                    x[i, j] = solver.MakeIntVar(0, 1, $"x_{i}_{j}");
+                }
+            }
+            
+            // row i represents the i-th bin and column j represents the length of the bin.
+            Variable[] y = new Variable[data.NumBins];
+            for (int i = 0; i < data.NumBins; i++)
+            {
+                    // y[i, j] is 1 if bin i has length j. otherwise 0.
+                y[i] = solver.MakeIntVar(0, 1, $"y_{i}");
+            }
+        
+            for (int i = 0; i < data.NumItems; i++)
+            {
+                // each item is in exactly one bin. every item must be in one bin.
+                Constraint constraint = solver.MakeConstraint(1, 1, "");
+                for (int j = 0; j < data.NumBins; j++)
+                {
+                    constraint.SetCoefficient(x[i, j], 1);
                 }
             }
 
-            for (int i = 0; i < data.NumItems; i++)
+            // the sum of the lengths of the items in each bin must be less than or equal to the bin's capacity.
+            for (int j = 0; j < data.NumBins; j++)
             {
-                if (x[i, j].SolutionValue() == 1)
+                Constraint constraint = solver.MakeConstraint(0, Double.PositiveInfinity, "");
+                constraint.SetCoefficient(y[j], selectedRawMaterialLength);
+                
+                // BinCapacity - (Sum of the lengths of the items in the bin) >= 0
+                // since we set the lower bound to 0, the sum of the lengths of the items in the bin must be less than or equal to the bin's capacity.
+                for (int i = 0; i < data.NumItems; i++)
                 {
-                    howManyTimes++;
-                    rawMaterial.insert_part(DataModel.parts[i]);
+                    constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
                 }
             }
-            if (rawMaterial != null)
-                rawMaterialsUsed.Add(rawMaterial);
+
+            Objective objective = solver.Objective();
+            // set the objective to minimize the total sum of the remaining lengths of the bins.
+        
+            for (int j = 0; j < data.NumBins; j++)
+            {
+                objective.SetCoefficient(y[j], selectedRawMaterialLength);
+            }
+        
+            for (int j = 0; j < data.NumBins; j++)
+            {
+                for (int i = 0; i < data.NumItems; i++)
+                {
+                    // Subtract the parts lengths from the total raw material length
+                    objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
+                }
+            }
+
+            objective.SetMinimization();
+
+            Console.WriteLine("Ready to solve.");
+            
+            Solver.ResultStatus resultStatus = solver.Solve();
+
+            Console.WriteLine("Solved.");
+            // Check that the problem has an optimal solution.
+            
+            if (resultStatus == Solver.ResultStatus.INFEASIBLE)
+            {
+                // 파트가 없거나 하나밖에 없을 때 솔루션을 찾지 못하는 경우 여기로 들어옴.
+                Console.WriteLine("여기에 들어오는감??");
+            }
+            else
+            {
+                
+                if (resultStatus != Solver.ResultStatus.OPTIMAL)
+                {
+                    Console.WriteLine("The problem does not have an optimal solution!");
+                }
+                
+                Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
+
+                int howManyTimes = 0;
+                int TotalScrap = 0;
+        
+                bool foundBin = false;
+                for (int j = 0; j < data.NumBins; ++j)
+                {
+                    RawMaterial rawMaterial = null;
+                    if (y[j].SolutionValue() == 1)
+                    {
+                        rawMaterial = new RawMaterial(selectedRawMaterialLength);
+                    }
+
+                    for (int i = 0; i < data.NumItems; i++)
+                    {
+                        if (x[i, j].SolutionValue() == 1)
+                        {
+                            howManyTimes++;
+                            rawMaterial.insert_part(DataModel.parts[i]);
+                        }
+                    }
+                    if (rawMaterial != null)
+                        rawMaterialsUsed.Add(rawMaterial);
+                }
+                Console.WriteLine("How Many Times: " + howManyTimes);
+                count_check(rawMaterialsUsed);
+                rawMaterialsUsed.Sort((x, y) => x.Length.CompareTo(y.Length));
+                ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
+                return res;
+            }
+        
         }
-        Console.WriteLine("How Many Times: " + howManyTimes);
-        count_check(rawMaterialsUsed);
-        rawMaterialsUsed.Sort((x, y) => x.Length.CompareTo(y.Length));
-        ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
-        return res;
+
+        return new ObservableCollection<RawMaterial>();
+    }
+
+    private static int GetTotalPartsLength(List<Part> partList)
+    {
+        int totalPartsLength = 0;
+        foreach (var part in partList)
+        {
+            totalPartsLength += part.Length;
+        }
+
+        return totalPartsLength;
+    }
+    
+    private static int FindLongestPartLength(List<Part> partList)
+    {
+        int longestLength = 0;
+        foreach (var part in partList)
+        {
+            if (longestLength < part.Length)
+                longestLength = part.Length;
+        }
+
+        if (longestLength > 0)
+            return longestLength;
+        else
+            return -1;
     }
 
     public ObservableCollection<RawMaterial> GetArrangedRawMaterials()

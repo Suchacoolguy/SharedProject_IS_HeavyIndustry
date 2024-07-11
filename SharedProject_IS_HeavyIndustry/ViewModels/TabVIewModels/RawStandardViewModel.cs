@@ -10,8 +10,10 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using DynamicData;
 using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
@@ -20,10 +22,11 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
     {
         public string Title { get; } = "규격 설정";
         public string SubTitle { get; } = "규격별 중량 및 원자재 길이를 정의할 수 있습니다\n규격 정보를 설정 할 수 있습니다";
+
         private Dictionary<string, RawLengthSet> LengthSetDictionary { get; set; }
         public ObservableCollection<RawLengthSet> LengthSetList { get; set; }
 
-        public ICommand SaveCommand { get; } 
+        public ICommand SaveCommand { get; }
         public ICommand PasteCommand { get; }
 
         public RawStandardViewModel()
@@ -37,14 +40,33 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             LengthSetList.CollectionChanged += LengthSetList_CollectionChanged!;
         }
 
-        private void LengthSetList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void LengthSetList_CollectionChanged(object sender,
+            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            LengthSetDictionary = LengthSetList.ToDictionary(item => item.Description);
+            ApplyChanges();
         }
-        
+
+        private bool ApplyChanges()
+        {
+            LengthSetDictionary.Clear();
+            var msg = "";
+            var cnt = 0;
+            foreach (var item in LengthSetList.Where(item => !string.IsNullOrWhiteSpace(item.Description)))
+                if (!LengthSetDictionary.TryAdd(item.Description, item))
+                {
+                    msg += item.Description + ",\n";
+                    cnt++;
+                }
+
+            if (cnt <= 0) return true;
+            MessageService.Send("총 " + cnt + " 개의 중복된 규격이 존재합니다.\n" + msg);
+            return false;
+        }
+
         private void Save()
         {
-            JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
+            if (ApplyChanges())
+                JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
         }
 
         [Obsolete("Obsolete")]
@@ -59,7 +81,8 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
                 ]
             };
 
-            var window = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+            var window = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
+                ?.MainWindow;
             if (window == null) return;
 
             var result = await dialog.ShowAsync(window);
@@ -88,6 +111,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
 
     public class RelayCommand : ICommand
     {

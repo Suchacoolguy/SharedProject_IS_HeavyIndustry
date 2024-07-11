@@ -17,7 +17,7 @@
     <Border BorderBrush="Gray" BorderThickness="1">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <!-- Oversized Parts -->
-        <DockPanel Name="MyStackPanel" DragDrop.AllowDrop="True">
+        <DockPanel Name="MyStackPanel" DragDrop.AllowDrop="True" Background="White">
             <ItemsControl ItemsSource="{Binding DragAndDropViewModel.TempPartList}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

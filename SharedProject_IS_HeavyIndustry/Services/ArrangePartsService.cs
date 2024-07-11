@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using DynamicData;
 using SharedProject_IS_HeavyIndustry.Models;
 using Google.OrTools.LinearSolver;
 using Newtonsoft.Json.Linq;
@@ -14,27 +15,37 @@ public class  ArrangePartsService
 {
     public static List<int> _lengthOptionsRawMaterial { get; set; }
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
-    private static ObservableCollection<Part> _overSizeParts;
+    private static List<Part> _separatedParts;
     
     // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, List<int> lengthOptions)
     {
         // 파트배치 완료된 것들
         _lengthOptionsRawMaterial = lengthOptions;
-        _rawMaterialsUsed = ArrangeParts(parts);
         
         List<Part> replacedParts = new List<Part>();
         foreach (var ppp in overSizeParts)
         {
-            while (ppp.Length > Int32.Parse(ppp.lengthToBeSeperated))
+            int length = ppp.Length;
+            while (length > Convert.ToInt32(ppp.lengthToBeSeperated))
             {
-                ppp.Length -= Int32.Parse(ppp.lengthToBeSeperated);
-                Part newPart = new Part(ppp.Assem, ppp.Mark, ppp.Material, Int32.Parse(ppp.lengthToBeSeperated), ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
+                length -= Convert.ToInt32(ppp.lengthToBeSeperated);
+                // 여기에서 도면번호에 J 붙이는 코드 추가해야함.
+                Part newPart = new Part(ppp.Assem, ppp.Mark, ppp.Material, Convert.ToInt32(ppp.lengthToBeSeperated), ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
                 replacedParts.Add(newPart);
-                replacedParts.Add(ppp);
+            }
+
+            if (length > 0)
+            {
+                // 여기에서 도면번호에 J 붙이는 코드 추가해야함.
+                Part restPart = new Part(ppp.Assem, ppp.Mark, ppp.Material, length, ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
+                replacedParts.Add(restPart);
             }
         }
-        _overSizeParts = new ObservableCollection<Part>(replacedParts);
+        _separatedParts = replacedParts;
+        parts.AddRange(_separatedParts);
+        _rawMaterialsUsed = ArrangeParts(parts);
+        
     }
     
     public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts)
@@ -197,9 +208,9 @@ public class  ArrangePartsService
         return _rawMaterialsUsed;
     }
     
-    public ObservableCollection<Part> GetOverSizeParts()
+    public List<Part> GetOverSizeParts()
     {
-        return _overSizeParts;
+        return _separatedParts;
     }
     
     public static List<int> GetLengthOptionsRawMaterial()
@@ -218,7 +229,7 @@ public class  ArrangePartsService
             }
         }
         
-        Console.WriteLine("Total parts: " + count);
-        Console.WriteLine("Total raw materials: " + rawMaterialUsed.Count);
+        Console.WriteLine("Total parts after 배치: " + count);
+        Console.WriteLine("Total raw materials after 배치: " + rawMaterialUsed.Count);
     }
 }

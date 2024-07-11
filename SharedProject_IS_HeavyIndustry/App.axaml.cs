@@ -1,9 +1,10 @@
-using System;
-using System.IO;
-using System.Text.Json.Nodes;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ClosedXML.Excel;
+using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.Views;
 
@@ -15,7 +16,7 @@ public partial class App : Application
     {
         AvaloniaXamlLoader.Load(this);
     }
-
+    
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

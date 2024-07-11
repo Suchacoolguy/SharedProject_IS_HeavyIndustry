@@ -32,6 +32,7 @@ public partial class DragAndDropTabView : TabView
         {
             // _key = selectedMaterial + "," + selectedDescription;
             MainWindowViewModel.SelectedKey = selectedMaterial + "," + selectedDescription;
+            
             //딕셔너리에 키가 존재하는지 확인 -> 존재하면 한번 DragAndDrop처리 했던것이므로 해당 값 불러와서 DragAndDropView추가 
             if (MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var arrangedRawMaterials))  // 여기!!
             {
@@ -75,10 +76,14 @@ public partial class DragAndDropTabView : TabView
         partsOverLength = GetFilteredParts(selectedMaterial, selectedDescription,
             BOMDataViewModel.PartsToSeparate);
 
+        Console.WriteLine(selectedDescription);
+        Console.WriteLine("=================파트 개수: " + parts.Count + "=================");
+        Console.WriteLine("=================오바사이즈 개수: " + partsOverLength.Count + "=================");
+        
         var service = new ArrangePartsService(new List<Part>(parts), partsOverLength,
             SettingsViewModel.GetLengthOption(selectedDescription));
         MainWindowViewModel.DragAndDropViewModel =
-            new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.GetOverSizeParts(), MainWindowViewModel.SelectedKey);
+            new DragAndDropViewModel(service.GetArrangedRawMaterials(), MainWindowViewModel.SelectedKey);
         DragAndDropViewModel.TempPartList = [];
 
 

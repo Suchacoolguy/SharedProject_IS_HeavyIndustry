@@ -71,7 +71,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 
                 if (newLengthSetDictionary != null)
                 {
-                    JsonConverter.WriteDictionaryToJson(newLengthSetDictionary);
+                    //JsonConverter.WriteDictionaryToJson(newLengthSetDictionary);
                     LengthSetDictionary = newLengthSetDictionary;
                     LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
 

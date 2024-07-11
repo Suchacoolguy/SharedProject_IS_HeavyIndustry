@@ -101,6 +101,11 @@ namespace SharedProject_IS_HeavyIndustry.Views
         {
             AddTab("규격 목록");
         }
+        
+        private void HyungGang_btn_click(object? sender, RoutedEventArgs e)
+        {
+            AddTab("형강 목록");
+        }
 
         public void AddTab(string tabHeader)
         {
@@ -155,6 +160,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 "파트 배치" => new DragAndDropTabView(this),
                 "레포트 출력" => new ReportTabView(),
                 "규격 목록" => new RawStandardTabView(),
+                "형강 목록" => new HyungGangTabView(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

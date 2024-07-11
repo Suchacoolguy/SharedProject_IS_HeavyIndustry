@@ -8,14 +8,27 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
     public static class SettingsViewModel
     {
         // public static double MaxLen = ArrangePartsService._lengthOptionsRawMaterial.Max();
-        public static List<string> HyungGangList { get; set; } = [ "H", "I", "L", "C", "ㄷ", "TB" ];
-
+        public static Dictionary<string, string> HyungGangSet { get; set; }
         private static Dictionary<string, List<int>> LengthOptionSet { get; set; }
         public static List<string> MissingKeys { get; private set; } = [];
 
         static SettingsViewModel()
         {
             InitializeLengthOptionSet();
+            InitializeHyungGangSet();
+        }
+
+        private static void InitializeHyungGangSet()
+        {
+            try
+            {
+                HyungGangSet = JsonConverter.ReadHyungGangSetFromJson()!;
+            }
+            catch (Exception ex)
+            {
+                HyungGangSet = new Dictionary<string, string>();
+                Console.WriteLine($"An error occurred while initializing LengthOptionSet: {ex.Message}");
+            }
         }
 
         private static void InitializeLengthOptionSet()
@@ -58,6 +71,11 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
             Console.WriteLine($"Key not found: 규격목록에 {desc} 정보 없음");
             MissingKeys.Add(desc);
             return 0.0; // 혹은 다른 적절한 기본값을 반환
+        }
+
+        public static List<string> GetHyungGangList()
+        {
+            return HyungGangSet.Count > 0 ? new List<string>(HyungGangSet.Keys) : [];
         }
     }
 }

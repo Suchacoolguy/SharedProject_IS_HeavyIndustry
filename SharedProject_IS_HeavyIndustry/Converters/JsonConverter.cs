@@ -14,7 +14,7 @@ public static class JsonConverter
     {
         try
         {
-            var filePath = GetFilePath();
+            var filePath = GetFilePath("RawLengthSettingInfo");
             if (!File.Exists(filePath))
             {
                 MessageService.Send("규격정보가 없습니다");
@@ -38,7 +38,7 @@ public static class JsonConverter
     {
         try
         {
-            var filePath = GetFilePath();
+            var filePath = GetFilePath("RawLengthSettingInfo");
             var directory = Path.GetDirectoryName(filePath);
             if (directory != null && !Directory.Exists(directory))
             {
@@ -57,10 +57,55 @@ public static class JsonConverter
         SettingsViewModel.Refresh();
     }
     
-    private static string GetFilePath()
+    public static Dictionary<string, string>? ReadHyungGangSetFromJson()
+    {
+        try
+        {
+            var filePath = GetFilePath("HyungGangSettingInfo");
+            if (!File.Exists(filePath))
+            {
+                MessageService.Send("형강정보가 없습니다");
+                return null;
+            }
+
+            var json = File.ReadAllText(filePath);
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return dictionary;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"JSON 파일 로드 중 오류 발생: {ex.Message}");
+            Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - ReadHyungGangSetFromJson()");
+            return null;
+        }
+    }
+    public static void WriteDictionaryToJson(Dictionary<string, string> dictionary)
+    {
+        try
+        {
+            var filePath = GetFilePath("HyungGangSettingInfo");
+            var directory = Path.GetDirectoryName(filePath);
+            if (directory != null && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
+            File.WriteAllText(filePath, json);
+            MessageService.Send("성공적으로 저장되었습니다.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"JSON 파일 저장 중 오류 발생: {ex.Message}");
+            Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - WriteDictionaryFromJson()");
+        }
+        SettingsViewModel.Refresh();
+    }
+    
+    private static string GetFilePath(string filename)
     {
         var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        var filePath = Path.Combine(appDirectory, "Assets", "RawLengthSettingInfo.json");
+        var filePath = Path.Combine(appDirectory, "Assets", filename + ".json");
         return filePath;
     }
     

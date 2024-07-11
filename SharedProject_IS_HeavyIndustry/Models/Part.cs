@@ -10,6 +10,7 @@ public class Part : INotifyPropertyChanged
     private int length, num;
     private double weightOne, weightSum, pArea;
     private Description desc;
+    private string descString;
     private bool _isOverLenth, _isExcluded, _needSeparate;
     
     public Part() {}
@@ -25,6 +26,7 @@ public class Part : INotifyPropertyChanged
         this.weightSum = weightSum;
         this.pArea = pArea;
         this.desc = desc;
+        descString = desc.ToString();
         _isOverLenth = false;
         _isExcluded = true;
         _needSeparate = false;
@@ -34,7 +36,17 @@ public class Part : INotifyPropertyChanged
     public Description Desc
     {
         get { return desc; }
-        set { desc = value; }
+        set
+        {
+            desc = value;
+            descString = value.ToString();
+        }
+    }
+
+    public string DescString
+    {
+        get { return descString; }
+        set { descString = value; }
     }
     
     public string Assem

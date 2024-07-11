@@ -33,7 +33,20 @@
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
             
-            <DataGridTextColumn Header="규격" Width="1.5*">
+            <DataGridTextColumn Header="규격" Binding="{Binding DescString}" Width="1.5*">
+                <DataGridTextColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Text="규격" VerticalAlignment="Center" Grid.Column="0"/>
+                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Description" Background="Transparent" Grid.Column="1">
+                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/filter.png" Width="16" Height="16"/>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </DataGridTextColumn.HeaderTemplate>
+            </DataGridTextColumn>
+            
+            <!--<DataGridTextColumn Header="규격" Width="1.5*">
                 <DataGridTextColumn.Binding>
                     <MultiBinding StringFormat="{}{0}{1}">
                         <Binding Path="Desc.Type"/>
@@ -54,7 +67,7 @@
                         </Grid>
                     </DataTemplate>
                 </DataGridTextColumn.HeaderTemplate>
-            </DataGridTextColumn>
+            </DataGridTextColumn>-->
             
             <DataGridTextColumn Header="도면번호" Binding="{Binding Assem}" Width="1.3*">
                 <DataGridTextColumn.HeaderTemplate>

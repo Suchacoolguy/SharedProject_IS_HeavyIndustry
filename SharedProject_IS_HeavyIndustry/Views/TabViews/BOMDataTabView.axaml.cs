@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
-using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
@@ -35,8 +30,14 @@ public partial class BOMDataTabView : TabView
         tablePanel.Children.Add(tableView);
     }
 
-    private void DnDTaskBtn_Click(object? sender, RoutedEventArgs e)
+    private async void DnDTaskBtn_Click(object? sender, RoutedEventArgs e)
     {
+        if (!CheckSeparateCondition())
+        {
+            var answer = await MessageService.SendWithAnswer("분리 필요한 파트가 \n분리 설정 되지 않았습니다.\n계속 작업 하시겠습니까?");
+            if(!answer)
+                return;
+        }
         if (MainWindowViewModel.BomDataViewModel == null)
         {
             MessageService.Send("시트를 선택해 주세요");
@@ -46,6 +47,16 @@ public partial class BOMDataTabView : TabView
             MainWindowViewModel.RawMaterialSet.Clear();
         BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
         mainWindow?.AddTab("파트 배치");
+    }
+
+    private bool CheckSeparateCondition()
+    {
+        foreach (var p in BOMDataViewModel.AllParts)
+        {
+            if (!p.IsOverLenth == p.NeedSeparate)
+                return false;
+        }
+        return true;
     }
     
     private void SetExcludeTrue(object? sender, RoutedEventArgs e)
@@ -78,5 +89,20 @@ public partial class BOMDataTabView : TabView
             // Do something with menuItem.Header
             Console.WriteLine($"You clicked {menuItem.Header}");
         }
+    }
+
+    private void SeparateCheckChanged(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not CheckBox checkBox) return;
+        if (!this.FindControl<Panel>("TablePanel")!.Children.Any())
+        {
+            checkBox.IsChecked = false;
+            MessageService.Send("파트 목록이 없습니다.\n시트를 선택해주세요");
+            return;
+        }
+        if(checkBox.IsChecked == true)
+            BOMDataViewModel.ApplyFilter(true);
+        else
+            BOMDataViewModel.ApplyFilter(false);
     }
 }

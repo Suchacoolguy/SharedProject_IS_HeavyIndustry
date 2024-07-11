@@ -1,43 +1,5 @@
 ﻿<Style xmlns="https://github.com/avaloniaui"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-       <Design.PreviewWith>
-              <StackPanel Width="800" Height="800">
-                     <StackPanel Orientation="Horizontal">
-                            <Canvas Width="500" Height="10" Background="Orange">
-                                   <Border BorderBrush="Black" BorderThickness="1">
-                                          <Rectangle Fill="Orange" Width="100" Height="10"></Rectangle>
-                                   </Border>
-                                   <Border BorderBrush="Black" BorderThickness="1">
-                                          <Rectangle Fill="Orange" Width="100" Height="10"></Rectangle>
-                                   </Border>
-                                   <Border BorderBrush="Black" BorderThickness="1">
-                                          <Rectangle Fill="Orange" Width="100" Height="10"></Rectangle>
-                                   </Border>
-                                   <Border BorderBrush="Black" BorderThickness="1">
-                                          <Rectangle Fill="Orange" Width="100" Height="10"></Rectangle>
-                                   </Border>
-                            </Canvas>
-                     </StackPanel>
-
-                     <StackPanel Orientation="Horizontal">
-                            <Border Width="100" Height="10" BorderBrush="Black" BorderThickness="1">
-                                   <Rectangle Fill="Aqua"></Rectangle>
-                            </Border>
-                            <Border Width="100" Height="10" BorderBrush="Black" BorderThickness="1">
-                                   <Rectangle Fill="Aqua"></Rectangle>
-                            </Border>
-                            <Border Width="100" Height="10" BorderBrush="Black" BorderThickness="1">
-                                   <Rectangle Fill="Aqua"></Rectangle>
-                            </Border>
-                            <Border Width="100" Height="10" BorderBrush="Black" BorderThickness="1">
-                                   <Rectangle Fill="Aqua"></Rectangle>
-                            </Border>
-                            <Border Width="100" Height="10" BorderBrush="Black" BorderThickness="1">
-                                   <Rectangle Fill="Aqua"></Rectangle>
-                            </Border>
-                     </StackPanel>
-              </StackPanel>
-       </Design.PreviewWith>
        <Style Selector="Button.FilterButton">
               <Setter Property="Button.Padding" Value="5"/>
               <Setter Property="Button.Margin" Value="5,0,0,0"/>

@@ -78,6 +78,17 @@
                 }
             }
 
+            public static void ApplyFilter(bool isChecked)
+            {
+                PartsFiltered.Clear();
+                if(isChecked)
+                    foreach (var part in AllParts.Where(p => p.IsOverLenth))
+                        PartsFiltered.Add(part);
+                else
+                    foreach (var part in AllParts.Where(p => !p.IsOverLenth))
+                        PartsFiltered.Add(part);
+            }
+            
             private static ObservableCollection<Part> Clone(ObservableCollection<Part> list)
             {
                 ObservableCollection<Part> result = [];

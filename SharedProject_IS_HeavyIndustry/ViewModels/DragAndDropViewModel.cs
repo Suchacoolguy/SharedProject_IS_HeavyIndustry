@@ -150,6 +150,13 @@ public class DragAndDropViewModel
         
         // 파트 위에다 드랍하는 경우 이 변수에 그 파트가 저장될 것
         var partTo = (e.Source as Control)?.DataContext as Part;
+        var borderTo = (e.Source as Border);
+        if (borderTo != null)
+        {
+            Console.WriteLine("보더에 드랍합!");
+            partTo = borderTo.Child.DataContext as Part;
+            Console.WriteLine("파트의 정체는? " + partTo);
+        }
         
         if (rawMaterialFrom == null)
         {
@@ -224,7 +231,7 @@ public class DragAndDropViewModel
         else if ((partTo != null || rawMaterialTo == null) && part != null)
         {
             // if (e.Source is StackPanel || e.Source is TextBlock)
-            if (e.Source is not DockPanel)
+            if (e.Source is not DockPanel && partTo == null)
             {
                 if (rawMaterialTo == null)
                 {

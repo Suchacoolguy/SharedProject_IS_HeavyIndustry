@@ -223,7 +223,8 @@ public class DragAndDropViewModel
         }
         else if ((partTo != null || rawMaterialTo == null) && part != null)
         {
-            if (e.Source is not Rectangle && e.Source is not Border)
+            // if (e.Source is StackPanel || e.Source is TextBlock)
+            if (e.Source is not DockPanel)
             {
                 if (rawMaterialTo == null)
                 {

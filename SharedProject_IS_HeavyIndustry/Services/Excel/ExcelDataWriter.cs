@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SkiaSharp;
 
@@ -223,7 +222,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             /*Console.WriteLine("height : " + mergedCellHeight);
             Console.WriteLine("width : " + mergedCellWidth);*/
             mergedCellHeight = (worksheet.Row(row).Height * 96 / 72);
-
+            
             using (var ms = new MemoryStream())
             {
                 image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(ms);

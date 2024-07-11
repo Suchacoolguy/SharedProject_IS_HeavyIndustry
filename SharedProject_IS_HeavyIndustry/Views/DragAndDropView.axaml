@@ -16,7 +16,7 @@
     
     <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 

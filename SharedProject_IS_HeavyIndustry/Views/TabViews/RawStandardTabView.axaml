@@ -29,6 +29,8 @@
                             Content="규격정보 저장" DockPanel.Dock="Left" Command="{Binding SaveCommand}"/>
                     <Button Name="DnDTaskBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 
                             Content="엑셀에서 붙여넣기" Command="{Binding PasteCommand}" Margin="4,0,0,0" DockPanel.Dock="Left"/>
+                    <Button Name="Addition" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 
+                            Content="행추가" Click="MoveToBottum" Margin="4,0,0,0" DockPanel.Dock="Right"/>
                     <Button Background="White"/>
                 </DockPanel>
                 <Panel Name="TablePanel" Margin="4,4,4,0">

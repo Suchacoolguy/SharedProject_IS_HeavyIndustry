@@ -20,7 +20,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
         [Obsolete("Obsolete")]
         public FilteringService(string tag)
         {
-            this._tag = tag;
+            _tag = tag;
             FilterMenu = GenerateFilter();
         }
         

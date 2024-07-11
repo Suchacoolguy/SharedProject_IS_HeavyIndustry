@@ -19,7 +19,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         }
         public List<int> LengthsAsIntegerList()
         {
-            return StringToList(lengths).Select(value => (int)(value * 1000)).ToList();
+            return lengths.Equals("") ? [] : StringToList(lengths).Select(value => (int)(value * 1000)).ToList();
         }
         private static string ListToString(List<double> lengths)
         {

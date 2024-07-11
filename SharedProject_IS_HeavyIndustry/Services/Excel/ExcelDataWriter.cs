@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SkiaSharp;
 
@@ -46,12 +47,15 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     _row = 13; // _row 변수 초기화
                     var sheetName = ConvertSheetName(kvp.Key);
                     var worksheet = workbook.Worksheets.Add(sheetName);
-                    _imgWidth = ModifyCellWidth(worksheet);
+                    //_imgWidth = ModifyCellWidth(worksheet);
+                    worksheet.ColumnWidth = (int)worksheet.ColumnWidth + 1;
+                    worksheet.RowHeight = (int)worksheet.RowHeight;
 
-                    type = Regex.Match(kvp.Key, @"^[^\d]+").Value;
-                    size = Regex.Match(kvp.Key, @"[\d\*\.]+").Value;
+                    var match = Regex.Match(kvp.Key, @"^(.*),([A-Za-z]+)([\d\*\.]+)$");
+                    type = match.Groups[2].Value;
+                    size = match.Groups[3].Value;
 
-                    MakeHeader(worksheet, type, size, kvp.Value);
+                    MakeHeader(worksheet, type,type + size, kvp.Value);
                     MakeChart(worksheet, kvp.Value);
                 }
 
@@ -84,7 +88,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         }
 
 
-        private static void MakeHeader(IXLWorksheet worksheet, string type, string size, ObservableCollection<RawMaterial> rawMaterials)
+        private static void MakeHeader(IXLWorksheet worksheet, string type, string desc, ObservableCollection<RawMaterial> rawMaterials)
         {
             // 엑셀 세로 폭 설정
             worksheet.Row(3).Height = worksheet.RowHeight / 2;
@@ -102,7 +106,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             worksheet.Cell(1, 7).Value = "UNIT WEIGHT";
 
             worksheet.Cell(2, 1).Value = type;
-            worksheet.Cell(2, 3).Value = size;
+            worksheet.Cell(2, 3).Value = desc;
             worksheet.Cell(2, 5).Value = "SS275";
             worksheet.Cell(2, 7).Value = "20.1";
             worksheet.Cell(2, 7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
@@ -165,7 +169,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 worksheet.Cell(_row, 1).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                 worksheet.Cell(_row, 2).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                 worksheet.Cell(_row, 9).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                MakeBorder(worksheet, _row);
+                //MakeBorder(worksheet, _row);
                 InsertImage(worksheet, rawMaterial.GenerateBarChartImage(), _row);
                 i++;
                 _row++;
@@ -208,8 +212,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
 
         private static void InsertImage(IXLWorksheet worksheet, SKBitmap image, int row)
         {
+            // 병합할 범위 선택
+            var mergedCells = worksheet.Range(row, 3, row, 8);
+            // 셀 병합
+            mergedCells.Merge();
             worksheet.Row(row).Height = worksheet.Row(row).Height + 10; // 예시로 높이를 100으로 설정
-
+            
             //double mergedCellWidth = worksheet.Column(3).Width;
             var mergedCellHeight = worksheet.Row(row).Height;
             /*Console.WriteLine("height : " + mergedCellHeight);
@@ -219,13 +227,19 @@ namespace SharedProject_IS_HeavyIndustry.Models
             using (var ms = new MemoryStream())
             {
                 image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(ms);
-                var picture = worksheet.AddPicture(ms).MoveTo(worksheet.Cell(row, 3));
+                var picture = worksheet.AddPicture(ms).MoveTo(worksheet.Cell(row, 3));//.WithSize(400, 30);
+                
+                worksheet.Row(_row).Height = picture.Height + 5; 
+                /*Console.WriteLine("사진 너비 : " + picture.Width);
+                Console.WriteLine("셀 너비 : " + worksheet.ColumnWidth * 6);
+                Console.WriteLine("사진 높이 : " + picture.Height);
+                Console.WriteLine("셀 높이 : " + worksheet.RowHeight);*/
                 picture.ScaleWidth(1.0);
-                picture.ScaleHeight((mergedCellHeight + 2) / picture.Height);
+                picture.ScaleHeight((mergedCellHeight) / picture.Height);
             }
         }
 
-        private static int ModifyCellWidth(IXLWorksheet sheet)
+        /*private static int ModifyCellWidth(IXLWorksheet sheet)
         {
             var cellWidth = sheet.Column(3).Width;
             cellWidth = (int)((cellWidth + 2) * 45);
@@ -235,7 +249,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             }
             Console.WriteLine(cellWidth / 45);
             return (int)cellWidth;
-        }
+        }*/
 
         private static string ConvertSheetName(string input)
         {

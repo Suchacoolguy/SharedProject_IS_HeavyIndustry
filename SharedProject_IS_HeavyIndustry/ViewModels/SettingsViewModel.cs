@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SharedProject_IS_HeavyIndustry.Converters;
-using SharedProject_IS_HeavyIndustry.Services;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels
 {
@@ -57,7 +56,6 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
             if (LengthOptionSet.TryGetValue(desc, out var lengths))
                 return lengths.Max();
             Console.WriteLine($"Key not found: 규격목록에 {desc} 정보 없음");
-            Console.WriteLine(LengthOptionSet.Count);
             MissingKeys.Add(desc);
             return 0.0; // 혹은 다른 적절한 기본값을 반환
         }

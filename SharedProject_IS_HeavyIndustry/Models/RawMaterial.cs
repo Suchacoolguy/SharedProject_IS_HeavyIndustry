@@ -185,8 +185,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
         
         public SKBitmap GenerateBarChartImage()
         {
-            int width = 480;
-            int height = 27;
+            int width = 430;
+            int height = 15;
             SKBitmap image = new SKBitmap(width, height);
 
             int totalLength = Length;
@@ -197,7 +197,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 SKPaint paint = new SKPaint
                 {
                     Color = SKColors.Black,
-                    StrokeWidth = 3,
+                    StrokeWidth = 1, // 테두리 선의 굵기를 1로 변경
                     Style = SKPaintStyle.Stroke
                 };
                 canvas.DrawRect(0, 0, width - 1, height - 1, paint);
@@ -208,7 +208,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 SKPaint paint = new SKPaint
                 {
                     Color = SKColors.Black,
-                    StrokeWidth = 2
+                    StrokeWidth = 1, // 내부 선의 굵기는 1로 유지
+                    IsAntialias = true // 안티앨리어싱 활성화
                 };
 
                 int accumulatedLength = 0;
@@ -219,14 +220,23 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 {
                     accumulatedLength += part.Length;
 
+                    // 파트 번호 텍스트 설정
                     string label = i.ToString();
-                    using (SKPaint textPaint = new SKPaint { TextSize = 10, IsAntialias = true, Color = SKColors.Black })
+                    SKPaint textPaint = new SKPaint
                     {
-                        float x = lineX - textPaint.MeasureText(label) / 2 + 10;
-                        float y = height / 2;
-                        canvas.DrawText(label, x, y, textPaint);
-                    }
+                        TextSize = 7, // 텍스트 크기를 작게 조정
+                        IsAntialias = true, // 안티앨리어싱 활성화
+                        Color = SKColors.Black,
+                        TextAlign = SKTextAlign.Left,
+                        Typeface = SKTypeface.FromFamilyName("Arial")
+                    };
 
+                    float textX = lineX + 4; // 텍스트를 왼쪽으로 조금 이동
+                    float textY = height / 2 + textPaint.TextSize / 2; // 중앙에 위치
+
+                    canvas.DrawText(label, textX, textY, textPaint);
+
+                    // 선 그리기
                     lineX = (int)Math.Round((double)accumulatedLength / totalLength * (width - 2));
                     canvas.DrawLine(lineX, 0, lineX, height - 1, paint);
 
@@ -235,5 +245,6 @@ namespace SharedProject_IS_HeavyIndustry.Models
             }
             return image;
         }
+
     }
 }

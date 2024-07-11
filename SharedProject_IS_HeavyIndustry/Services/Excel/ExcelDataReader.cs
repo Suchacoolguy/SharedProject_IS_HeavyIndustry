@@ -104,7 +104,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             var description = new Description(type, size);
             //분리필요로 변경된 코드 
             var part = new Part(assem, mark, material, length, num, weightOne, weightSum, pArea, description);
-            foreach (var hyungGangType in SettingsViewModel.HyungGangList)
+            foreach (var hyungGangType in SettingsViewModel.GetHyungGangList())
             {
                 // 형강 목록 리스트에 없으면 제외 True, 있으면 제외 False.
                 if (type.Equals(hyungGangType.Trim()))

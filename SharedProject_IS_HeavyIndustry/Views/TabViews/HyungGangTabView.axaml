@@ -24,17 +24,21 @@
                     <TextBlock Padding="2" VerticalAlignment="Center" Foreground="White">형강 설정 </TextBlock>
                 </Border>
                 <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
+                    <Button Name="ReadExcelBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 
+                            Content="형강정보 저장" DockPanel.Dock="Left" Command="{Binding SaveCommand}"/>
                     <Button Name="DnDTaskBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 
                             Content="엑셀에서 붙여넣기" Command="{Binding PasteCommand}" Margin="4,0,0,0" DockPanel.Dock="Left"/>
                     <Button Background="White"/>
+                    <Button Name="Addition" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 
+                            Content="행추가" Click="MoveToBottum" Margin="4,0,0,0" DockPanel.Dock="Right"/>
+                    <Button Background="White"/>
                 </DockPanel>
                 <Panel Name="TablePanel" Margin="4,4,4,0">
-                    <DataGrid Name="Table" ItemsSource="{Binding LengthSetList}"
+                    <DataGrid Name="Table" ItemsSource="{Binding HyungGangList}"
                               AutoGenerateColumns="False" IsReadOnly="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="규격" Binding="{Binding Description}" Width="Auto"/>
-                            <DataGridTextColumn Header="단중" Binding="{Binding Weight}" Width="*"/>
-                            <DataGridTextColumn Header="길이" Binding="{Binding Lengths}" Width="*"/>
+                            <DataGridTextColumn Header="약자" Binding="{Binding Type}" Width="*"/>
+                            <DataGridTextColumn Header="구분" Binding="{Binding Description}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Panel>

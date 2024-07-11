@@ -21,7 +21,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         
         public static void main()
         {
-            Part part = new Part("G", "Mark", "material", 500, 1, 300, 300, 2.5, new Description("TB", "150*150"));
+            Part part = new Part("G", "Mark", "material", 500, 1, 300, 300, 2.5, new Description("D", "16"));
             var raw = new RawMaterial(8010);
             raw.PartsInside.Add(part);
             raw.PartsInside.Add(part);
@@ -254,10 +254,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
         {
             // 정규 표현식으로 입력 문자열을 그룹화하여 추출
             var match = Regex.Match(input, @"^(.*),([A-Za-z]+)([\d\*\.]+)$");
-
             if (!match.Success) return input;
+            var hyungGangSet = SettingsViewModel.HyungGangSet;
+            
             var material = match.Groups[1].Value;
             var type = match.Groups[2].Value;
+            hyungGangSet.TryGetValue(type, out type);
             var dimensions = match.Groups[3].Value.Replace("*", "x");
                 
             return $"{type}({dimensions})_<{material}>";

@@ -10,6 +10,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.Services;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 {
@@ -17,37 +18,57 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
     {
         public string Title { get; } = "형강 설정";
         public string SubTitle { get; } = "정보 필요";
-        private Dictionary<string, RawLengthSet> LengthSetDictionary { get; set; }
-        public ObservableCollection<RawLengthSet> LengthSetList { get; set; }
+        private Dictionary<string, string> HyungGangSet { get; set; }
+        public ObservableCollection<HyungGang > HyungGangList { get; set; }
 
         public ICommand SaveCommand { get; } 
         public ICommand PasteCommand { get; }
 
         public HyungGangViewModel()
         {
-            LengthSetDictionary = JsonConverter.ReadDictionaryFromJson() ?? new Dictionary<string, RawLengthSet>();
-            LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
+            HyungGangSet = JsonConverter.ReadHyungGangSetFromJson() ?? new Dictionary<string, string>();
+            HyungGangList = [];
+            foreach (var kvp in HyungGangSet)
+                HyungGangList.Add(new HyungGang(kvp.Key, kvp.Value));
 
             SaveCommand = new RelayCommand(Save);
             PasteCommand = new RelayCommand(Paste);
 
-            LengthSetList.CollectionChanged += LengthSetList_CollectionChanged!;
+            HyungGangList.CollectionChanged += HyungGangList_CollectionChanged!;
         }
 
-        private void LengthSetList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void HyungGangList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            LengthSetDictionary = LengthSetList.ToDictionary(item => item.Description);
+            ApplyChanges();
+        }
+        
+        private bool ApplyChanges()
+        {
+            HyungGangSet.Clear();
+            var msg = "";
+            var cnt = 0;
+            foreach (var item in HyungGangList.Where(item => !string.IsNullOrWhiteSpace(item.Type)))
+                if (!HyungGangSet.TryAdd(item.Type, item.Description))
+                {
+                    msg += item.Type + ",\n";
+                    cnt++;
+                }
+
+            if (cnt <= 0) return true;
+            MessageService.Send("총 " + cnt + " 개의 중복된 형강이 존재합니다.\n" + msg);
+            return false;
         }
         
         private void Save()
         {
-            JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
+            if (ApplyChanges()) 
+                JsonConverter.WriteDictionaryToJson(HyungGangSet);
         }
 
         [Obsolete("Obsolete")]
         private async void Paste()
         {
-            var dialog = new OpenFileDialog
+            /*var dialog = new OpenFileDialog
             {
                 Title = "엑셀 파일 선택",
                 Filters =
@@ -64,18 +85,18 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             if (result != null && result.Length > 0)
             {
                 var filePath = result[0];
-                var newLengthSetDictionary = ExcelDataReader.RawLengthSettingsFromExcel(filePath);
+                var newHyungGangSet = ExcelDataReader.RawLengthSettingsFromExcel(filePath);
 
-                if (newLengthSetDictionary != null)
+                if (newHyungGangSet != null)
                 {
-                    JsonConverter.WriteDictionaryToJson(newLengthSetDictionary);
-                    LengthSetDictionary = newLengthSetDictionary;
-                    LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
+                    JsonConverter.WriteDictionaryToJson(newHyungGangSet);
+                    HyungGangSet = newHyungGangSet;
+                    HyungGangList = new ObservableCollection<RawLengthSet>(HyungGangSet.Values);
 
                     // Raise PropertyChanged event to notify UI about the change
-                    OnPropertyChanged(nameof(LengthSetList));
+                    OnPropertyChanged(nameof(HyungGangList));
                 }
-            }
+            }*/
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

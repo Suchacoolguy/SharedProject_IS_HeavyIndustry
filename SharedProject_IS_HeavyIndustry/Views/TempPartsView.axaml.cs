@@ -19,8 +19,6 @@ public partial class TempPartsView : UserControl
 
         AddHandler(DragDrop.DropEvent, TempPart_DragOver);
         AddHandler(DragDrop.DropEvent, Part_Drop);
-        
-        Console.WriteLine("Num OverSizeParts: " + DragAndDropViewModel.TempPartList.Count);
     }
     
     private void TempPart_DragOver(object sender, DragEventArgs e)

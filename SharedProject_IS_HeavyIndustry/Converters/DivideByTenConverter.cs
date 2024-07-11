@@ -10,7 +10,7 @@ namespace SharedProject_IS_HeavyIndustry.Converters
         {
             if (value is int intValue)
             {
-                return (double)intValue / 20;
+                return (double)intValue / 20 - 2;
             }
             return value;
         }

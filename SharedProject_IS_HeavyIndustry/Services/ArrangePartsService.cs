@@ -218,7 +218,7 @@ public class  ArrangePartsService
             }
         }
         
-        Console.WriteLine("Total parts: " + count);
-        Console.WriteLine("Total raw materials: " + rawMaterialUsed.Count);
+        Console.WriteLine("Total parts after 배치: " + count);
+        Console.WriteLine("Total raw materials after 배치: " + rawMaterialUsed.Count);
     }
 }

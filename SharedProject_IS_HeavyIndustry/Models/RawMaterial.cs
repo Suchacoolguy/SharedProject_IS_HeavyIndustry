@@ -214,7 +214,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 SKPaint paint = new SKPaint
                 {
                     Color = SKColors.Black,
-                    StrokeWidth = 1, // 내부 선의 굵기는 1로 유지
+                    StrokeWidth = 2, // 내부 선의 굵기는 1로 유지
                     IsAntialias = true // 안티앨리어싱 활성화
                 };
 
@@ -230,7 +230,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     string label = i.ToString();
                     SKPaint textPaint = new SKPaint
                     {
-                        TextSize = 7, // 텍스트 크기를 작게 조정
+                        TextSize = 8, // 텍스트 크기를 작게 조정
                         IsAntialias = true, // 안티앨리어싱 활성화
                         Color = SKColors.Black,
                         TextAlign = SKTextAlign.Left,

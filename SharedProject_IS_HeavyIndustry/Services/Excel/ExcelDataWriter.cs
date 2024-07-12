@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels;
@@ -53,10 +55,11 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     worksheet.RowHeight = (int)worksheet.RowHeight;
 
                     var match = Regex.Match(kvp.Key, @"^(.*),([A-Za-z]+)([\d\*\.]+)$");
+                    var material = match.Groups[1].Value;
                     type = match.Groups[2].Value;
                     size = match.Groups[3].Value;
 
-                    MakeHeader(worksheet, type, type + size, kvp.Value);
+                    MakeHeader(worksheet, type, type + size, material, kvp.Value);
                     MakeChart(worksheet, kvp.Value);
                 }
 
@@ -114,7 +117,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         }
 
 
-        private static void MakeHeader(IXLWorksheet worksheet, string type, string desc, ObservableCollection<RawMaterial> rawMaterials)
+        private static void MakeHeader(IXLWorksheet worksheet, string type, string desc, string material, ObservableCollection<RawMaterial> rawMaterials)
         {
             // 엑셀 세로 폭 설정
             worksheet.Row(3).Height = worksheet.RowHeight / 2;
@@ -130,36 +133,55 @@ namespace SharedProject_IS_HeavyIndustry.Models
             worksheet.Cell(1, 3).Value = "DESCRIPTION";
             worksheet.Cell(1, 5).Value = "MATERIAL";
             worksheet.Cell(1, 7).Value = "UNIT WEIGHT";
+            
+            var hyungGangSet = SettingsViewModel.HyungGangSet;
+            hyungGangSet.TryGetValue(type, out type!);
+
+            var rowLengthSet = JsonConverter.ReadDictionaryFromJson();
+            rowLengthSet!.TryGetValue(desc, out var value);
+            var rawWeight = value!.Weight;
 
             worksheet.Cell(2, 1).Value = type;
             worksheet.Cell(2, 3).Value = desc;
-            worksheet.Cell(2, 5).Value = "SS275";
-            worksheet.Cell(2, 7).Value = "20.1";
+            worksheet.Cell(2, 5).Value = material;
+            worksheet.Cell(2, 7).Value = rawWeight;
             worksheet.Cell(2, 7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
             worksheet.Cell(2, 8).Value = "kg/m";
             worksheet.Cell(2, 8).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
+            var insideParts = 0;
+            var totalRemaining = 0;
+            var totalPartLen = 0;
+            var totalStockLen = 0;
+            foreach (var raw in rawMaterials)
+            {
+                insideParts += raw.PartsInside.Count;
+                totalRemaining += raw.RemainingLength;
+                totalPartLen += raw.Length - raw.RemainingLength;
+                totalStockLen += raw.Length;
+            }
+            
             worksheet.Cell(5, 1).Value = "NUMBER OF PART TYPE : ";
             worksheet.Cell(5, 4).Value = 1;
             worksheet.Cell(5, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
             worksheet.Cell(5, 6).Value = "TOTAL NUMBER OF PART : ";
-            worksheet.Cell(5, 9).Value = 1;
+            worksheet.Cell(5, 9).Value = insideParts;
             worksheet.Cell(5, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
             worksheet.Cell(6, 1).Value = "TOTAL STOCK WEIGHT = ";
-            worksheet.Cell(6, 4).Value = 242 + " [ Kg]";
+            worksheet.Cell(6, 4).Value = (double)totalStockLen/1000*rawWeight + " [ Kg]";
             worksheet.Cell(6, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
             worksheet.Cell(6, 6).Value = "TOTAL PART WEIGHT = ";
-            worksheet.Cell(6, 9).Value = 201 + " [ Kg]";
+            worksheet.Cell(6, 9).Value = (double)totalPartLen/1000*rawWeight + " [ Kg]";
             worksheet.Cell(6, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
             worksheet.Cell(7, 1).Value = "TOTAL RESIDUAL WEIGHT = ";
             worksheet.Cell(7, 6).Value = "TOTAL SCRAP WEIGHT = ";
-            worksheet.Cell(7, 9).Value = 40 + " [ Kg]";
+            worksheet.Cell(7, 9).Value = (double)totalRemaining/1000 * rawWeight  + " [ Kg]";
             worksheet.Cell(7, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
             worksheet.Cell(8, 1).Value = "TOTAL BAR USAGE : ";
-            worksheet.Cell(8, 4).Value = 83 + "%";
+            worksheet.Cell(8, 4).Value = "??" + "%";
             worksheet.Cell(8, 6).Value = "PRINT DATE : ";
             worksheet.Cell(8, 8).Value = $"{DateTime.Now:yyyy.MM.dd hh:mm}";
 

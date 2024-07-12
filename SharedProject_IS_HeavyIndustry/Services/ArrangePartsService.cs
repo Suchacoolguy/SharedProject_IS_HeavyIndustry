@@ -109,7 +109,7 @@ public class ArrangePartsService
                 else if (partList[partList.Count / 2].Length < selectedRawMaterialLength * 0.1 && partList.Count > 200)
                 {
                     Console.WriteLine("파트는 많지만 제곱근으로 줄이면 배치 불가넝 (ㅇ..ㅇ;;) ");
-                    data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count / 5);
+                    data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count / 4);
                 }
                 else if (avgPartsLength < selectedRawMaterialLength / 2 && partList[partList.Count / 2].Length < selectedRawMaterialLength / 2)
                 {
@@ -143,9 +143,9 @@ public class ArrangePartsService
             }
             
             
-            Solver solver = Solver.CreateSolver("SCIP");
-            solver.SetNumThreads(2);
-            solver.SetTimeLimit(20000);
+            Solver solver = Solver.CreateSolver("CP-SAT");
+            solver.SetNumThreads(8);
+            solver.SetTimeLimit(15000);
         
             // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
             Variable[,] x = new Variable[data.NumItems, data.NumBins];

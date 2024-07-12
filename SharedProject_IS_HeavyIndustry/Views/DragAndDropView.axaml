@@ -36,7 +36,7 @@
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Canvas Name="MyCanvas" Width="850" Height="55" Background="{Binding BackgroundColor}">
+                                <Canvas Name="MyCanvas" Width="850" Height="55" Background="{Binding BackgroundColor}" HorizontalAlignment="Stretch">
                                     
                                     <!-- Raw material -->
                                     <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="0" Canvas.Top="0" DragDrop.AllowDrop="True">

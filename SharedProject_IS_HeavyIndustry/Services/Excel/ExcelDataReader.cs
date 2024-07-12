@@ -111,7 +111,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     part.IsExcluded = false;
             }
             if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
-                part.IsOverLenth = true;
+                part.IsExcluded = true;
 
             return part;
         }

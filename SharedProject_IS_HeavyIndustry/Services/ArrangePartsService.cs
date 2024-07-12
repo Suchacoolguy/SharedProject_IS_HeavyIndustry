@@ -114,7 +114,7 @@ public class ArrangePartsService
                 else if (avgPartsLength < selectedRawMaterialLength / 2 && partList[partList.Count / 2].Length < selectedRawMaterialLength / 2)
                 {
                     Console.WriteLine("옳거니! 2분의 1");
-                    data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count / 2);
+                    data = new DataModel(partList, _lengthOptionsRawMaterial, partList.Count / 2 + 2);
                 }
                 else if (partList[partList.Count / 2].Length > selectedRawMaterialLength / 2)
                 {
@@ -144,7 +144,7 @@ public class ArrangePartsService
             
             
             Solver solver = Solver.CreateSolver("SCIP");
-            solver.SetTimeLimit(40000);
+            solver.SetTimeLimit(10000);
         
             // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
             Variable[,] x = new Variable[data.NumItems, data.NumBins];
@@ -209,7 +209,7 @@ public class ArrangePartsService
             objective.SetMinimization();
 
             Console.WriteLine("Ready to solve.");
-            
+
             Solver.ResultStatus resultStatus = solver.Solve();
 
             Console.WriteLine("Solved.");
@@ -218,20 +218,16 @@ public class ArrangePartsService
             if (resultStatus == Solver.ResultStatus.INFEASIBLE)
             {
                 // 파트가 없거나 하나밖에 없을 때 솔루션을 찾지 못하는 경우 여기로 들어옴.
-                Console.WriteLine("여기에 들어오는감??");
+                MessageService.Send("파트 배치가 불가능합니다. 규격 설정과 분리 설정을 확인해주세요.");
+                return new ObservableCollection<RawMaterial>();
             }
             else if (resultStatus == Solver.ResultStatus.NOT_SOLVED || resultStatus == Solver.ResultStatus.ABNORMAL)
             {
-                Console.WriteLine("Not Solved or Abnormal (ㅇ..ㅇ;;) ");   
+                Console.WriteLine("파트 배치에 실패하였습니다. 다시 시도해주세요.");
+                return new ObservableCollection<RawMaterial>();
             }
             else
             {
-                
-                if (resultStatus != Solver.ResultStatus.OPTIMAL)
-                {
-                    Console.WriteLine("The problem does not have an optimal solution!");
-                }
-                
                 Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
 
                 int howManyTimes = 0;

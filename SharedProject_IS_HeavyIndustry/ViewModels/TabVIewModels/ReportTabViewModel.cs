@@ -20,7 +20,6 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels
                 if (_width != value && IsTextAllowed(value.ToString()))
                 {
                     _width = value;
-                    Console.WriteLine($"Width changed to: {_width}");
                     OnStaticPropertyChanged(nameof(Width));
                 }
             }
@@ -35,8 +34,21 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels
                 if (_height != value && IsTextAllowed(value.ToString()))
                 {
                     _height = value;
-                    Console.WriteLine($"Height changed to: {_height}");
                     OnStaticPropertyChanged(nameof(Height));
+                }
+            }
+        }
+
+        private static bool _isVisible;
+        public static bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
+                    OnStaticPropertyChanged(nameof(IsVisible));
                 }
             }
         }
@@ -73,11 +85,13 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels
             {
                 Width = 430;
                 Height = 320;
+                IsVisible = true;
 
                 using (var writer = new StreamWriter(filePath))
                 {
                     writer.WriteLine($"Width={Width}");
                     writer.WriteLine($"Height={Height}");
+                    writer.WriteLine($"IsVisible={IsVisible}");
                 }
             }
             else
@@ -97,6 +111,10 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels
                             else if (parts[0] == "Height" && int.TryParse(parts[1], out var height))
                             {
                                 Height = height;
+                            }
+                            else if (parts[0] == "IsVisible" && bool.TryParse(parts[1], out var isVisible))
+                            {
+                                IsVisible = isVisible;
                             }
                         }
                     }

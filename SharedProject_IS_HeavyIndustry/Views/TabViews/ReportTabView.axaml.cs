@@ -50,10 +50,25 @@ namespace SharedProject_IS_HeavyIndustry.Views
                     Directory.CreateDirectory(Path.Combine(appDirectory, "Assets"));
                 }
 
+                string isVisibleLine = $"IsVisible={ReportTabViewModel.IsVisible}";
+                if (File.Exists(filePath))
+                {
+                    var lines = File.ReadAllLines(filePath);
+                    foreach (var line in lines)
+                    {
+                        if (line.StartsWith("IsVisible="))
+                        {
+                            isVisibleLine = line;
+                            break;
+                        }
+                    }
+                }
+
                 using (var writer = new StreamWriter(filePath))
                 {
                     writer.WriteLine($"Width={ReportTabViewModel.Width}");
                     writer.WriteLine($"Height={ReportTabViewModel.Height}");
+                    writer.WriteLine(isVisibleLine);
                 }
             }
         }
@@ -62,6 +77,30 @@ namespace SharedProject_IS_HeavyIndustry.Views
         {
             Regex regex = new Regex("[^0-9]+"); // 정수만 허용
             return !regex.IsMatch(text);
+        }
+
+        private void MakeInvisible(object? sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as ReportTabViewModel;
+            if (viewModel != null)
+            {
+                ReportTabViewModel.IsVisible = false;
+
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var filePath = Path.Combine(appDirectory, "Assets", "imageSize.txt");
+
+                if (!Directory.Exists(Path.Combine(appDirectory, "Assets")))
+                {
+                    Directory.CreateDirectory(Path.Combine(appDirectory, "Assets"));
+                }
+
+                using (var writer = new StreamWriter(filePath))
+                {
+                    writer.WriteLine($"Width={ReportTabViewModel.Width}");
+                    writer.WriteLine($"Height={ReportTabViewModel.Height}");
+                    writer.WriteLine($"IsVisible={ReportTabViewModel.IsVisible}");
+                }
+            }
         }
     }
 }

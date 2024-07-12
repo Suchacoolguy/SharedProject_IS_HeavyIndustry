@@ -18,7 +18,7 @@
               CanUserSortColumns="True"
               GridLinesVisibility="All"
               FontSize="5"
-              BorderThickness="1" BorderBrush="Gray">
+              BorderThickness="1" BorderBrush="Gray" >
         <DataGrid.Columns>
             <DataGridTextColumn Header="재질" Binding="{Binding Material}" Width="0.8*">
                 <DataGridTextColumn.HeaderTemplate>
@@ -108,7 +108,7 @@
             <DataGridTemplateColumn Header="제외" Width="0.8*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <CheckBox IsChecked="{Binding IsExcluded}" HorizontalAlignment="Center"/>
+                        <CheckBox IsChecked="{Binding IsExcluded}" HorizontalAlignment="Center" Focusable="False"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
@@ -116,7 +116,7 @@
             <DataGridTemplateColumn Header="분리" Width="0.8*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <CheckBox IsChecked="{Binding NeedSeparate}" HorizontalAlignment="Center"/>
+                        <CheckBox IsChecked="{Binding NeedSeparate}" HorizontalAlignment="Center" Focusable="False"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
@@ -132,7 +132,7 @@
             <DataGridTemplateColumn Header="분리 필요" Width="0.9*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <CheckBox IsChecked="{Binding IsOverLenth}" HorizontalAlignment="Center"/>
+                        <CheckBox IsChecked="{Binding IsOverLenth}" HorizontalAlignment="Center" Focusable="False"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

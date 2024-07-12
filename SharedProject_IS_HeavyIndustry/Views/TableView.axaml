@@ -121,14 +121,15 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             
-            <!--<DataGridTemplateColumn Header="분리 길이" Width="1*">
+            <DataGridTemplateColumn Header="분리 길이" Width="1*">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBox Text="{Binding lengthToBeSeperated, Mode=TwoWay}"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>-->
-            <DataGridTextColumn Header="분리 길이" Binding="{Binding lengthToBeSeperated}" IsReadOnly="False" Width="1*"/>
+            </DataGridTemplateColumn>
+            <!--<DataGridTextColumn Header="분리 길이" Binding="{Binding lengthToBeSeperated}" IsReadOnly="False" Width="1*"/>
+            -->
 
             <DataGridTemplateColumn Header="분리 필요" Width="0.9*">
                 <DataGridTemplateColumn.CellTemplate>

@@ -19,6 +19,14 @@ namespace SharedProject_IS_HeavyIndustry.Models
             set;
         }
 
+        public int TotalPartsLength
+        {
+            get
+            {
+                return Length - RemainingLength;
+            }
+        }
+
         public ObservableCollection<Part> PartsInside
         {
             get;
@@ -26,6 +34,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
         }
         
         public IBrush RectangleColor
+        {
+            get;
+            set;
+        }
+        
+        public IBrush BackgroundColor
         {
             get;
             set;
@@ -46,9 +60,16 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 {
                     _RemainingLength = value;
                     if (_RemainingLength < 0)
+                    {
                         RectangleColor = new SolidColorBrush(Colors.Red);
+                        BackgroundColor = new SolidColorBrush(Colors.Pink);
+                    }
                     else
+                    {
                         RectangleColor = new SolidColorBrush(Colors.Black);
+                        BackgroundColor = new SolidColorBrush(Colors.Transparent);
+                    }
+                    OnPropertyChanged(nameof(BackgroundColor));
                     OnPropertyChanged(nameof(RectangleColor)); // Notify that RectangleColor has changed
                     OnPropertyChanged(nameof(RemainingLength)); // Notify that RemainingLength has changed
                 }

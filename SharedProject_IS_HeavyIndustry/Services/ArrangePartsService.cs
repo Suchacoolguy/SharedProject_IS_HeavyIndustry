@@ -144,7 +144,8 @@ public class ArrangePartsService
             
             
             Solver solver = Solver.CreateSolver("SCIP");
-            solver.SetTimeLimit(10000);
+            solver.SetNumThreads(2);
+            solver.SetTimeLimit(20000);
         
             // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
             Variable[,] x = new Variable[data.NumItems, data.NumBins];

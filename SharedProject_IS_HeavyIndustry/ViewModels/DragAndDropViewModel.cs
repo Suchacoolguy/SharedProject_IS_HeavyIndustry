@@ -168,7 +168,7 @@ public class DragAndDropViewModel
                 Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
             }
             // 우측(TempPartsView)에서 좌측(DragAndDropView)의 빈 공간으로 드랍하는 경우
-            else if (e.Source is StackPanel && rawMaterialTo == null && tempPart != null)
+            else if (e.Source is not DockPanel && rawMaterialTo == null && tempPart != null && partTo == null)
             {
                 int bestLength = FindBestSizeRawMaterial(GetLengthOptionsRawMaterial(), tempPart);
                 RawMaterial newRawMaterial = new RawMaterial(bestLength);

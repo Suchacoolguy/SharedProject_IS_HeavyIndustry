@@ -144,8 +144,8 @@ public class ArrangePartsService
             
             
             Solver solver = Solver.CreateSolver("CP-SAT");
-            solver.SetNumThreads(4);
-            solver.SetTimeLimit(25000);
+            solver.SetNumThreads(8);
+            solver.SetTimeLimit(15000);
         
             // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
             Variable[,] x = new Variable[data.NumItems, data.NumBins];

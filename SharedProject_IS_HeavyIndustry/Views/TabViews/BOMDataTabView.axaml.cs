@@ -105,4 +105,13 @@ public partial class BOMDataTabView : TabView
         else
             BOMDataViewModel.ApplyFilter(false);
     }
+
+    private void Input_Btn_Clicked(object? sender, RoutedEventArgs e)
+    {
+        var len = this.FindControl<TextBox>("SeparateLenBox")!.Text!;
+        foreach (var part in BOMDataViewModel.PartsFiltered)
+        {
+            part.lengthToBeSeperated = len;
+        }
+    }
 }

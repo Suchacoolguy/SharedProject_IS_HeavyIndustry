@@ -110,8 +110,11 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 if (type.Equals(hyungGangType.Trim()))
                     part.IsExcluded = false;
             }
-            if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
+
+            if (SettingsViewModel.GetLengthOption(desc.ToString()).Count < 1)
                 part.IsExcluded = true;
+            if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
+                part.IsOverLenth = true;
 
             return part;
         }

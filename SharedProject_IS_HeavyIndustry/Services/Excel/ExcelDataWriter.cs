@@ -66,13 +66,15 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 // 다운로드 폴더 경로 생성
                 var downloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
                 var filePath = Path.Combine(downloadFolder, fileName);
+                
+                Console.WriteLine(filePath);
 
-                // 파일이 이미 열려 있는지 확인
+                /*// 파일이 이미 열려 있는지 확인
                 if (IsFileLocked(filePath))
                 {
                     MessageService.Send("동일한 이름의 파일이 이미 열려있습니다\n작업을 종료하고 다시 시작하세요");
                     return;
-                }
+                }*/
 
                 using (var memoryStream = new MemoryStream())
                 {

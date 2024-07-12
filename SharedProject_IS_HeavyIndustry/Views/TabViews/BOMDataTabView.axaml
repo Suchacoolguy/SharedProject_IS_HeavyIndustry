@@ -56,9 +56,7 @@
                             </MenuItem>
                         </Menu>
                     </DropDownButton>
-                    <!--<Button Name="InputBtn" Click="Input_Btn_Clicked" FontSize="13" Margin="4,0" Content="적용" DockPanel.Dock="Right"/>
-                    <TextBox Name="SeparateLenBox" Height="28" Margin="4,0" DockPanel.Dock="Right"/>-->
-                    <CheckBox Name="SeparateCheckBox" Content="분리필요" Margin="10,0" IsCheckedChanged="SeparateCheckChanged" DockPanel.Dock="Right"/>
+                    <CheckBox Name="SeparateCheckBox" Content="분리 필요" Margin="10,0" IsCheckedChanged="SeparateCheckChanged" DockPanel.Dock="Right"/>
                     <!-- <StackPanel Margin="20"> -->
                     <!--     <ComboBox SelectedIndex="0" MaxDropDownHeight="100" > -->
                     <!--         <ComboBoxItem>Text Item 1</ComboBoxItem> -->

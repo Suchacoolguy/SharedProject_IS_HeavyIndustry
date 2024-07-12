@@ -66,6 +66,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 // 다운로드 폴더 경로 생성
                 var downloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
                 var filePath = Path.Combine(downloadFolder, fileName);
+                
+                Console.WriteLine(filePath);
 
                 // 파일이 이미 열려 있는지 확인
                 if (IsFileLocked(filePath))

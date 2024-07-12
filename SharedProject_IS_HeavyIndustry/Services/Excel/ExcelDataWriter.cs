@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
+using SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels;
 using SkiaSharp;
 
 namespace SharedProject_IS_HeavyIndustry.Models
@@ -248,19 +249,22 @@ namespace SharedProject_IS_HeavyIndustry.Models
             /*Console.WriteLine("height : " + mergedCellHeight);
             Console.WriteLine("width : " + mergedCellWidth);*/
             mergedCellHeight = (worksheet.Row(row).Height * 96 / 72);
+
+            var width = ReportTabViewModel.Width;
+            var height = ReportTabViewModel.Height;
             
             using (var ms = new MemoryStream())
             {
                 image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(ms);
-                var picture = worksheet.AddPicture(ms).MoveTo(worksheet.Cell(row, 3));//.WithSize(400, 30);
+                var picture = worksheet.AddPicture(ms).MoveTo(worksheet.Cell(row, 3)).WithSize(width, height);
                 
-                worksheet.Row(_row).Height = picture.Height + 5; 
+                worksheet.Row(_row).Height += 3; 
                 /*Console.WriteLine("사진 너비 : " + picture.Width);
                 Console.WriteLine("셀 너비 : " + worksheet.ColumnWidth * 6);
                 Console.WriteLine("사진 높이 : " + picture.Height);
                 Console.WriteLine("셀 높이 : " + worksheet.RowHeight);*/
-                picture.ScaleWidth(1.0);
-                picture.ScaleHeight((mergedCellHeight) / picture.Height);
+                //picture.ScaleWidth(1.0);
+                //picture.ScaleHeight((mergedCellHeight) / picture.Height);
             }
         }
 

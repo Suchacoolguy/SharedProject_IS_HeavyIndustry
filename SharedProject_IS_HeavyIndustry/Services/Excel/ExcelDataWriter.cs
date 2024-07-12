@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
+using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SkiaSharp;
 
@@ -54,13 +55,20 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     type = match.Groups[2].Value;
                     size = match.Groups[3].Value;
 
-                    MakeHeader(worksheet, type,type + size, kvp.Value);
+                    MakeHeader(worksheet, type, type + size, kvp.Value);
                     MakeChart(worksheet, kvp.Value);
                 }
 
                 // 다운로드 폴더 경로 생성
                 var downloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
                 var filePath = Path.Combine(downloadFolder, fileName);
+
+                // 파일이 이미 열려 있는지 확인
+                if (IsFileLocked(filePath))
+                {
+                    MessageService.Send("동일한 이름의 파일이 이미 열려있습니다\n작업을 종료하고 다시 시작하세요");
+                    return;
+                }
 
                 using (var memoryStream = new MemoryStream())
                 {
@@ -73,6 +81,24 @@ namespace SharedProject_IS_HeavyIndustry.Models
 
             Console.WriteLine("Excel 파일이 생성되고 열렸습니다.");
         }
+
+        private static bool IsFileLocked(string filePath)
+        {
+            try
+            {
+                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                {
+                    return false;
+                }
+            }
+            catch (IOException)
+            {
+                // 파일이 열려 있는 경우 예외가 발생함
+                return true;
+            }
+            return false;
+        }
+
 
         private static void OpenFile(string filePath)
         {
@@ -256,14 +282,22 @@ namespace SharedProject_IS_HeavyIndustry.Models
             var match = Regex.Match(input, @"^(.*),([A-Za-z]+)([\d\*\.]+)$");
             if (!match.Success) return input;
             var hyungGangSet = SettingsViewModel.HyungGangSet;
-            
+    
             var material = match.Groups[1].Value;
             var type = match.Groups[2].Value;
             hyungGangSet.TryGetValue(type, out type);
             var dimensions = match.Groups[3].Value.Replace("*", "x");
-                
-            return $"{type}({dimensions})_<{material}>";
+    
+            // 최종 문자열 생성
+            var result = $"{type}({dimensions})_<{material}>";
+    
+            // 문자열이 31자 이상이면 뒤에서부터 자르기
+            if (result.Length > 31)
+            {
+                result = result.Substring(0, 31);
+            }
 
+            return result;
         }
 
     }

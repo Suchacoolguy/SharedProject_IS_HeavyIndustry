@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -26,6 +27,31 @@ public partial class RawStandardTabView : TabView
             dataGrid.ScrollIntoView(items[items.Count - 1], null);
         }
     }
+    
+    private void Search_btn_click(object? sender, RoutedEventArgs e)
+    {
+        var input = this.FindControl<TextBox>("SearchBox")!.Text;
+        var dataGrid = this.FindControl<DataGrid>("Table")!;
+        var items = (ObservableCollection<RawLengthSet>)dataGrid.ItemsSource;
+
+        if (items == null) return;
+
+        // `input` 문자열을 포함하는 항목들을 찾기
+        var matchingItems = items.Where(item => item.Description.Contains(input)).ToList();
+
+        // 기존 컬렉션에서 matchingItems 제거
+        foreach (var item in matchingItems)
+        {
+            items.Remove(item);
+        }
+
+        // matchingItems를 컬렉션의 맨 앞에 추가
+        for (int i = matchingItems.Count - 1; i >= 0; i--)
+        {
+            items.Insert(0, matchingItems[i]);
+        }
+    }
+
 
     private void Filter_Btn_Click(object? sender, RoutedEventArgs e)
     {

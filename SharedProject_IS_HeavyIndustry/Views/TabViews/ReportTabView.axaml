@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:tabVIewModels="clr-namespace:SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels"
+             xmlns:tabViewModels="clr-namespace:SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SharedProject_IS_HeavyIndustry.Views.ReportTabView"
-             x:DataType="tabVIewModels:ReportTabViewModel">
+             x:DataType="tabViewModels:ReportTabViewModel">
     <DockPanel DockPanel.Dock="Top">
                <!--Box1-->         
         <Border Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
@@ -24,6 +24,14 @@
                 <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
                     <Button Content="Cutting Plan 미리보기" Click="PlanReview_btn_click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left"/>
                     <Button Content= "Cutting Plan 출력" Click="PrintPlan_btn_click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Margin="4,0,0,0" DockPanel.Dock="Left"/>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,0">
+                        <TextBlock Text="세로" VerticalAlignment="Center"/>
+                        <TextBox Name="HeightBox" Margin="4,0" Text="{Binding Height, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,0">
+                        <TextBlock Text="가로" VerticalAlignment="Center"/>
+                        <TextBox Name="WidthBox" Margin="4,0" Text="{Binding Width, Mode=TwoWay}"/>
+                    </StackPanel>
                     <Button Background="White"/>
                 </DockPanel>
             </StackPanel>

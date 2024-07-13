@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -14,18 +15,22 @@ namespace SharedProject_IS_HeavyIndustry.Services
 {
     public class FilteringService
     {
-        public FlyoutBase FilterMenu;
-        private readonly string _tag;
+        private static Dictionary<string, FlyoutBase> _filterSet = new Dictionary<string, FlyoutBase>() ;
+        private static string _key;
 
         [Obsolete("Obsolete")]
-        public FilteringService(string tag)
+        public static FlyoutBase GetFilterMenu(string tag)
         {
-            _tag = tag;
-            FilterMenu = GenerateFilter();
+            _key = tag;
+            if (_filterSet.TryGetValue(_key, out var filter))
+                return filter;
+            filter = GenerateFilter();
+            _filterSet.Add(_key, filter);
+            return filter;
         }
         
         [Obsolete("Obsolete")]
-        private FlyoutBase GenerateFilter()
+        private static FlyoutBase GenerateFilter()
         {
             var contextFlyout = new Flyout
             {
@@ -35,7 +40,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
                     {
                         new TextBlock
                         {
-                            Text = _tag,
+                            Text = _key,
                             FontWeight = FontWeight.Bold,
                             FontSize = 20,
                             Margin = new Thickness(5)
@@ -49,7 +54,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
         }
 
         [Obsolete("Obsolete")]
-        private Control CreateFilterContent()
+        private static Control CreateFilterContent()
         {
             var itemList = GetFilteringOptions();
 
@@ -98,7 +103,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
 
             scrollViewer.Content = panel;
 
-            var applyButton = new Button { Content = "적용", Tag = _tag, Margin = new Thickness(0,10,0,0), HorizontalAlignment = HorizontalAlignment.Right};
+            var applyButton = new Button { Content = "적용", Tag = _key, Margin = new Thickness(0,10,0,0), HorizontalAlignment = HorizontalAlignment.Right};
             applyButton.Click += FilterApply_Btn_Click;
 
             return new StackPanel
@@ -113,7 +118,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
         }
 
 
-        private void CheckBox_StateChanged(object? sender, RoutedEventArgs e)
+        private static void CheckBox_StateChanged(object? sender, RoutedEventArgs e)
         {
             if (sender is not CheckBox checkBox) return;
             if (checkBox.Parent is not StackPanel panel) return;
@@ -128,9 +133,9 @@ namespace SharedProject_IS_HeavyIndustry.Services
             }
         }
 
-        private List<string> GetFilteringOptions()
+        private static List<string> GetFilteringOptions()
         {
-            return _tag switch
+            return _key switch
             {
                 "Description" => BOMDataViewModel.AllParts.Select(p => p.Desc.ToString()).Distinct().ToList(),
                 "Assem" => BOMDataViewModel.AllParts.Select(p => p.Assem.ToString()).Distinct().ToList(),
@@ -140,14 +145,14 @@ namespace SharedProject_IS_HeavyIndustry.Services
             };
         }
 
-        private void SelectAllCheckbox_Checked(object sender, RoutedEventArgs e)
+        private static void SelectAllCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is not CheckBox checkBox) return;
             // 체크된 경우, 모든 하위 체크박스를 체크 처리
             SetAllCheckBoxesChecked((checkBox.Parent!.Parent as Panel)!, true); 
         }
 
-        private void SelectAllCheckbox_Unchecked(object sender, RoutedEventArgs e)
+        private static void SelectAllCheckbox_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is not CheckBox checkBox) return;
             checkBox.IsThreeState = false;
@@ -155,7 +160,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
             SetAllCheckBoxesChecked((checkBox.Parent!.Parent as Panel)!, false);
         }
 
-        private void SetAllCheckBoxesChecked(Panel panel, bool isChecked)
+        private static void SetAllCheckBoxesChecked(Panel panel, bool isChecked)
         {
             foreach (var child in panel.Children)
                 if (child is CheckBox checkBox && checkBox != panel.Children[0]) // 첫 번째는 "모두 선택" 체크박스이므로 제외
@@ -165,7 +170,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
                 }
         }
 
-        private void FilterApply_Btn_Click(object? sender, RoutedEventArgs e)
+        private static void FilterApply_Btn_Click(object? sender, RoutedEventArgs e)
         {
             // 적용 버튼 클릭 시 처리할 로직 작성
             if (sender is not Button applyButton) return;
@@ -181,7 +186,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
             BOMDataViewModel.ApplyFilter(applyButton.Tag?.ToString()!, selectedItems);
         }
 
-        private void FilterCheckBoxes(Panel panel, string filter)
+        private static void FilterCheckBoxes(Panel panel, string filter)
         {
             foreach (var child in panel.Children)
                 if (child is CheckBox checkBox && checkBox != panel.Children[0])

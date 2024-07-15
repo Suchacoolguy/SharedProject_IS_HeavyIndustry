@@ -25,20 +25,11 @@ namespace SharedProject_IS_HeavyIndustry.Views
         {
             if (sender is not Button button) return;
             var columnHeader = button.Tag?.ToString();
-            FlyoutBase contextFlyout;
 
-            if (filterSet.TryGetValue(columnHeader!, out var value))
-                contextFlyout = value.FilterMenu;
-            else
-            {
-                var filteringService = new FilteringService(columnHeader!);
-                contextFlyout = filteringService.FilterMenu;
-                filterSet.Clear(); //이건 임시방편 나중에 지워야함
-                filterSet.Add(columnHeader!, filteringService);
-            }
+            var filter = FilteringService.GetFilterMenu(columnHeader!);
 
-            FlyoutBase.SetAttachedFlyout(button, contextFlyout);
-            contextFlyout.ShowAt(button);
+            FlyoutBase.SetAttachedFlyout(button, filter);
+            filter.ShowAt(button);
         }
 
         public void SetExclude(bool value)

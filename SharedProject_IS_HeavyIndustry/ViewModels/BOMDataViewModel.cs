@@ -4,7 +4,9 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Runtime.Intrinsics.X86;
     using DynamicData;
+    using HarfBuzzSharp;
     using SharedProject_IS_HeavyIndustry.Converters;
     using SharedProject_IS_HeavyIndustry.Models;
 
@@ -19,6 +21,7 @@
             
             //필터 적용 후 파트 
             public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
+            public static Stack<(string, ObservableCollection<Part>)> FilteredPartsStack = new ();
             
             public BOMDataViewModel(List<Part> parts)
             {
@@ -47,35 +50,62 @@
                     list.Add(part);
             }
 
-            public static void ApplyFilter(string type, List<string> selectedFilterItems)
+            public static void ApplyFilter(string key, bool release, List<string> selectedFilterItems)
             {
-
+                //Stack이 비어있으면 Allparts 가져와서 채움
+                if (FilteredPartsStack.Count == 0)
+                {
+                    FilteredPartsStack.Push((key, Clone(AllParts)));
+                    Console.WriteLine("스택 비어있음 원소 추가");
+                }
+                else
+                {
+                    //Stack 최상위 원소가 현재 필터와 같은 경우 (ex-규격 필터를 설정하고 또 다시 규격 필터를 사용할 경우)
+                    if (FilteredPartsStack.Peek().Item1.Equals(key))
+                    {
+                        FilteredPartsStack.Pop();
+                        Console.WriteLine("최상위 원소 같은 POP실행");
+                        Console.WriteLine("현재 스택 : " + FilteredPartsStack.Count);
+                    }
+                    //Stack에 현재 필터가 이미 존재하면 해당 필터가 나올때 까지 Pop
+                    else if(FilteredPartsStack.Any(tuple => tuple.Item1.Equals(key)) || release)
+                    {
+                        while (!FilteredPartsStack.Pop().Item1.Equals(key))
+                            continue;
+                        Console.WriteLine("현재 필터가 이미 존재함 해당 필터 나올때 까지 POP실핼");
+                        Console.WriteLine("현재 스택 : " + FilteredPartsStack.Count);
+                    }
+                }
+                
                 PartsFiltered.Clear();
-                switch (type)
+                switch (key)
                 {
                     case "Description":
                     {
-                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Desc.ToString())))
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.Desc.ToString())))
                             PartsFiltered.Add(part);
                         break;
                     }
                     case "Assem":
                     {
-                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Assem)))
+                        foreach (var part in FilteredPartsStack.Peek().Item2.Where(p => selectedFilterItems.Contains(p.Assem)))
                             PartsFiltered.Add(part);
                         break;
                     }
                     case "Mark":
                     {
-                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Mark)))
+                        foreach (var part in FilteredPartsStack.Peek().Item2.Where(p => selectedFilterItems.Contains(p.Mark)))
                             PartsFiltered.Add(part);
                         break;
                     }
                     case "Material":
-                        foreach (var part in AllParts.Where(p => selectedFilterItems.Contains(p.Material)))
+                        foreach (var part in FilteredPartsStack.Peek().Item2.Where(p => selectedFilterItems.Contains(p.Material)))
                             PartsFiltered.Add(part);
                         break;
                 }
+                //필터링 결과 스택에 푸쉬
+                FilteredPartsStack.Push((key, Clone(PartsFiltered)));
             }
 
             public static void ApplyFilter(bool isChecked)

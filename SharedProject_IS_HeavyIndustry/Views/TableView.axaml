@@ -46,29 +46,6 @@
                 </DataGridTextColumn.HeaderTemplate>
             </DataGridTextColumn>
             
-            <!--<DataGridTextColumn Header="규격" Width="1.5*">
-                <DataGridTextColumn.Binding>
-                    <MultiBinding StringFormat="{}{0}{1}">
-                        <Binding Path="Desc.Type"/>
-                        <Binding Path="Desc.Size"/>
-                    </MultiBinding>
-                </DataGridTextColumn.Binding>
-                <DataGridTextColumn.HeaderTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="규격" VerticalAlignment="Center" Grid.Column="0"/>
-                            <Button Classes="FilterButton" Click="Filter_Btn_Click" Tag="Description" Background="Transparent" Grid.Column="1">
-                                <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/filter.png" Width="16" Height="16"/>
-                            </Button>
-                        </Grid>
-                    </DataTemplate>
-                </DataGridTextColumn.HeaderTemplate>
-            </DataGridTextColumn>-->
-            
             <DataGridTextColumn Header="도면번호" IsReadOnly="True" Binding="{Binding Assem}" Width="1.3*">
                 <DataGridTextColumn.HeaderTemplate>
                     <DataTemplate>
@@ -121,14 +98,6 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             
-            
-            <!--<DataGridTemplateColumn Header="분리 길이" Width="1*">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBox Text="{Binding lengthToBeSeperated, Mode=TwoWay}"/>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>-->
             <DataGridTextColumn Header="분리 길이" Binding="{Binding lengthToBeSeperated}" IsReadOnly="False" Width="1*"/>
 
             <DataGridTemplateColumn Header="분리 필요" Width="0.9*">

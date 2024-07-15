@@ -18,7 +18,6 @@ public class DataModel
         NumItems = parts.Count;
         NumBins = parts.Count;
         NumRawMaterialOptions = lengthOptionsRawMaterial.Count;
-        Console.WriteLine("Num: " + parts.Count);
     }
 
     public DataModel(List<Part> partList, List<int> lengthOptions, int numBins)

@@ -12,6 +12,7 @@ namespace SharedProject_IS_HeavyIndustry;
 
 public partial class App : Application
 {
+    [assembly: AvaloniaTestApplication(typeof(TestAppBuilder))]
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);

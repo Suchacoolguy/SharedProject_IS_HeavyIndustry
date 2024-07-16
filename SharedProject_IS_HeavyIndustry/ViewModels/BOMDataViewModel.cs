@@ -89,20 +89,61 @@
                     }
                     case "Assem":
                     {
-                        foreach (var part in FilteredPartsStack.Peek().Item2.Where(p => selectedFilterItems.Contains(p.Assem)))
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.Assem)))
                             PartsFiltered.Add(part);
                         break;
                     }
                     case "Mark":
                     {
-                        foreach (var part in FilteredPartsStack.Peek().Item2.Where(p => selectedFilterItems.Contains(p.Mark)))
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.Mark)))
                             PartsFiltered.Add(part);
                         break;
                     }
                     case "Material":
-                        foreach (var part in FilteredPartsStack.Peek().Item2.Where(p => selectedFilterItems.Contains(p.Material)))
+                    {
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.Material)))
                             PartsFiltered.Add(part);
                         break;
+                    }
+                    case "Length":
+                    {
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.Length.ToString())))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
+                    case "Num":
+                    {
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.Num.ToString())))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
+                    case "WeightOne":
+                    {
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.WeightOne.ToString())))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
+
+                    case "PArea":
+                    {
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.PArea.ToString())))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
+                    case "WeightSum":
+                    {
+                        foreach (var part in FilteredPartsStack.Peek().Item2
+                                     .Where(p => selectedFilterItems.Contains(p.WeightSum.ToString())))
+                            PartsFiltered.Add(part);
+                        break;
+                    }
                 }
                 //필터링 결과 스택에 푸쉬
                 FilteredPartsStack.Push((key, Clone(PartsFiltered)));

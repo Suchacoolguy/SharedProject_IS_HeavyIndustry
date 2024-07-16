@@ -171,6 +171,11 @@ namespace SharedProject_IS_HeavyIndustry.Services
                 "Assem" => BOMDataViewModel.PartsFiltered.Select(p => p.Assem.ToString()).Distinct().ToList(),
                 "Mark" => BOMDataViewModel.PartsFiltered.Select(p => p.Mark.ToString()).Distinct().ToList(),
                 "Material" => BOMDataViewModel.PartsFiltered.Select(p => p.Material.ToString()).Distinct().ToList(),
+                "Length" => BOMDataViewModel.PartsFiltered.Select(p => p.Length.ToString()).Distinct().ToList(),
+                "Num" => BOMDataViewModel.PartsFiltered.Select(p => p.Num.ToString()).Distinct().ToList(),
+                "WeightOne" => BOMDataViewModel.PartsFiltered.Select(p => p.WeightOne.ToString()).Distinct().ToList(),
+                "PArea" => BOMDataViewModel.PartsFiltered.Select(p => p.PArea.ToString()).Distinct().ToList(),
+                "WeightSum" => BOMDataViewModel.PartsFiltered.Select(p => p.WeightSum.ToString()).Distinct().ToList(),
                 _ => new List<string>()
             };
         }

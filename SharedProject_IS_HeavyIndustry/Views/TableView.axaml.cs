@@ -25,6 +25,13 @@ namespace SharedProject_IS_HeavyIndustry.Views
         {
             if (sender is not Button button) return;
             var columnHeader = button.Tag?.ToString();
+            
+            var dataGrid = this.FindControl<DataGrid>("Table");
+
+            foreach (var column in dataGrid.Columns)
+            {
+                Console.WriteLine(column.Header.ToString());
+            }
 
             var filter = FilteringService.GetFilterMenu(columnHeader!);
 

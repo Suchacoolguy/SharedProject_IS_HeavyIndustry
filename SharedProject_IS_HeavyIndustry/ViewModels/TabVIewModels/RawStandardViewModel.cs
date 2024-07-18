@@ -31,6 +31,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 
         public RawStandardViewModel()
         {
+            // 여기 디비
             LengthSetDictionary = JsonConverter.ReadDictionaryFromJson() ?? new Dictionary<string, RawLengthSet>();
             LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
 
@@ -65,6 +66,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 
         private void Save()
         {
+            // 여기 디비
             if (ApplyChanges())
                 JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
         }

@@ -18,7 +18,8 @@
               CanUserSortColumns="True"
               GridLinesVisibility="All"
               FontSize="5"
-              BorderThickness="1" BorderBrush="Gray" >
+              BorderThickness="1" BorderBrush="Gray"
+              CellEditEnding="Table_CellEditEnding">
         <DataGrid.Columns>
             <DataGridTextColumn Header="재질" IsReadOnly="True" Binding="{Binding Material}" Width="0.8*">
                 <DataGridTextColumn.HeaderTemplate>
@@ -153,7 +154,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             
-            <DataGridTextColumn Header="분리 길이" Binding="{Binding lengthToBeSeperated}" IsReadOnly="False" Width="1*"/>
+            <DataGridTextColumn Header="분리 길이" Binding="{Binding lengthToBeSeperated}" IsReadOnly="False" Width="1*" Tag="LengthToBeSeparated"/>
 
             <DataGridTemplateColumn Header="분리 필요" Width="0.9*">
                 <DataGridTemplateColumn.CellTemplate>

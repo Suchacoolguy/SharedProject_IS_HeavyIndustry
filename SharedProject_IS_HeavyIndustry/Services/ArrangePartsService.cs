@@ -23,6 +23,11 @@ public class ArrangePartsService
     // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, List<int> lengthOptions)
     {
+        foreach (var part in overSizeParts)
+        {
+            Console.WriteLine("분리길이 : " + part.lengthToBeSeperated);
+        }
+        
         // 파트배치 완료된 것들
         _lengthOptionsRawMaterial = lengthOptions;
 
@@ -32,26 +37,38 @@ public class ArrangePartsService
         foreach (var ppp in overSizeParts)
         {
             int length = ppp.Length;
-            while (length > Convert.ToInt32(ppp.lengthToBeSeperated))
+            if (!string.IsNullOrEmpty(ppp.lengthToBeSeperated))
             {
-                length -= Convert.ToInt32(ppp.lengthToBeSeperated);
-                // 분리한 놈들은 J를 붙여서 새로운 피트로 추가
-                Part newPart = new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material,
-                    Convert.ToInt32(ppp.lengthToBeSeperated), ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea,
-                    ppp.Desc);
-                replacedParts.Add(newPart);
+                int lengthToBeSeperated = Convert.ToInt32(ppp.lengthToBeSeperated);
+                while (length > lengthToBeSeperated)
+                {
+                    length -= lengthToBeSeperated;
+                    // 분리한 놈들은 J를 붙여서 새로운 피트로 추가
+                    Part newPart = new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material,
+                        lengthToBeSeperated, ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea,
+                        ppp.Desc);
+                    replacedParts.Add(newPart);
+                }
+                
+                if (length > 0)
+                {
+                    // 여기에서 블록마크에 J 붙이는 코드 추가해야함.
+                    Part restPart = new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material, length, ppp.Num,
+                        ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
+                    replacedParts.Add(restPart);
+                }
+                
             }
+            
 
-            if (length > 0)
-            {
-                // 여기에서 블록마크에 J 붙이는 코드 추가해야함.
-                Part restPart = new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material, length, ppp.Num,
-                    ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
-                replacedParts.Add(restPart);
-            }
+            
         }
 
         _separatedParts = replacedParts;
+        foreach (var VARIABLE in _separatedParts)
+        {
+            Console.WriteLine(VARIABLE);
+        }
         parts.AddRange(_separatedParts);
         _rawMaterialsUsed = ArrangeParts(parts);
 

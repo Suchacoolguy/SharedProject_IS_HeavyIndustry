@@ -24,6 +24,8 @@ public class DatabaseService
 
         // Use the database path in the connection string
         connectionDB = $"Data Source={dbPath}";
+        
+        Console.WriteLine("DB Path:" + dbPath);
     }
 
     static string createSelectQuery(string connectionString,string tableName)

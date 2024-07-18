@@ -30,7 +30,7 @@ public class Part : INotifyPropertyChanged
         _isOverLenth = false;
         _isExcluded = true;
         _needSeparate = false;
-        lengthToBeSeperated = "4000";
+        lengthToBeSeperated = "";
     }
     
     public Description Desc

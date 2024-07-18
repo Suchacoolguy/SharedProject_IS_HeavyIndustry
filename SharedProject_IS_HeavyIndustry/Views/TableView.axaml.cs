@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using DocumentFormat.OpenXml.Spreadsheet;
+using ReactiveUI;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
@@ -25,13 +26,6 @@ namespace SharedProject_IS_HeavyIndustry.Views
         {
             if (sender is not Button button) return;
             var columnHeader = button.Tag?.ToString();
-            
-            var dataGrid = this.FindControl<DataGrid>("Table");
-
-            foreach (var column in dataGrid.Columns)
-            {
-                Console.WriteLine(column.Header.ToString());
-            }
 
             var filter = FilteringService.GetFilterMenu(columnHeader!);
 
@@ -56,5 +50,37 @@ namespace SharedProject_IS_HeavyIndustry.Views
             foreach (var item in table.ItemsSource.Cast<Part>())
                 item.NeedSeparate = value;
         }
+        
+        private void Table_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit && e.Column is DataGridTextColumn textColumn &&
+                textColumn.Tag?.ToString() == "LengthToBeSeparated")
+            {
+                var textBox = e.EditingElement as TextBox;
+                if (textBox != null)
+                {
+                    string newValue = textBox.Text.Trim();
+                    if (e.Row.DataContext is Part part)
+                    {
+                        Console.WriteLine("sucess");
+                        part.lengthToBeSeperated = newValue;
+                        
+                        Console.WriteLine($"Before setting: Part {part.IsOverLenth} 분리길이: {part.lengthToBeSeperated}");
+                    }
+                }
+            }
+        }
+
+        // public void abc()
+        // {
+        //     var dataGrid = this.FindControl<DataGrid>("Table");
+        //     dataGrid.CellEditEnded
+        //     
+        //     foreach (var column in dataGrid.Columns)
+        //     {
+        //         if (column.Header.ToString() == "분리길이")
+        //             Console.WriteLine(column);
+        //     }
+        // }
     }
 }

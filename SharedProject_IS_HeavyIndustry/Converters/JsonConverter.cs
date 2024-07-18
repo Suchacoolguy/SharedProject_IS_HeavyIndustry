@@ -58,6 +58,7 @@ public static class JsonConverter
         }
         SettingsViewModel.Refresh();
         
+        // Json 대신 DB 파일에 저장하는 코드. 추후에 적용할 예정
         
         // try
         // {

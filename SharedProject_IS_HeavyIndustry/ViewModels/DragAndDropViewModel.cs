@@ -102,6 +102,7 @@ public class DragAndDropViewModel
                 }
                 else    // part != null일 때
                 {
+                    // 여기에 원자재 길이 조정하는 코드~
                     to.insert_part(part);
                     from.removePart(part);
                     if (from.PartsInside.Count == 0)
@@ -186,6 +187,7 @@ public class DragAndDropViewModel
             {
                 if (rawMaterialTo != null)  // 원자재 위에다 드랍한 경우
                 {
+                    // 여기도 원자재 길이 변경하는 코드~
                     rawMaterialTo.insert_part(tempPart);
                     if (TempPartList.Contains(tempPart))
                     {
@@ -210,6 +212,7 @@ public class DragAndDropViewModel
                     if (rawMaterialTo != null)
                     {
                         // 해당 원자재에다 추가
+                        // 여기도 원자재 길이 변경하는 코드 추가~
                         rawMaterialTo.insert_part(tempPart);
                         if (TempPartList.Contains(tempPart))
                         {

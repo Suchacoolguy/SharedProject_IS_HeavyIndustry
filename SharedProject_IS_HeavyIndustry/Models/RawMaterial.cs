@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using Avalonia.Media;
 using SkiaSharp;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Models
 {
@@ -19,11 +20,26 @@ namespace SharedProject_IS_HeavyIndustry.Models
             set;
         }
 
+        // 얘는 쓰지 말 것
+        public int _TotalPartsLength
+        {
+            get;
+            set;
+        }
+
         public int TotalPartsLength
         {
             get
             {
-                return Length - RemainingLength;
+                return _TotalPartsLength;
+            }
+            set
+            {
+                if (_TotalPartsLength != value)
+                {
+                    _TotalPartsLength = value;
+                }
+                OnPropertyChanged(nameof(TotalPartsLength));
             }
         }
 
@@ -53,7 +69,10 @@ namespace SharedProject_IS_HeavyIndustry.Models
         
         public int RemainingLength
         {
-            get { return _RemainingLength; }
+            get
+            {
+                return _RemainingLength;
+            }
             set
             {
                 if (_RemainingLength != value)
@@ -87,6 +106,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
         {
             PartsInside.Add(part);
             RemainingLength -= part.Length;
+            TotalPartsLength += part.Length;
+            if (PartsInside.Count > 1)
+            {
+                RemainingLength -= SettingsViewModel.CuttingLoss;
+            }
+            
             return part;
         }
 
@@ -95,7 +120,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
             if (PartsInside.Contains(part))
             {
                 PartsInside.Remove(part);
+                TotalPartsLength -= part.Length;
                 RemainingLength += part.Length;
+                if (PartsInside.Count >= 1)
+                {
+                    RemainingLength += SettingsViewModel.CuttingLoss;
+                }
             }
         }
         
@@ -115,6 +145,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             this.Length = length;
             this.PartsInside = new ObservableCollection<Part>();
             this.RemainingLength = length;
+            this.TotalPartsLength = 0;
         }
         
         public override string ToString()

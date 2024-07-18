@@ -8,14 +8,13 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
     public static class SettingsViewModel
     {
         // 절단 손실분 (mm 단위)
-        public static int CuttingLoss;
+        public static int CuttingLoss = 3;
         public static Dictionary<string, string> HyungGangSet { get; set; }
         private static Dictionary<string, List<int>> LengthOptionSet { get; set; }
         public static List<string> MissingKeys { get; private set; } = [];
 
         static SettingsViewModel()
         {
-            
             InitializeLengthOptionSet();
             InitializeHyungGangSet();
         }

@@ -103,6 +103,22 @@ public class DragAndDropViewModel
                 else    // part != null일 때
                 {
                     // 여기에 원자재 길이 조정하는 코드~
+                    // 가능한 길이 어데서 갖고오느냐?
+                    // 바로
+                    int bestLengthOption = to.findPossibleRawLength(part);
+                    
+                    Console.WriteLine("==========================================");
+                    Console.WriteLine(to.isAddingPossible(part));
+                    Console.WriteLine(bestLengthOption);
+                    Console.WriteLine("==========================================");
+
+                    
+                    if (!to.isAddingPossible(part) && bestLengthOption != -1)
+                    {
+                        to.increaseRawLength(bestLengthOption, part);
+                    }
+                    
+                    // --------------------------------------------------------------------------------
                     to.insert_part(part);
                     from.removePart(part);
                     if (from.PartsInside.Count == 0)
@@ -188,6 +204,13 @@ public class DragAndDropViewModel
                 if (rawMaterialTo != null)  // 원자재 위에다 드랍한 경우
                 {
                     // 여기도 원자재 길이 변경하는 코드~
+                    int bestLengthOption = rawMaterialTo.findPossibleRawLength(part);
+                    if (!rawMaterialTo.isAddingPossible(part) && bestLengthOption != -1)
+                    {
+                        rawMaterialTo.increaseRawLength(bestLengthOption, part);
+                    }
+                    
+                    
                     rawMaterialTo.insert_part(tempPart);
                     if (TempPartList.Contains(tempPart))
                     {
@@ -213,6 +236,18 @@ public class DragAndDropViewModel
                     {
                         // 해당 원자재에다 추가
                         // 여기도 원자재 길이 변경하는 코드 추가~
+                        int bestLengthOption = rawMaterialTo.findPossibleRawLength(part);
+                        Console.WriteLine("==========================================");
+                        Console.WriteLine(rawMaterialTo.isAddingPossible(part));
+                        Console.WriteLine(bestLengthOption);
+                        Console.WriteLine("==========================================");
+                        
+                        if (!rawMaterialTo.isAddingPossible(part) && bestLengthOption != -1)
+                        {
+                            rawMaterialTo.increaseRawLength(bestLengthOption, part);
+                        }
+                        
+                        
                         rawMaterialTo.insert_part(tempPart);
                         if (TempPartList.Contains(tempPart))
                         {

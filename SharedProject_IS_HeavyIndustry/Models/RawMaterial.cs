@@ -139,6 +139,43 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     RemainingLength += SettingsViewModel.CuttingLoss;
                 }
             }
+            
+            int fitLength = FindShortestLengthPossibleWhenRemovePart(part);
+            if (fitLength != -1)
+            {
+                int lengthNeeded = Length - RemainingLength;
+                Length = fitLength;
+                RemainingLength = Length - lengthNeeded;
+            }
+        }
+
+        private int FindShortestLengthPossibleWhenRemovePart(Part part)
+        {
+            List<int> lengthOptions = SettingsViewModel.GetLengthOption(part.Desc.ToString());
+
+            int chosenLength = -1;
+            if (lengthOptions.Any() && lengthOptions.Count > 1)
+            {
+                // Sorting in Descending order
+                lengthOptions.Sort((a, b) => b.CompareTo(a));
+                
+                int lengthNeeded = Length - RemainingLength;
+                int remaining = Int32.MaxValue;
+                
+                foreach (var len in lengthOptions)
+                {
+                    if (len >= lengthNeeded && len - lengthNeeded < remaining)
+                    {
+                        chosenLength = len;
+                        remaining = len - lengthNeeded;
+                    }
+                }
+            }
+
+            if (chosenLength != -1)
+                return chosenLength;
+            
+            return -1;
         }
 
         public bool isAddingPossible(Part part)
@@ -149,7 +186,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             return false;
         }
         
-        public int findPossibleRawLength(Part part)
+        public int findPossibleRawLengthToIncrease(Part part)
         {
             // key의 형태가 "SS275,H194*150*6*9" 이런식이라 뒤에꺼만 따로 추출해야 함..
             string key = MainWindowViewModel.SelectedKey;
@@ -157,7 +194,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             
             List<int> lengthSet = SettingsViewModel.GetLengthOption(key);
             
-            // partList.Sort((a, b) => b.Length.CompareTo(a.Length));
+            // Sorting in Descending order
             lengthSet.Sort((a, b) => b.CompareTo(a));
             int remainingLengthIfPartAdded = RemainingLength - part.Length - SettingsViewModel.CuttingLoss;
             
@@ -202,11 +239,6 @@ namespace SharedProject_IS_HeavyIndustry.Models
             }
 
             return false;
-        }
-        
-        public int GetTotalLengthOfPartsInside()
-        {
-            return PartsInside.Sum(part => part.Length);
         }
         
         

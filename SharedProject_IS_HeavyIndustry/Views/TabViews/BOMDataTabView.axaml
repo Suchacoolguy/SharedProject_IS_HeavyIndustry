@@ -58,9 +58,9 @@
                     </DropDownButton>
                     <Button Name="InputBtn" Click="Input_Btn_Clicked" Margin="0,0,4,0" Content="적용" DockPanel.Dock="Right"/>
                     <TextBox Name="SeparateLenBox" Height="18" Margin="0,0,2,0" DockPanel.Dock="Right"/>
-                    <ToggleSwitch Name="NeedSeparate" Tag="NeedSeparateCheck" Content="분리 필요" DockPanel.Dock="Right" IsCheckedChanged="AddToggleFilter" Margin="0,0,10,0"/>
-                    <ToggleSwitch Name="Separate" Tag="SeparateCheck" Content="분리" DockPanel.Dock="Right" IsCheckedChanged="AddToggleFilter" Margin="0,0,10,0"/>
-                    <ToggleSwitch Name="Exclude" Tag="ExcludeCheck" Content="제외" DockPanel.Dock="Right" IsCheckedChanged="AddToggleFilter" Margin="0,0,10,0"/>
+                    <ToggleButton Name="NeedSeparate" Tag="NeedSeparateCheck" Content="분리 필요" DockPanel.Dock="Right" Click="AddToggleFilter" Margin="0,0,10,0"/>
+                    <ToggleButton Name="Separate" Tag="SeparateCheck" Content="분리" DockPanel.Dock="Right" Click="AddToggleFilter" Margin="0,0,10,0"/>
+                    <ToggleButton Name="Exclude" Tag="ExcludeCheck" Content="제외" DockPanel.Dock="Right" Click="AddToggleFilter" Margin="0,0,10,0"/>
                     <Button Background="White"/>
                 </DockPanel>
                 

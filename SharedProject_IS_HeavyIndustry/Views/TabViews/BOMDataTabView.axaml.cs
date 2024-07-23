@@ -2,9 +2,12 @@
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using DocumentFormat.OpenXml.Office.CustomUI;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
+using Avalonia.Controls.Primitives;
+using ToggleButton = Avalonia.Controls.Primitives.ToggleButton;
 
 namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 
@@ -13,7 +16,7 @@ public partial class BOMDataTabView : TabView
     private readonly MainWindow mainWindow;
     private TableView tableView;
     private bool initialToggleState = true;
-    private static ToggleSwitch exclude, separate, needSeparate;
+    private static ToggleButton exclude, separate, needSeparate;
     
     public BOMDataTabView(MainWindow mainWindow)
     {
@@ -94,25 +97,26 @@ public partial class BOMDataTabView : TabView
     
     private void AddToggleFilter(object? sender, RoutedEventArgs e)
     {
-        var toggleOption = sender as ToggleSwitch;
+        var toggleOption = sender as ToggleButton;
         switch (toggleOption!.Tag!.ToString()!)
         {
             case "ExcludeCheck":
-                BOMDataViewModel.ExcludeCheck = !BOMDataViewModel.ExcludeCheck;
+                BOMDataViewModel.ExcludeCheck = toggleOption.IsChecked == true;
                 exclude ??= toggleOption;
                 break;
             case "SeparateCheck":
-                BOMDataViewModel.SeparateCheck = !BOMDataViewModel.SeparateCheck;
+                BOMDataViewModel.SeparateCheck = toggleOption.IsChecked == true;
                 separate ??= toggleOption;
                 break;
             case "NeedSeparateCheck":
-                BOMDataViewModel.NeedSeparateCheck = !BOMDataViewModel.NeedSeparateCheck;
+                BOMDataViewModel.NeedSeparateCheck = toggleOption.IsChecked == true;
                 needSeparate ??= toggleOption;
                 break;
         }
         BOMDataViewModel.ApplyToggleFilter();
     }
 
+    //토글버튼 모두 끔
     public static void OffSwitches()
     {
         if (exclude != null)

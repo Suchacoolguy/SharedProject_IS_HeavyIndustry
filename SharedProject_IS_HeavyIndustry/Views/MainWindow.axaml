@@ -39,6 +39,12 @@
                             <TextBlock Text="형강 목록" HorizontalAlignment="Center" FontSize="10"/>
                         </StackPanel>
                     </Button>
+                    <Button Click="CuttingLoss_btn_click" Background="Transparent" Focusable="False">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <Image Source="/Assets/CuttingLossSetting.png" Height="30" Margin="0, 0, 0, 5"/>
+                            <TextBlock Text="로스 설정" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <Button Name="Bell" Click="Bell_Click_Event" Margin="10,0" Background="Transparent" IsVisible="False" DockPanel.Dock="Right">
                     <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/Bell.png" Width="25" Height="25"/>

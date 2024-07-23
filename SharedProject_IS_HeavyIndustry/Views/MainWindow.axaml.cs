@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ClosedXML.Excel;
@@ -173,6 +175,38 @@ namespace SharedProject_IS_HeavyIndustry.Views
             if (!btn!.Name!.Equals("BellActive")) return;
             btn.IsVisible = false;
             this.FindControl<Button>("Bell")!.IsVisible = true;
+        }
+
+        private void CuttingLoss_btn_click(object? sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button) return;
+            var flyout = new Flyout();
+            var stackPanel = new StackPanel();
+            stackPanel.Orientation = Orientation.Horizontal;
+            var inputTextBox = new TextBox
+            {
+                Text = SettingsViewModel.CuttingLoss.ToString(),
+                Margin = new Thickness(10)
+            };
+            stackPanel.Children.Add(inputTextBox);
+
+            // 설정 버튼
+            var applyButton = new Button
+            {
+                Content = "설정",
+                Margin = new Thickness(10)
+            };
+            applyButton.Click += (s, args) =>
+            {
+                // 문자를 정수로 변환
+                if (!int.TryParse(inputTextBox.Text, out var newValue)) return;
+                SettingsViewModel.CuttingLoss = newValue;
+                // Close the flyout
+                flyout.Hide();
+            };
+            stackPanel.Children.Add(applyButton);
+            flyout.Content = stackPanel;
+            flyout.ShowAt(button);
         }
     }
 }

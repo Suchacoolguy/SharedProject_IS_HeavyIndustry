@@ -169,6 +169,52 @@ public static class JsonConverter
         SettingsViewModel.Refresh();
     }
     
+    public static bool DeleteItemByDescription(string description)
+    {
+        try
+        {
+            // Get the directory where the executable is located
+            string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    
+            // Construct the path to the database file
+            string dbPath = Path.Combine(exeDirectory, "db_test.db");
+    
+            // Use the database path in the connection string
+            string connectionDB = $"Data Source={dbPath};";
+    
+            using (SqliteConnection connection = new SqliteConnection(connectionDB))
+            {
+                connection.Open();
+        
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "DELETE FROM RawLengthSet WHERE Description = @description";
+                    command.Parameters.AddWithValue("@description", description);
+                
+                    int result = command.ExecuteNonQuery();
+                
+                    // Check if any row was actually deleted
+                    if (result > 0)
+                    {
+                        Console.WriteLine("Item successfully deleted.");
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No item found with the given description.");
+                        return false;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while trying to delete item: {ex.Message}");
+            return false;
+        }
+    }
+
+    
     public static Dictionary<string, string>? ReadHyungGangSetFromJson()
     {
         try

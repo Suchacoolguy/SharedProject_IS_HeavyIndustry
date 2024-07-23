@@ -166,5 +166,9 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
+
+        private void Bell_Click_Event(object? sender, RoutedEventArgs e)
+        {
+        }
     }
 }

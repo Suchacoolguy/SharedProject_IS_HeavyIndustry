@@ -13,32 +13,41 @@
 
     <DockPanel Name="BasicPanel" LastChildFill="True">
         <Border BorderBrush="#DFE9F5" BorderThickness="0,1.2" DockPanel.Dock="Top">
-            <StackPanel Name="Header" Height="70" Background="#ECF2F9" Orientation="Horizontal">
-                <Button Click="NewProjectWindow_btn_click" Background="Transparent" Focusable="False">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Image Source="/Assets/add_folder.png" Height="30" Margin="0, 0, 0, 5"/>
-                        <TextBlock Text="새프로젝트" HorizontalAlignment="Center" FontSize="10"/>
-                    </StackPanel>
+            <DockPanel Name="Header" Height="70" Background="#ECF2F9" >
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Click="NewProjectWindow_btn_click" Background="Transparent" Focusable="False">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <Image Source="/Assets/add_folder.png" Height="30" Margin="0, 0, 0, 5"/>
+                            <TextBlock Text="새프로젝트" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </Button>
+                    <Button  Click="Report_btn_click" Background="Transparent" Focusable="False">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <Image Source="/Assets/cut_folder.png" Height="30" Margin="0, 0, 0, 5" />
+                            <TextBlock Text="레포트 출력" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="Standard_btn_click" Background="Transparent" Focusable="False">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <Image Source="/Assets/standard_folder.png" Height="30" Margin="0, 0, 0, 5"/>
+                            <TextBlock Text="규격 목록" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="HyungGang_btn_click" Background="Transparent" Focusable="False">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <Image Source="/Assets/standard_folder.png" Height="30" Margin="0, 0, 0, 5"/>
+                            <TextBlock Text="형강 목록" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Button Name="Bell" Click="Bell_Click_Event" Margin="10,0" Background="Transparent" IsVisible="False" DockPanel.Dock="Right">
+                    <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/Bell.png" Width="25" Height="25"/>
                 </Button>
-                <Button  Click="Report_btn_click" Background="Transparent" Focusable="False">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Image Source="/Assets/cut_folder.png" Height="30" Margin="0, 0, 0, 5" />
-                        <TextBlock Text="레포트 출력" HorizontalAlignment="Center" FontSize="10"/>
-                    </StackPanel>
+                <Button Name="BellActive" Click="Bell_Click_Event" Margin="10,0" Background="Transparent" IsVisible="True" DockPanel.Dock="Right">
+                    <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/Bell_Active.png" Width="25" Height="25"/>
                 </Button>
-                <Button Click="Standard_btn_click" Background="Transparent" Focusable="False">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Image Source="/Assets/standard_folder.png" Height="30" Margin="0, 0, 0, 5"/>
-                        <TextBlock Text="규격 목록" HorizontalAlignment="Center" FontSize="10"/>
-                    </StackPanel>
-                </Button>
-                <Button Click="HyungGang_btn_click" Background="Transparent" Focusable="False">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Image Source="/Assets/standard_folder.png" Height="30" Margin="0, 0, 0, 5"/>
-                        <TextBlock Text="형강 목록" HorizontalAlignment="Center" FontSize="10"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
+                <Button Background="Transparent" DockPanel.Dock="Right"/>
+            </DockPanel>
         </Border>
         <Grid DockPanel.Dock="Top">
             <TabControl Name="TabFrame" Margin="0" Padding="0"/>

@@ -66,45 +66,25 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 // 다운로드 폴더 경로 생성
                 var downloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
                 var filePath = Path.Combine(downloadFolder, fileName);
-                
-                Console.WriteLine(filePath);
 
-                /*// 파일이 이미 열려 있는지 확인
-                if (IsFileLocked(filePath))
+                try
                 {
-                    MessageService.Send("동일한 이름의 파일이 이미 열려있습니다\n작업을 종료하고 다시 시작하세요");
-                    return;
-                }*/
-
-                using (var memoryStream = new MemoryStream())
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        workbook.SaveAs(memoryStream);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        File.WriteAllBytes(filePath, memoryStream.ToArray());
+                        OpenFile(filePath);
+                    }
+                }
+                catch
                 {
-                    workbook.SaveAs(memoryStream);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    File.WriteAllBytes(filePath, memoryStream.ToArray());
-                    OpenFile(filePath);
+                    MessageService.Send("같은 이름의 엑셀 파일이 열려있습니다\n해당 작업을 종료하고 시도해주세요");
                 }
             }
 
             Console.WriteLine("Excel 파일이 생성되고 열렸습니다.");
         }
-
-        private static bool IsFileLocked(string filePath)
-        {
-            try
-            {
-                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
-                {
-                    return false;
-                }
-            }
-            catch (IOException)
-            {
-                // 파일이 열려 있는 경우 예외가 발생함
-                return true;
-            }
-            return false;
-        }
-
 
         private static void OpenFile(string filePath)
         {

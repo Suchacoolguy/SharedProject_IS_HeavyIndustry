@@ -28,19 +28,20 @@ namespace SharedProject_IS_HeavyIndustry.Services
 {
     public class FilteringService
     {
-        private static Dictionary<string, FlyoutBase> _filterSet = new Dictionary<string, FlyoutBase>() ;
         private static string _key;
-        private static List<(string, FlyoutBase)> filterStack = [];
         private static OrderedDictionary filterSet = new();
         public static List<string> SelectedItems = [];
 
         [Obsolete("Obsolete")]
         public static FlyoutBase GetFilterMenu(string tag) // filterStack에 필터 존재 여부 확인 후 반환, 없으면 추가후 반환
         {
+
             //필터셋에 이미 필터가 존재하는데 필터의 상태가 모두 선택이면 필터 없는것과 같으므로 해당 필터를 셋에서 제외
-            if(filterSet.Count > 0 && filterSet.Contains(_key))
-                if(GetAllSelectCheckState(((FlyoutBase)filterSet[_key]!)))
+            if (filterSet.Count > 0 && filterSet.Contains(_key))
+            {
+                if (GetAllSelectCheckState(((FlyoutBase)filterSet[_key]!)))
                     filterSet.RemoveAt(filterSet.Count - 1);
+            }
             _key = tag;
             FlyoutBase filter = null;
             
@@ -51,16 +52,11 @@ namespace SharedProject_IS_HeavyIndustry.Services
             return filter;
         }
 
-        public static bool GetAllSelectCheckState(FlyoutBase flyoutBase)
+        public static void Clear()
         {
-            var filter = (Flyout)flyoutBase;
-            var parentStackPanel = filter.Content as StackPanel;
-            var scrollViewer = parentStackPanel?.Children.OfType<StackPanel>().FirstOrDefault()!.Children.OfType<ScrollViewer>().FirstOrDefault();
-            var childStackPanel = scrollViewer!.Content as StackPanel;
-            var selectAllCheckBox = childStackPanel!.Children.OfType<Border>().FirstOrDefault()!.Child as CheckBox;
-            if (selectAllCheckBox!.IsChecked == true)
-                return true;
-            return false;
+            _key = "";
+            filterSet.Clear();
+            SelectedItems = [];
         }
         
         [Obsolete("Obsolete")]
@@ -255,6 +251,16 @@ namespace SharedProject_IS_HeavyIndustry.Services
             foreach (var child in panel.Children)
                 if (child is CheckBox checkBox && checkBox != panel.Children[0])
                     checkBox.IsVisible = string.IsNullOrEmpty(filter) || checkBox.Content!.ToString()!.Contains(filter, StringComparison.OrdinalIgnoreCase);
+        }
+        
+        private static bool GetAllSelectCheckState(FlyoutBase flyoutBase)
+        {
+            var filter = (Flyout)flyoutBase;
+            var parentStackPanel = filter.Content as StackPanel;
+            var scrollViewer = parentStackPanel?.Children.OfType<StackPanel>().FirstOrDefault()!.Children.OfType<ScrollViewer>().FirstOrDefault();
+            var childStackPanel = scrollViewer!.Content as StackPanel;
+            var selectAllCheckBox = childStackPanel!.Children.OfType<Border>().FirstOrDefault()!.Child as CheckBox;
+            return selectAllCheckBox!.IsChecked == true;
         }
     }
 }

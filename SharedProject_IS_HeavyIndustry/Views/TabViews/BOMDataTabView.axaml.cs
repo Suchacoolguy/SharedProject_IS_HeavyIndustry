@@ -30,6 +30,7 @@ public partial class BOMDataTabView : TabView
         await mainWindow?.OpenSheetSelectWindow()!;
         tableView = new TableView();
         var tablePanel = this.FindControl<Panel>("TablePanel")!;
+        FilteringService.Clear();//시트가 바뀌면 필터 또한 클리어 
         tablePanel.Children.Clear(); // Clear existing children
         tablePanel.Children.Add(tableView);
     }

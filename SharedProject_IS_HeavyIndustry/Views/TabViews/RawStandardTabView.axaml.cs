@@ -27,8 +27,17 @@ public partial class RawStandardTabView : TabView
             dataGrid.ScrollIntoView(items[items.Count - 1], null);
         }
     }
-    
+
     private void Search_btn_click(object? sender, RoutedEventArgs e)
+    {
+        var input = this.FindControl<TextBox>("SearchBox")!.Text ?? "";
+        RawStandardViewModel.LengthSetList.Clear();
+        foreach (var value in RawStandardViewModel.TempLengthSetList)
+            if(value.Description.Contains(input!))
+                RawStandardViewModel.LengthSetList.Add(value);
+    }
+    
+    /*private void Search_btn_click(object? sender, RoutedEventArgs e)
     {
         var input = this.FindControl<TextBox>("SearchBox")!.Text;
         var dataGrid = this.FindControl<DataGrid>("Table")!;
@@ -50,7 +59,7 @@ public partial class RawStandardTabView : TabView
         {
             items.Insert(0, matchingItems[i]);
         }
-    }
+    }*/
 
 
     private void Filter_Btn_Click(object? sender, RoutedEventArgs e)

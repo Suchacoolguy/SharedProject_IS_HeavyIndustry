@@ -24,7 +24,8 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
         public string SubTitle { get; } = "규격별 중량 및 원자재 길이를 정의할 수 있습니다\n규격 정보를 설정 할 수 있습니다";
 
         private Dictionary<string, RawLengthSet> LengthSetDictionary { get; set; }
-        public ObservableCollection<RawLengthSet> LengthSetList { get; set; }
+        public static ObservableCollection<RawLengthSet> LengthSetList { get; set; } = null!;
+        public static ObservableCollection<RawLengthSet> TempLengthSetList { get; set; } = null!;
 
         public ICommand SaveCommand { get; }
         public ICommand PasteCommand { get; }
@@ -34,6 +35,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             // 여기 디비
             LengthSetDictionary = JsonConverter.ReadDictionaryFromJson() ?? new Dictionary<string, RawLengthSet>();
             LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
+            TempLengthSetList = Clone(LengthSetList);
 
             SaveCommand = new RelayCommand(Save);
             PasteCommand = new RelayCommand(Paste);
@@ -111,6 +113,14 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        private ObservableCollection<RawLengthSet> Clone(ObservableCollection<RawLengthSet> list)
+        {
+            ObservableCollection<RawLengthSet> result = [];
+            foreach (var value in list)
+                result.Add(value);
+            return result;
         }
     }
 

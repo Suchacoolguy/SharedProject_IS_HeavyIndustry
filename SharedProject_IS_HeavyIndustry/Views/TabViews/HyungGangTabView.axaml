@@ -26,7 +26,7 @@
                 <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
                     <Button Name="ReadExcelBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 
                             Content="형강정보 저장" DockPanel.Dock="Left" Command="{Binding SaveCommand}"/>
-                    <Button Name="DnDTaskBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 
+                    <Button Name="DnDTaskBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" IsVisible="False"
                             Content="엑셀에서 붙여넣기" Command="{Binding PasteCommand}" Margin="4,0,0,0" DockPanel.Dock="Left"/>
                     <Button Background="White"/>
                     <Button Name="Addition" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" 

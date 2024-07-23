@@ -14,24 +14,68 @@ public static class JsonConverter
 { 
     public static Dictionary<string, RawLengthSet>? ReadDictionaryFromJson()
     {
+        // try
+        // {
+        //     var filePath = GetFilePath("RawLengthSettingInfo");
+        //     if (!File.Exists(filePath))
+        //     {
+        //         MessageService.Send("규격정보가 없습니다");
+        //         return null;
+        //     }
+        //
+        //
+        //     var json = File.ReadAllText(filePath);
+        //     var dictionary = JsonConvert.DeserializeObject<Dictionary<string, RawLengthSet>>(json);
+        //     return dictionary;
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine($"JSON 파일 로드 중 오류 발생: {ex.Message}");
+        //     Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - ReadDictionaryFromJson()");
+        //     return null;
+        // }
+        
         try
         {
-            var filePath = GetFilePath("RawLengthSettingInfo");
-            if (!File.Exists(filePath))
+            // Get the directory where the executable is located
+            string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    
+            // Construct the path to the database file
+            string dbPath = Path.Combine(exeDirectory, "db_test.db");
+    
+            // Use the database path in the connection string
+            string connectionDB = $"Data Source={dbPath};";
+    
+            using (SqliteConnection connection = new SqliteConnection(connectionDB))
             {
-                MessageService.Send("규격정보가 없습니다");
-                return null;
+                connection.Open();
+        
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT Description, Weight, Lengths FROM RawLengthSet";
+                
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var dictionary = new Dictionary<string, RawLengthSet>();
+                    
+                        while (reader.Read())
+                        {
+                            string description = reader["Description"].ToString();
+                            double weight = Convert.ToDouble(reader["Weight"]);
+                            string lengths = reader["Lengths"].ToString();
+    
+                            dictionary.Add(description, new RawLengthSet(description, weight, lengths));
+                        }
+    
+                        return dictionary;
+                    }
+                }
             }
-
-
-            var json = File.ReadAllText(filePath);
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, RawLengthSet>>(json);
-            return dictionary;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"JSON 파일 로드 중 오류 발생: {ex.Message}");
-            Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - ReadDictionaryFromJson()");
+            Console.WriteLine($"데이터베이스 로드 중 오류 발생: {ex.Message}");
+            Console.WriteLine("오류 발생 클래스 : DBConverter.cs - ReadDictionaryFromDB()");
             return null;
         }
     }

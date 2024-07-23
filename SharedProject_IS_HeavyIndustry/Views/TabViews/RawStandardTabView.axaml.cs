@@ -6,7 +6,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using DynamicData;
+using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Models;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
@@ -30,6 +32,12 @@ public partial class RawStandardTabView : TabView
         {
             dataGrid.ScrollIntoView(items[items.Count - 1], null);
         }
+    }
+
+    private void deleteItem(object? sender, RoutedEventArgs routedEventArgs)
+    {
+        // JsonConverter.DeleteItemByDescription("Hello");
+        // SettingsViewModel.Refresh();
     }
 
     private void Search_btn_click(object? sender, RoutedEventArgs e)

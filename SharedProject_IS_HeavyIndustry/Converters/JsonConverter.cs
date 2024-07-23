@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DocumentFormat.OpenXml.Office2010.CustomUI;
 using Microsoft.Data.Sqlite;
-using Newtonsoft.Json;
+using Newtonsoft.Json; 
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
@@ -16,29 +16,52 @@ public static class JsonConverter
     {
         try
         {
-            var filePath = GetFilePath("RawLengthSettingInfo");
-            if (!File.Exists(filePath))
+            // Get the directory where the executable is located
+            string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    
+            // Construct the path to the database file
+            string dbPath = Path.Combine(exeDirectory, "db_test.db");
+    
+            // Use the database path in the connection string
+            string connectionDB = $"Data Source={dbPath};";
+    
+            using (SqliteConnection connection = new SqliteConnection(connectionDB))
             {
-                MessageService.Send("규격정보가 없습니다");
-                return null;
+                connection.Open();
+        
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT Description, Weight, Lengths FROM RawLengthSet";
+                
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var dictionary = new Dictionary<string, RawLengthSet>();
+                    
+                        while (reader.Read())
+                        {
+                            string description = reader["Description"].ToString();
+                            double weight = Convert.ToDouble(reader["Weight"]);
+                            string lengths = reader["Lengths"].ToString();
+    
+                            dictionary.Add(description, new RawLengthSet(description, weight, lengths));
+                        }
+    
+                        return dictionary;
+                    }
+                }
             }
-
-
-            var json = File.ReadAllText(filePath);
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, RawLengthSet>>(json);
-            return dictionary;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"JSON 파일 로드 중 오류 발생: {ex.Message}");
-            Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - ReadDictionaryFromJson()");
+            Console.WriteLine($"데이터베이스 로드 중 오류 발생: {ex.Message}");
+            Console.WriteLine("오류 발생 클래스 : DBConverter.cs - ReadDictionaryFromDB()");
             return null;
         }
     }
 
     public static void WriteDictionaryToJson(Dictionary<string, RawLengthSet> dictionary)
     {
-        try
+        /*try
         {
             var filePath = GetFilePath("RawLengthSettingInfo");
             var directory = Path.GetDirectoryName(filePath);
@@ -57,9 +80,9 @@ public static class JsonConverter
             Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - WriteDictionaryFromJson()");
         }
 
-        SettingsViewModel.Refresh();
+        SettingsViewModel.Refresh();*/
 
-    /*// Json 대신 DB 파일에 저장하는 코드. 추후에 적용할 예정
+    //Json 대신 DB 파일에 저장하는 코드. 추후에 적용할 예정
 
     try
 
@@ -165,8 +188,54 @@ public static class JsonConverter
             Console.WriteLine($"데이터베이스 저장 중 오류 발생: {ex.Message}");
             Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - WriteDictionaryFromJson()");
         }
-        SettingsViewModel.Refresh();*/
+        SettingsViewModel.Refresh();
     }
+    
+    public static bool DeleteItemByDescription(string description)
+    {
+        try
+        {
+            // Get the directory where the executable is located
+            string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    
+            // Construct the path to the database file
+            string dbPath = Path.Combine(exeDirectory, "db_test.db");
+    
+            // Use the database path in the connection string
+            string connectionDB = $"Data Source={dbPath};";
+    
+            using (SqliteConnection connection = new SqliteConnection(connectionDB))
+            {
+                connection.Open();
+        
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "DELETE FROM RawLengthSet WHERE Description = @description";
+                    command.Parameters.AddWithValue("@description", description);
+                
+                    int result = command.ExecuteNonQuery();
+                
+                    // Check if any row was actually deleted
+                    if (result > 0)
+                    {
+                        Console.WriteLine("Item successfully deleted.");
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No item found with the given description.");
+                        return false;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while trying to delete item: {ex.Message}");
+            return false;
+        }
+    }
+
     
     public static Dictionary<string, string>? ReadHyungGangSetFromJson()
     {

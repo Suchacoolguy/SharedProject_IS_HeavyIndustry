@@ -32,6 +32,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
         private static string _key;
         private static List<(string, FlyoutBase)> filterStack = [];
         private static OrderedDictionary filterSet = new();
+        public static List<string> SelectedItems = [];
 
         [Obsolete("Obsolete")]
         public static FlyoutBase GetFilterMenu(string tag) // filterStack에 필터 존재 여부 확인 후 반환, 없으면 추가후 반환
@@ -214,15 +215,15 @@ namespace SharedProject_IS_HeavyIndustry.Services
             var scrollViewer = stackPanel.Children.OfType<ScrollViewer>().FirstOrDefault();
             var panel = scrollViewer?.Content as StackPanel;
 
-            var selectedItems = new List<string>();
+            SelectedItems.Clear();
             foreach (var child in panel!.Children)
                 if (child is CheckBox checkBox && checkBox != panel.Children[0] && checkBox.IsChecked == true)
-                    selectedItems.Add(checkBox.Content!.ToString()!);
+                    SelectedItems.Add(checkBox.Content!.ToString()!);
+            Console.WriteLine("선택된 아이템 개수: " + SelectedItems.Count);
 
             //모두 선택 체크박스가 체크되어있을 시 필터 헤제와 같으므로 적절한 처리 
             var selectAllCheckBox = panel.Children.OfType<Border>().FirstOrDefault()!.Child as CheckBox;
-            BOMDataViewModel.ApplyFilter(applyButton.Tag?.ToString()!, selectAllCheckBox!.IsChecked == true,
-                selectedItems);
+            BOMDataViewModel.ApplyFilter(applyButton.Tag?.ToString()!, selectAllCheckBox!.IsChecked == true);
             RefreshFilterSet();
         }
 

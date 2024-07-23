@@ -9,6 +9,8 @@
     using HarfBuzzSharp;
     using SharedProject_IS_HeavyIndustry.Converters;
     using SharedProject_IS_HeavyIndustry.Models;
+    using SharedProject_IS_HeavyIndustry.Services;
+    using SharedProject_IS_HeavyIndustry.Views.TabViews;
 
     namespace SharedProject_IS_HeavyIndustry.ViewModels
     {
@@ -27,6 +29,7 @@
             //필터 적용 후 파트 
             public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
             public static Stack<(string, ObservableCollection<Part>)> FilteredPartsStack = new ();
+            public static bool ExcludeCheck = false, SeparateCheck = false, NeedSeparateCheck = false;
             
             public BOMDataViewModel(List<Part> parts)
             {
@@ -55,8 +58,9 @@
                     list.Add(part);
             }
 
-            public static void ApplyFilter(string key, bool release, List<string> selectedFilterItems)
+            public static void ApplyFilter(string key, bool release)
             {
+                var selectedFilterItems = FilteringService.SelectedItems;
                 //Stack이 비어있으면 Allparts 가져와서 채움
                 if (FilteredPartsStack.Count == 0)
                 {
@@ -65,6 +69,9 @@
                 }
                 else
                 {
+                    //분리, 제외, 분리 필요 버튼이 활성화 되어있으면 삭제 
+                    if (FilteredPartsStack.Peek().Item1.Equals("ToggleOption"))
+                        FilteredPartsStack.Pop();
                     //Stack 최상위 원소가 현재 필터와 같은 경우 (ex-규격 필터를 설정하고 또 다시 규격 필터를 사용할 경우)
                     if (FilteredPartsStack.Peek().Item1.Equals(key))
                     {
@@ -80,6 +87,7 @@
                         Console.WriteLine("현재 필터가 이미 존재함 해당 필터 나올때 까지 POP실핼");
                         Console.WriteLine("현재 스택 : " + FilteredPartsStack.Count);
                     }
+                    BOMDataTabView. OffSwitches();
                 }
                 
                 PartsFiltered.Clear();
@@ -154,15 +162,23 @@
                 FilteredPartsStack.Push((key, Clone(PartsFiltered)));
             }
 
-            public static void ApplyFilter(bool isChecked)
+            public static void ApplyToggleFilter()
             {
                 PartsFiltered.Clear();
-                if(isChecked)
-                    foreach (var part in AllParts.Where(p => p.IsOverLenth))
-                        PartsFiltered.Add(part);
-                else
-                    foreach (var part in AllParts.Where(p => !p.IsOverLenth))
-                        PartsFiltered.Add(part);
+                if (FilteredPartsStack.Count == 0)
+                {
+                    FilteredPartsStack.Push(("Base", Clone(AllParts)));
+                    Console.WriteLine("스택 비어있음 원소 추가");
+                }
+                if (FilteredPartsStack.Peek().Item1.Equals("ToggleOption"))
+                    FilteredPartsStack.Pop();
+                foreach (var part in FilteredPartsStack.Peek().Item2
+                             .Where(p => (!ExcludeCheck || p.IsExcluded) 
+                                         && (!NeedSeparateCheck || p.IsOverLenth)
+                                         && (!SeparateCheck || p.NeedSeparate)))
+                    PartsFiltered.Add(part);
+                
+                FilteredPartsStack.Push(("ToggleOption", Clone(PartsFiltered)));
             }
             
             private static ObservableCollection<Part> Clone(ObservableCollection<Part> list)

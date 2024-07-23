@@ -56,15 +56,9 @@
                             </MenuItem>
                         </Menu>
                     </DropDownButton>
-                    <CheckBox Name="SeparateCheckBox" Content="분리 필요" Margin="10,0" IsCheckedChanged="SeparateCheckChanged" DockPanel.Dock="Right"/>
-                    <!-- <StackPanel Margin="20"> -->
-                    <!--     <ComboBox SelectedIndex="0" MaxDropDownHeight="100" > -->
-                    <!--         <ComboBoxItem>Text Item 1</ComboBoxItem> -->
-                    <!--         <ComboBoxItem>Text Item 2</ComboBoxItem> -->
-                    <!--         <ComboBoxItem>Text Item 3</ComboBoxItem> -->
-                    <!--         <ComboBoxItem>Text Item 4</ComboBoxItem> -->
-                    <!--     </ComboBox> -->
-                    <!-- </StackPanel> -->
+                    <ToggleSwitch Name="NeedSeparate" Tag="NeedSeparateCheck" Content="분리 필요" DockPanel.Dock="Right" IsCheckedChanged="AddToggleFilter" Margin="0,0,10,0"/>
+                    <ToggleSwitch Name="Separate" Tag="SeparateCheck" Content="분리" DockPanel.Dock="Right" IsCheckedChanged="AddToggleFilter" Margin="0,0,10,0"/>
+                    <ToggleSwitch Name="Exclude" Tag="ExcludeCheck" Content="제외" DockPanel.Dock="Right" IsCheckedChanged="AddToggleFilter" Margin="0,0,10,0"/>
                     <Button Background="White"/>
                 </DockPanel>
                 
@@ -75,3 +69,75 @@
     </DockPanel>
     
 </UserControl>
+
+<!--
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:tabVIewModels="clr-namespace:SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels"
+             xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.TabViews.BOMDataTabView"
+             x:DataType="tabVIewModels:ExcelTabViewModel">
+    
+    <Design.DataContext>
+        <tabVIewModels:ExcelTabViewModel/>
+    </Design.DataContext>
+    
+    <DockPanel DockPanel.Dock="Top">
+        
+        ~1~Box1@1@         
+        <Border Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
+            <DockPanel>
+                <Border Margin="0,0,4,0" DockPanel.Dock="Left">
+                    <Image Source="/Assets/information.png" VerticalAlignment="Center" Height="50"/>
+                </Border>
+                <TextBlock Text="{Binding Title}" FontWeight="Heavy" Padding="3" DockPanel.Dock="Top"/>
+                <TextBlock Text="{Binding SubTitle}" FontSize="12" Padding="3" DockPanel.Dock="Top"/>
+            </DockPanel>
+        </Border>
+               ~1~Box2@1@           
+        <Border Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
+            <StackPanel>
+                <TextBlock Padding="2" Text="기본정보" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue"/>
+                <TextBlock Padding="2" Foreground="Black" Background="White" VerticalAlignment="Center">
+                    <Run Text="프로젝트명: "/>
+                    <Run Text="엑셀파일 경로: "/>
+                    <Run Text="{Binding ExcelFilePath}"/>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+               ~1~Box3@1@
+        <Border BorderBrush="Gray" BorderThickness="2" Margin="4,4,4,0">
+            <DockPanel Name="MyDockPanel" Background="White">
+                
+                <Border Background="DodgerBlue" DockPanel.Dock="Top">
+                    <TextBlock Padding="2" VerticalAlignment="Center" Foreground="White">엑셀 입력 내용 </TextBlock>
+                </Border>
+                
+                <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
+                    <Button Name="ReadExcelBtn" Click="ReadExcelBtn_Click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="엑셀에서 BOM 생성" DockPanel.Dock="Left"/>
+                    <Button Name="DnDTaskBtn" Click="DnDTaskBtn_Click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="BOM에서 부재 생성 및 자동 배치" Margin="4,0,0,0" DockPanel.Dock="Left"/>
+                    <DropDownButton Name="DropDownBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right">
+                        <Menu>
+                            <MenuItem Header="선택/해제">
+                                <MenuItem Header="표시된 항목 제외 설정" Click="SetExcludeTrue"/>
+                                <MenuItem Header="표시된 항목 제외 해제" Click="SetExcludeFalse"/>
+                                <MenuItem Header="표시된 항목 분리 설정" Click="SetSeparateTrue"/>
+                                <MenuItem Header="표시된 항목 분리 해제" Click="SetSeparateFalse"/>
+                            </MenuItem>
+                        </Menu>
+                    </DropDownButton>
+                    <CheckBox Name="SeparateCheckBox" Content="분리 필요" Margin="10,0" IsCheckedChanged="SeparateCheckChanged" DockPanel.Dock="Right"/>
+                    <Button Background="White"/>
+                </DockPanel>
+                
+                <Panel Name="TablePanel" Margin="4,4,4,0"/>
+            </DockPanel>
+        </Border>
+               
+    </DockPanel>
+    
+</UserControl>
+-->

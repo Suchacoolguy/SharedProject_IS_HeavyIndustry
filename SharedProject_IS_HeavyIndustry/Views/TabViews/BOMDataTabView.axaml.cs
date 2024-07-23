@@ -13,6 +13,7 @@ public partial class BOMDataTabView : TabView
     private readonly MainWindow mainWindow;
     private TableView tableView;
     private bool initialToggleState = true;
+    private static ToggleSwitch exclude, separate, needSeparate;
     
     public BOMDataTabView(MainWindow mainWindow)
     {
@@ -90,20 +91,36 @@ public partial class BOMDataTabView : TabView
             Console.WriteLine($"You clicked {menuItem.Header}");
         }
     }
-
-    private void SeparateCheckChanged(object? sender, RoutedEventArgs e)
+    
+    private void AddToggleFilter(object? sender, RoutedEventArgs e)
     {
-        if (sender is not CheckBox checkBox) return;
-        if (!this.FindControl<Panel>("TablePanel")!.Children.Any())
+        var toggleOption = sender as ToggleSwitch;
+        switch (toggleOption!.Tag!.ToString()!)
         {
-            checkBox.IsChecked = false;
-            MessageService.Send("파트 목록이 없습니다.\n시트를 선택해주세요");
-            return;
+            case "ExcludeCheck":
+                BOMDataViewModel.ExcludeCheck = !BOMDataViewModel.ExcludeCheck;
+                exclude ??= toggleOption;
+                break;
+            case "SeparateCheck":
+                BOMDataViewModel.SeparateCheck = !BOMDataViewModel.SeparateCheck;
+                separate ??= toggleOption;
+                break;
+            case "NeedSeparateCheck":
+                BOMDataViewModel.NeedSeparateCheck = !BOMDataViewModel.NeedSeparateCheck;
+                needSeparate ??= toggleOption;
+                break;
         }
-        if(checkBox.IsChecked == true)
-            BOMDataViewModel.ApplyFilter(true);
-        else
-            BOMDataViewModel.ApplyFilter(false);
+        BOMDataViewModel.ApplyToggleFilter();
+    }
+
+    public static void OffSwitches()
+    {
+        if (exclude != null)
+            exclude.IsChecked = false;
+        if (separate != null)
+            separate.IsChecked = false;
+        if (needSeparate != null)
+            needSeparate.IsChecked = false;
     }
 
     private void Input_Btn_Clicked(object? sender, RoutedEventArgs e)

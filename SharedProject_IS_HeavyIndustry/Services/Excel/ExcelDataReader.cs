@@ -10,6 +10,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
 {
     public static class ExcelDataReader
     {
+        private static string noRawLengthData = "";
         public static XLWorkbook Read(string filePath)
         {
             try
@@ -37,6 +38,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
 
                 row++;
             }
+            MessageService.Send("규격 정보 없음\n" + noRawLengthData);
 
             return parts;
         }
@@ -110,12 +112,17 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 if (type.Equals(hyungGangType.Trim()))
                     part.IsExcluded = false;
             }
-
-            if (SettingsViewModel.GetLengthOption(desc.ToString()).Count < 1)
+            
+            //규격목록에 길이가 설정 되어있지 않다면 제외
+            if (!part.IsExcluded && SettingsViewModel.GetLengthOption(desc.ToString()).Count < 1)
+            {
                 part.IsExcluded = true;
-            if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
+                noRawLengthData = part.Desc + "\n";
+            }
+            else if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
                 part.IsOverLenth = true;
 
+            
             return part;
         }
     }

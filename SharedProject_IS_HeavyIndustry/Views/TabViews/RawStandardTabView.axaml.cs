@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using DynamicData;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
@@ -21,7 +23,9 @@ public partial class RawStandardTabView : TabView
     {
         var dataGrid = this.FindControl<DataGrid>("Table")!;
         var items = (ObservableCollection<RawLengthSet>)dataGrid.ItemsSource;
-        items.Add(new RawLengthSet("", 0, ""));
+        var newItem = new RawLengthSet("", 0, "");
+        RawStandardViewModel.TempLengthSetList.Add(newItem);
+        items.Add(newItem);
         if (items.Count > 0)
         {
             dataGrid.ScrollIntoView(items[items.Count - 1], null);

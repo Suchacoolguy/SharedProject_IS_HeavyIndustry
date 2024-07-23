@@ -169,6 +169,10 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         private void Bell_Click_Event(object? sender, RoutedEventArgs e)
         {
+            var btn = sender as Button;
+            if (!btn!.Name!.Equals("BellActive")) return;
+            btn.IsVisible = false;
+            this.FindControl<Button>("Bell")!.IsVisible = true;
         }
     }
 }

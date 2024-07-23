@@ -14,27 +14,6 @@ public static class JsonConverter
 { 
     public static Dictionary<string, RawLengthSet>? ReadDictionaryFromJson()
     {
-        // try
-        // {
-        //     var filePath = GetFilePath("RawLengthSettingInfo");
-        //     if (!File.Exists(filePath))
-        //     {
-        //         MessageService.Send("규격정보가 없습니다");
-        //         return null;
-        //     }
-        //
-        //
-        //     var json = File.ReadAllText(filePath);
-        //     var dictionary = JsonConvert.DeserializeObject<Dictionary<string, RawLengthSet>>(json);
-        //     return dictionary;
-        // }
-        // catch (Exception ex)
-        // {
-        //     Console.WriteLine($"JSON 파일 로드 중 오류 발생: {ex.Message}");
-        //     Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - ReadDictionaryFromJson()");
-        //     return null;
-        // }
-        
         try
         {
             // Get the directory where the executable is located
@@ -82,26 +61,6 @@ public static class JsonConverter
     
     public static void WriteDictionaryToJson(Dictionary<string, RawLengthSet> dictionary)
     {
-        // try
-        // {
-        //     var filePath = GetFilePath("RawLengthSettingInfo");
-        //     var directory = Path.GetDirectoryName(filePath);
-        //     if (directory != null && !Directory.Exists(directory))
-        //     {
-        //         Directory.CreateDirectory(directory);
-        //     }
-        //
-        //     var json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
-        //     File.WriteAllText(filePath, json);
-        //     MessageService.Send("성공적으로 저장되었습니다.");
-        // }
-        // catch (Exception ex)
-        // {
-        //     Console.WriteLine($"JSON 파일 저장 중 오류 발생: {ex.Message}");
-        //     Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - WriteDictionaryFromJson()");
-        // }
-        // SettingsViewModel.Refresh();
-        
         // Json 대신 DB 파일에 저장하는 코드. 추후에 적용할 예정
         
         try

@@ -154,7 +154,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             
-            <DataGridTextColumn Header="분리 길이" Binding="{Binding lengthToBeSeperated}" IsReadOnly="False" Width="1*" Tag="LengthToBeSeparated"/>
+            <DataGridTextColumn Header="분리 길이" Binding="{Binding lengthToBeSeparated}" IsReadOnly="False" Width="1*" Tag="LengthToBeSeparated"/>
 
             <DataGridTemplateColumn Header="분리 필요" Width="0.9*">
                 <DataGridTemplateColumn.CellTemplate>

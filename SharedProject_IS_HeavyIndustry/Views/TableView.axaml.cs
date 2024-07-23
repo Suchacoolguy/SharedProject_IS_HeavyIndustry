@@ -63,9 +63,9 @@ namespace SharedProject_IS_HeavyIndustry.Views
                     if (e.Row.DataContext is Part part)
                     {
                         Console.WriteLine("sucess");
-                        part.lengthToBeSeperated = newValue;
+                        part.lengthToBeSeparated = newValue;
                         
-                        Console.WriteLine($"Before setting: Part {part.IsOverLenth} 분리길이: {part.lengthToBeSeperated}");
+                        Console.WriteLine($"Before setting: Part {part.IsOverLenth} 분리길이: {part.lengthToBeSeparated}");
                     }
                 }
             }

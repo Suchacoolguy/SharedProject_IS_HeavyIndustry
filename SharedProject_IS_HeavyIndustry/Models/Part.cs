@@ -5,13 +5,24 @@ namespace SharedProject_IS_HeavyIndustry.Models;
 public class Part : INotifyPropertyChanged
 {
     public bool is_selected = false;
-    public string? lengthToBeSeperated { get; set; }
     private string assem, mark, material;
     private int length, num;
     private double weightOne, weightSum, pArea;
     private Description desc;
     private string descString;
     private bool _isOverLenth, _isExcluded, _needSeparate;
+    private string _lengthToBeSeparated;
+    public string lengthToBeSeparated
+    {
+        get => _lengthToBeSeparated;
+        set
+        {
+            if (!int.TryParse(value, out _)) return;
+            if (_lengthToBeSeparated == value) return;
+            _lengthToBeSeparated = value;
+            OnPropertyChanged();
+        }
+    }
     
     public Part() {}
     
@@ -30,7 +41,7 @@ public class Part : INotifyPropertyChanged
         _isOverLenth = false;
         _isExcluded = true;
         _needSeparate = false;
-        lengthToBeSeperated = "";
+        _lengthToBeSeparated = "";
     }
     
     public Description Desc
@@ -125,7 +136,7 @@ public class Part : INotifyPropertyChanged
     
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected void OnPropertyChanged(string propertyName)
+    protected void OnPropertyChanged(string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

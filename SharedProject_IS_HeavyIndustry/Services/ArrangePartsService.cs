@@ -25,7 +25,7 @@ public class ArrangePartsService
     {
         foreach (var part in overSizeParts)
         {
-            Console.WriteLine("분리길이 : " + part.lengthToBeSeperated);
+            Console.WriteLine("분리길이 : " + part.lengthToBeSeparated);
         }
         
         // 파트배치 완료된 것들
@@ -37,9 +37,9 @@ public class ArrangePartsService
         foreach (var ppp in overSizeParts)
         {
             int length = ppp.Length;
-            if (!string.IsNullOrEmpty(ppp.lengthToBeSeperated))
+            if (!string.IsNullOrEmpty(ppp.lengthToBeSeparated))
             {
-                int lengthToBeSeperated = Convert.ToInt32(ppp.lengthToBeSeperated);
+                int lengthToBeSeperated = Convert.ToInt32(ppp.lengthToBeSeparated);
                 while (length > lengthToBeSeperated)
                 {
                     length -= lengthToBeSeperated;

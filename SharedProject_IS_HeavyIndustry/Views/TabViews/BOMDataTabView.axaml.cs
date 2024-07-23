@@ -128,7 +128,7 @@ public partial class BOMDataTabView : TabView
         var len = this.FindControl<TextBox>("SeparateLenBox")!.Text!;
         foreach (var part in BOMDataViewModel.PartsFiltered)
         {
-            part.lengthToBeSeperated = len;
+            part.lengthToBeSeparated = len;
         }
     }
 }

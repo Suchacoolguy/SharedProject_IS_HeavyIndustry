@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DocumentFormat.OpenXml.Office2010.CustomUI;
 using Microsoft.Data.Sqlite;
-using Newtonsoft.Json;
+using Newtonsoft.Json; 
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
@@ -58,13 +58,35 @@ public static class JsonConverter
             return null;
         }
     }
-    
+
     public static void WriteDictionaryToJson(Dictionary<string, RawLengthSet> dictionary)
     {
-        // Json 대신 DB 파일에 저장하는 코드. 추후에 적용할 예정
-        
-        try
+        /*try
         {
+            var filePath = GetFilePath("RawLengthSettingInfo");
+            var directory = Path.GetDirectoryName(filePath);
+            if (directory != null && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
+            File.WriteAllText(filePath, json);
+            MessageService.Send("성공적으로 저장되었습니다.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"JSON 파일 저장 중 오류 발생: {ex.Message}");
+            Console.WriteLine("오류 발생 클래스 : JsonConverter.cs - WriteDictionaryFromJson()");
+        }
+
+        SettingsViewModel.Refresh();*/
+
+    //Json 대신 DB 파일에 저장하는 코드. 추후에 적용할 예정
+
+    try
+
+    {
             // Get the directory where the executable is located
             string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
         

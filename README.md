@@ -56,3 +56,30 @@ Length 값대로 막대 길이 설정하면 넘 길어져서 10으로 나눌려�
 - DragAndDropView.axaml
 - DragAndDropView.axaml.cs
 - etc)
+```
+using Squirrel;
+using System;
+using System.Threading.Tasks;
+
+
+public async Task CheckForUpdates()
+        {
+            try
+            {
+                using (var mgr = new UpdateManager("https://github.com/Suchacoolguy/SharedProject_IS_HeavyIndustry/releases/tag/v0.00"))
+                {
+                    await mgr.UpdateApp();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions here (log them, show a message to the user, etc.)
+                Console.WriteLine("Update failed: " + ex.Message);
+            }
+        }
+```
+
+```
+InitializeComponent();
+CheckForUpdates().ConfigureAwait(false);
+```

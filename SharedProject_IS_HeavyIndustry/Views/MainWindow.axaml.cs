@@ -25,8 +25,10 @@ namespace SharedProject_IS_HeavyIndustry.Views
         public MainWindow()
         {
             InitializeComponent();
+            
             DataContext = new MainWindowViewModel();
             loading = this.FindControl<Loading>("LoadingControl")!;
+            
         }
 
         public static List<string> GetSheetNames() // StartWindow에서 사용

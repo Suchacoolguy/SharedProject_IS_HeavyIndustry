@@ -91,39 +91,37 @@ namespace SharedProject_IS_HeavyIndustry.Views
             // those that have not been worked on (not arranged).
             List<string> emptyKeys = FindEmptyKeys();
             MyProgressBar.Maximum = emptyKeys.Count;
-            
+
             if (MainWindowViewModel.RawMaterialSet.Count < 1)
             {
                 MessageService.Send("작업된 항목이 없습니다");
                 return;
             }
-            else
-            {
-                // do the arrangement on the empty keys here.
-                await Task.Run(() =>
-                {
-                    // Split the part arrangement into smaller tasks and update the progress
-                    for (int i = 0; i < emptyKeys.Count; i++)
-                    {
-                        string key = emptyKeys[i];
 
-                        Dispatcher.UIThread.InvokeAsync(() =>
-                            {
-                                // Perform arrangement for each part
-                                ArrangePartsForEmptyKey(key);
-                            
-                                MyProgressBar.Value = i + 1;    
-                            }
-                        );
-                    }
+            // Perform the arrangement on the empty keys here.
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < emptyKeys.Count; i++)
+                {
+                    string key = emptyKeys[i];
                     
+                    // Perform arrangement for each part
+                    ArrangePartsForEmptyKey(key);
+
+                    // Update the progress bar on the UI thread
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        WriteImageSizeFile();
-                        ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
+                        MyProgressBar.Value = i + 1;
                     });
-                });
-            }
+                }
+            });
+
+            // After processing all keys, execute the following on the UI thread
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                WriteImageSizeFile();
+                ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
+            });
         }
 
         

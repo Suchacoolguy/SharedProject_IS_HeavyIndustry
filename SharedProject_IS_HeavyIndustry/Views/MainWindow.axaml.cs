@@ -67,11 +67,11 @@ namespace SharedProject_IS_HeavyIndustry.Views
         public async Task OpenSheetSelectWindow()
         {
             var miniWindow = new SheetSelectionWindow(GetSheetNames(), this);
-            await miniWindow.ShowDialog(this);
+            await miniWindow.ShowDialog(this); 
             if (!string.IsNullOrEmpty(BOMDataViewModel.SheetName))
                 SetSheet(BOMDataViewModel.SheetName);
         }
-
+        
         //새 프로젝트 생성창 띄우기
         private async void NewProjectWindow_btn_click(object? sender, RoutedEventArgs e)
         {
@@ -173,10 +173,12 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         private void Bell_Click_Event(object? sender, RoutedEventArgs e)
         {
-            var btn = sender as Button;
-            if (!btn!.Name!.Equals("BellActive")) return;
-            btn.IsVisible = false;
-            this.FindControl<Button>("Bell")!.IsVisible = true;
+            //var btn = sender as Button;
+            var alarmWindow = new AlarmWindow();
+            alarmWindow.Show();
+            //if (!btn!.Name!.Equals("BellActive")) return;
+            //btn.IsVisible = false;
+            //this.FindControl<Button>("Bell")!.IsVisible = true;
         }
 
         private void CuttingLoss_btn_click(object? sender, RoutedEventArgs e)

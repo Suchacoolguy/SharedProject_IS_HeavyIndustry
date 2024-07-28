@@ -2,8 +2,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
+        xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
+        mc:Ignorable="d" 
+        Width="500" Height="300"
         x:Class="SharedProject_IS_HeavyIndustry.Views.AlarmWindow"
+        x:DataType="vm:AlarmWindowViewModel"
         Title="AlarmWindow">
-    Welcome to Avalonia!
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- MissingStandardBuffer 리스트 -->
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Text="규격" FontWeight="Bold" Margin="0,0,0,10"/>
+            <ItemsControl ItemsSource="{Binding MissingStandardBuffer}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding .}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+        
+        <!-- MissingHyungGangBuffer 리스트 -->
+        <StackPanel Grid.Column="1" Margin="10">
+            <TextBlock Text="형강" FontWeight="Bold" Margin="0,0,0,10"/>
+            <ItemsControl ItemsSource="{Binding MissingHyungGangBuffer}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding .}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
 </Window>

@@ -113,8 +113,6 @@ public class ArrangePartsService
         {
             data = new DataModel(partList, _lengthOptionsRawMaterial);
         }
-            
-            
         
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];
@@ -157,6 +155,7 @@ public class ArrangePartsService
             }
         }
 
+        int firstPartNoCuttingLoss = 0;
         // the sum of the lengths of the items in each bin must be less than or equal to the bin's capacity.
         for (int j = 0; j < data.NumBins; j++)
         {
@@ -172,7 +171,9 @@ public class ArrangePartsService
             // since we set the lower bound to 0, the sum of the lengths of the items in the bin must be less than or equal to the bin's capacity.
             for (int i = 0; i < data.NumItems; i++)
             {
-                constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
+                constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length - (SettingsViewModel.CuttingLoss * firstPartNoCuttingLoss));
+                if (x[i, j].SolutionValue() == 1)
+                    firstPartNoCuttingLoss = 1;
             }
         }
 

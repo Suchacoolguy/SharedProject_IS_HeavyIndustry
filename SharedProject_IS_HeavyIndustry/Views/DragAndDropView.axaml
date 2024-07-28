@@ -46,7 +46,7 @@
                                     <TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="0" Canvas.Top="35"/>
                                     <TextBlock Text="{Binding TotalPartsLength}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" 
                                                TextAlignment="Center" Canvas.Left="0" Canvas.Top="35" />
-                                    <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" Foreground="{Binding RectangleColor}" 
+                                    <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" 
                                                Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35"/>
 
                                     

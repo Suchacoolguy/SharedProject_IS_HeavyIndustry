@@ -111,9 +111,9 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 // 형강 목록 리스트에 없으면 제외 True, 있으면 제외 False.
                 if (type.Equals(hyungGangType.Trim()))
                     part.IsExcluded = false;
-                if(part.IsExcluded)
-                    AlarmWindowViewModel.AddToMissingHyungGangBuffer(hyungGangType);
             }
+            if (part.IsExcluded)
+                AlarmWindowViewModel.AddToMissingHyungGangBuffer(type);
             
             //규격목록에 길이가 설정 되어있지 않다면 제외
             if (!part.IsExcluded && SettingsViewModel.GetLengthOption(desc.ToString()).Count < 1)

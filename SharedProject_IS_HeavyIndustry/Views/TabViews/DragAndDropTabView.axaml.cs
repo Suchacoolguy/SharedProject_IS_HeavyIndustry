@@ -13,7 +13,6 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 public partial class DragAndDropTabView : TabView
 {
     private MainWindow mainWindow;
-    // private string _key = "";
     
     public DragAndDropTabView(MainWindow mainWindow)
     {

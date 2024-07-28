@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -10,6 +12,9 @@ using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 using System.IO;
+using System.Threading.Tasks;
+using Avalonia.Threading;
+using SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 namespace SharedProject_IS_HeavyIndustry.Views
 {
@@ -25,9 +30,96 @@ namespace SharedProject_IS_HeavyIndustry.Views
         {
             MessageService.Send("아직 구현되지 않은 페이지 입니다");
         }
-
-        private void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
+        
+        private static ObservableCollection<Part> GetFilteredParts(string material, string desc, ObservableCollection<Part> parts)
         {
+            var list = new ObservableCollection<Part>();
+
+            foreach (var part in parts)
+                if (part.Desc.ToString().Equals(desc) && part.Material.Equals(material))
+                    list.Add(part);
+
+            return list;
+        }
+        
+        private Dictionary<string, List<string>> GetFilterSet()
+        {
+            var dictionary = new Dictionary<string, List<string>>();
+            GetFilterSetFromParts(dictionary, BOMDataViewModel.AllParts);
+            return dictionary;
+        }
+
+        private void GetFilterSetFromParts(Dictionary<string, List<string>> dictionary, ObservableCollection<Part> parts)
+        {
+            foreach (var part in parts)
+            {
+                if (part.IsExcluded) continue;
+
+                // Combine material and description to match the MainWindowViewModel.SelectedKey format
+                string combinedKey = part.Material + "," + part.Desc.ToString();
+
+                if (!dictionary.ContainsKey(combinedKey))
+                {
+                    dictionary.Add(combinedKey, new List<string> { combinedKey });
+                }
+            }
+        }
+        
+        public List<string> FindEmptyKeys()
+        {
+            Dictionary<string, List<string>> filterSet = GetFilterSet();
+        
+            List<string> emptyKeys = new List<string>();
+
+            foreach (var entry in filterSet)
+            {
+                foreach (var description in entry.Value)
+                {
+                    if (!MainWindowViewModel.RawMaterialSet.TryGetValue(description, out var rawMaterials))
+                    {
+                        if (rawMaterials == null || rawMaterials.Count == 0)
+                            emptyKeys.Add(description);  // 비어있다면 키를 리스트에 추가합니다.
+                    }
+                }
+            }
+
+            return emptyKeys;  // 비어있는 키들의 리스트를 반환합니다.
+        }
+
+        private async void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as ReportTabViewModel;
+
+            // those that have not been worked on (not arranged).
+            List<string> emptyKeys = FindEmptyKeys();
+
+            // Initialize the progress bar
+            if (viewModel != null)
+            {
+                viewModel.Progress = 0;
+            }
+
+            // do the arrangement on the empty keys here.
+            await Task.Run(() =>
+            {
+                // Split the part arrangement into smaller tasks and update the progress
+                for (int i = 0; i < emptyKeys.Count; i++)
+                {
+                    string key = emptyKeys[i];
+                    // Perform arrangement for each part
+                    ArrangePartsForEmptyKey(key);
+
+                    // Update progress on the UI thread
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (viewModel != null)
+                        {
+                            viewModel.Progress = ((i + 1) / (double)emptyKeys.Count) * 100;
+                        }
+                    });
+                }
+            });
+
             WriteImageSizeFile();
             if (MainWindowViewModel.RawMaterialSet.Count < 1)
             {
@@ -35,6 +127,43 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 return;
             }
             ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
+        }
+
+        
+        private void ArrangePartsForEmptyKey(string key)
+        {
+            var parts = GetFilteredPartsForKey(key, BOMDataViewModel.PartsForTask);
+            var partsOverLength = GetFilteredPartsForKey(key, BOMDataViewModel.PartsToSeparate);
+
+            // Get the length options from settings
+            var lengthOptions = SettingsViewModel.GetLengthOption(key.Split(',')[1]);
+
+            // Create the ArrangePartsService instance
+            var service = new ArrangePartsService(new List<Part>(parts), partsOverLength, lengthOptions);
+
+            // Update the RawMaterialSet and TempPartSet
+            if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))
+            {
+                MainWindowViewModel.RawMaterialSet.TryAdd(key, service.GetArrangedRawMaterials());
+            }
+        }
+        
+        private ObservableCollection<Part> GetFilteredPartsForKey(string key, ObservableCollection<Part> parts)
+        {
+            var partsList = new ObservableCollection<Part>();
+            var keyParts = key.Split(',');
+            var material = keyParts[0];
+            var desc = keyParts[1];
+
+            foreach (var part in parts)
+            {
+                if (part.Material.Equals(material) && part.Desc.ToString().Equals(desc))
+                {
+                    partsList.Add(part);
+                }
+            }
+
+            return partsList;
         }
 
         private void WriteImageSizeFile()

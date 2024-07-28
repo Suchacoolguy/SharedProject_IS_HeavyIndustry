@@ -18,8 +18,8 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
 
     public string Title { get; } = "배치 정보";
     public string SubTitle { get; } = "최적의 조합으로 파트를 배치합니다.";
-
-    private readonly Dictionary<string, List<string>> filterSet; // 재질, 규격 중복 방지 딕셔너리
+    
+    public readonly Dictionary<string, List<string>> filterSet; // 재질, 규격 중복 방지 딕셔너리
 
     private List<string> materialList; // 재질 콤보박스 아이템
     public List<string> MaterialList

@@ -53,5 +53,8 @@
         <DependentUpon>HyungGangTabView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\AlarmWindow.axaml.cs">
+        <DependentUpon>AlarmWindow.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

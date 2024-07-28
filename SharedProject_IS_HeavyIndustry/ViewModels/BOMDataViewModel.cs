@@ -17,7 +17,7 @@
         public class BOMDataViewModel 
         {
             public static string SheetName = null!;
-            public static ObservableCollection<Part> AllParts { get; set; }
+            public static ObservableCollection<Part> AllParts { get; set; } = [];
             public static ObservableCollection<Part> PartsForTask { get; set; } = []; // 제외 False, 분리 False
             public static ObservableCollection<Part> PartsToSeparate {
                 get
@@ -33,8 +33,21 @@
             
             public BOMDataViewModel(List<Part> parts)
             {
+                Initialize();
                 AllParts = new ObservableCollection<Part>(parts);
                 PartsFiltered = Clone(AllParts);
+            }
+
+            private static void Initialize()
+            {
+                AllParts.Clear();
+                PartsForTask.Clear();
+                PartsToSeparate.Clear();
+                PartsFiltered.Clear();
+                FilteredPartsStack.Clear();
+                ExcludeCheck = false;
+                SeparateCheck = false;
+                NeedSeparateCheck = false;
             }
 
             public static void ClassifyParts() // StartWindow, ExcelTabView에서 사용

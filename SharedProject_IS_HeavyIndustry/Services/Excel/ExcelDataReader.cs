@@ -112,12 +112,15 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 if (type.Equals(hyungGangType.Trim()))
                     part.IsExcluded = false;
             }
+            if (part.IsExcluded)
+                AlarmWindowViewModel.AddToMissingHyungGangBuffer(type);
             
             //규격목록에 길이가 설정 되어있지 않다면 제외
             if (!part.IsExcluded && SettingsViewModel.GetLengthOption(desc.ToString()).Count < 1)
             {
                 part.IsExcluded = true;
-                noRawLengthData = part.Desc + "\n";
+                //noRawLengthData = part.Desc + "\n";
+                AlarmWindowViewModel.AddToMissingStandardBuffer(part.Desc.ToString());
             }
             else if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
                 part.IsOverLenth = true;

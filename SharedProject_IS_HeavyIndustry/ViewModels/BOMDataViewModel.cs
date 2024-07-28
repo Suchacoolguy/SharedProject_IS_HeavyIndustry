@@ -17,7 +17,7 @@
         public class BOMDataViewModel 
         {
             public static string SheetName = null!;
-            public static ObservableCollection<Part> AllParts { get; set; }
+            public static ObservableCollection<Part> AllParts { get; set; } = [];
             public static ObservableCollection<Part> PartsForTask { get; set; } = []; // 제외 False, 분리 False
             public static ObservableCollection<Part> PartsToSeparate {
                 get
@@ -33,8 +33,21 @@
             
             public BOMDataViewModel(List<Part> parts)
             {
+                Initialize();
                 AllParts = new ObservableCollection<Part>(parts);
                 PartsFiltered = Clone(AllParts);
+            }
+
+            private static void Initialize()
+            {
+                AllParts.Clear();
+                PartsForTask.Clear();
+                PartsToSeparate.Clear();
+                PartsFiltered.Clear();
+                FilteredPartsStack.Clear();
+                ExcludeCheck = false;
+                SeparateCheck = false;
+                NeedSeparateCheck = false;
             }
 
             public static void ClassifyParts() // StartWindow, ExcelTabView에서 사용
@@ -64,7 +77,7 @@
                 //Stack이 비어있으면 Allparts 가져와서 채움
                 if (FilteredPartsStack.Count == 0)
                 {
-                    FilteredPartsStack.Push((key, Clone(AllParts)));
+                    FilteredPartsStack.Push(("Base", Clone(AllParts)));
                     Console.WriteLine("스택 비어있음 원소 추가");
                 }
                 else
@@ -179,6 +192,16 @@
                     PartsFiltered.Add(part);
                 
                 FilteredPartsStack.Push(("ToggleOption", Clone(PartsFiltered)));
+            }
+
+            public static void ReleaseAllFilter()
+            {
+                PartsFiltered.Clear();
+                FilteredPartsStack.Clear();
+                BOMDataTabView.OffSwitches();
+                FilteringService.Clear();
+                foreach (var p in AllParts)
+                    PartsFiltered.Add(p);
             }
             
             private static ObservableCollection<Part> Clone(ObservableCollection<Part> list)

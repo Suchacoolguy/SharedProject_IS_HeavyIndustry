@@ -151,19 +151,25 @@ namespace SharedProject_IS_HeavyIndustry.Models
             worksheet.Cell(5, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
             worksheet.Cell(6, 1).Value = "TOTAL STOCK WEIGHT = ";
-            worksheet.Cell(6, 4).Value = (double)totalStockLen/1000*rawWeight + " [ Kg]";
+            worksheet.Cell(6, 4).Value = ((double)totalStockLen/1000*rawWeight).ToString("F2") + " [ Kg]";
             worksheet.Cell(6, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
             worksheet.Cell(6, 6).Value = "TOTAL PART WEIGHT = ";
-            worksheet.Cell(6, 9).Value = (double)totalPartLen/1000*rawWeight + " [ Kg]";
+            worksheet.Cell(6, 9).Value = ((double)totalPartLen/1000*rawWeight).ToString("F2") + " [ Kg]";
             worksheet.Cell(6, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
             worksheet.Cell(7, 1).Value = "TOTAL RESIDUAL WEIGHT = ";
             worksheet.Cell(7, 6).Value = "TOTAL SCRAP WEIGHT = ";
-            worksheet.Cell(7, 9).Value = (double)totalRemaining/1000 * rawWeight  + " [ Kg]";
+            worksheet.Cell(7, 9).Value = ((double)totalRemaining/1000 * rawWeight).ToString("F2")  + " [ Kg]";
             worksheet.Cell(7, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
+            var barUsage = 0.0;
+            foreach (var r in rawMaterials)
+                barUsage = barUsage + (double)(r.Length - r.RemainingLength) * 100 / r.Length;
+
+            barUsage = barUsage / rawMaterials.Count;
+
             worksheet.Cell(8, 1).Value = "TOTAL BAR USAGE : ";
-            worksheet.Cell(8, 4).Value = "??" + "%";
+            worksheet.Cell(8, 4).Value = (int)barUsage + "%";
             worksheet.Cell(8, 6).Value = "PRINT DATE : ";
             worksheet.Cell(8, 8).Value = $"{DateTime.Now:yyyy.MM.dd hh:mm}";
 

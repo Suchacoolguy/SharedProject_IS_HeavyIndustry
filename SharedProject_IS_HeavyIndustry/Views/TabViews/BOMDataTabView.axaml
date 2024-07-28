@@ -46,6 +46,7 @@
                 <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
                     <Button Name="ReadExcelBtn" Click="ReadExcelBtn_Click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="엑셀에서 BOM 생성" DockPanel.Dock="Left"/>
                     <Button Name="DnDTaskBtn" Click="DnDTaskBtn_Click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="BOM에서 부재 생성 및 자동 배치" Margin="4,0,0,0" DockPanel.Dock="Left"/>
+                    <Button Click="ReleaseFilter_Btn_Click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Content="모든 필터 해제" Margin="4,0,0,0" DockPanel.Dock="Left"/>
                     <DropDownButton Name="DropDownBtn" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right">
                         <Menu>
                             <MenuItem Header="선택/해제">

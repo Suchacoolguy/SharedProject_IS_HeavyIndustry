@@ -3,7 +3,6 @@ auto_readme.sh
 
 # file to store the input file path
 config.json
-*.csproj
 
 *.DS_Store
 /SharedProject_IS_HeavyIndustry/app.manifest

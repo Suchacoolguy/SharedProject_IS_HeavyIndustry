@@ -10,6 +10,7 @@ using Google.OrTools.LinearSolver;
 using Google.OrTools.Sat;
 using Newtonsoft.Json.Linq;
 using SharedProject_IS_HeavyIndustry.Converters;
+using SharedProject_IS_HeavyIndustry.ViewModels;
 using Constraint = Google.OrTools.LinearSolver.Constraint;
 
 namespace SharedProject_IS_HeavyIndustry.Services;
@@ -57,11 +58,7 @@ public class ArrangePartsService
                         ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
                     replacedParts.Add(restPart);
                 }
-                
             }
-            
-
-            
         }
 
         _separatedParts = replacedParts;
@@ -195,7 +192,6 @@ public class ArrangePartsService
                 objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
             }
         }
-
         
         objective.SetMinimization();
 

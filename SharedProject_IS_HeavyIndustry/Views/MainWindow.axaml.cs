@@ -49,7 +49,8 @@ namespace SharedProject_IS_HeavyIndustry.Views
             try
             {
                 List<Part> partsFromBOM = ExcelDataReader.PartListFromExcel(_sheet);
-                MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM);    
+                MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM); 
+                BOMDataTabView.OffSwitches();
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -159,7 +160,6 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         private Control CreateTabContent(string tabHeader)
         {
-            
             return tabHeader switch
             {
                 "프로젝트 정보" => new BOMDataTabView(this),

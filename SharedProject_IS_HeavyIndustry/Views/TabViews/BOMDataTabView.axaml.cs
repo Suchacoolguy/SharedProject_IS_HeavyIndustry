@@ -7,6 +7,7 @@ using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 using Avalonia.Controls.Primitives;
+using Button = Avalonia.Controls.Button;
 using ToggleButton = Avalonia.Controls.Primitives.ToggleButton;
 
 namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
@@ -116,6 +117,11 @@ public partial class BOMDataTabView : TabView
         }
         BOMDataViewModel.ApplyToggleFilter();
     }
+    
+    private void ReleaseFilter_Btn_Click(object? sender, RoutedEventArgs e)
+    {
+        BOMDataViewModel.ReleaseAllFilter();
+    }
 
     //토글버튼 모두 끔
     public static void OffSwitches()
@@ -130,10 +136,13 @@ public partial class BOMDataTabView : TabView
 
     private void Input_Btn_Clicked(object? sender, RoutedEventArgs e)
     {
-        var len = this.FindControl<TextBox>("SeparateLenBox")!.Text!;
+        var inputBox = this.FindControl<TextBox>("SeparateLenBox")!;
         foreach (var part in BOMDataViewModel.PartsFiltered)
         {
-            part.lengthToBeSeparated = len;
+            part.lengthToBeSeparated = inputBox.Text!;
         }
+
+        inputBox.Text = "";
+
     }
 }

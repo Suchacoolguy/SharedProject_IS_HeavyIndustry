@@ -77,7 +77,7 @@
                 //Stack이 비어있으면 Allparts 가져와서 채움
                 if (FilteredPartsStack.Count == 0)
                 {
-                    FilteredPartsStack.Push((key, Clone(AllParts)));
+                    FilteredPartsStack.Push(("Base", Clone(AllParts)));
                     Console.WriteLine("스택 비어있음 원소 추가");
                 }
                 else
@@ -192,6 +192,16 @@
                     PartsFiltered.Add(part);
                 
                 FilteredPartsStack.Push(("ToggleOption", Clone(PartsFiltered)));
+            }
+
+            public static void ReleaseAllFilter()
+            {
+                PartsFiltered.Clear();
+                FilteredPartsStack.Clear();
+                BOMDataTabView.OffSwitches();
+                FilteringService.Clear();
+                foreach (var p in AllParts)
+                    PartsFiltered.Add(p);
             }
             
             private static ObservableCollection<Part> Clone(ObservableCollection<Part> list)

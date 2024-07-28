@@ -15,110 +15,106 @@ namespace SharedProject_IS_HeavyIndustry.Models
 {
     public class RawMaterial : INotifyPropertyChanged
     {
-        private int _Length; // Field for Length
         public int Length
         {
-            get => _Length;
+            get
+            {
+                return _Length;
+            }
             set
             {
                 if (_Length != value)
                 {
                     _Length = value;
-                    OnPropertyChanged(nameof(Length));
                 }
+                OnPropertyChanged(nameof(Length));
             }
         }
 
-        private int _TotalPartsLength; // Field for TotalPartsLength
+        
+        private int _TotalPartsLength
+        {
+            get;
+            set;
+        }
+
         public int TotalPartsLength
         {
-            get => _TotalPartsLength;
+            get
+            {
+                return _TotalPartsLength;
+            }
             set
             {
                 if (_TotalPartsLength != value)
                 {
                     _TotalPartsLength = value;
-                    OnPropertyChanged(nameof(TotalPartsLength));
                 }
+                OnPropertyChanged(nameof(TotalPartsLength));
             }
         }
 
-        public ObservableCollection<Part> PartsInside { get; set; }
-
-        private IBrush _rectangleColor; // Field for RectangleColor
+        public ObservableCollection<Part> PartsInside
+        {
+            get;
+            set;
+        }
+        
         public IBrush RectangleColor
         {
-            get => _rectangleColor;
-            set
-            {
-                if (_rectangleColor != value)
-                {
-                    _rectangleColor = value;
-                    OnPropertyChanged(nameof(RectangleColor));
-                }
-            }
+            get;
+            set;
         }
-
-        private IBrush _backgroundColor; // Field for BackgroundColor
+        
         public IBrush BackgroundColor
         {
-            get => _backgroundColor;
-            set
-            {
-                if (_backgroundColor != value)
-                {
-                    _backgroundColor = value;
-                    OnPropertyChanged(nameof(BackgroundColor));
-                }
-            }
+            get;
+            set;
         }
 
-        private int _RemainingLength; // Field for RemainingLength
+        private int _RemainingLength;
+        
         public int RemainingLength
         {
-            get => _RemainingLength;
+            get
+            {
+                return _RemainingLength;
+            }
             set
             {
                 if (_RemainingLength != value)
                 {
                     _RemainingLength = value;
-                    UpdateColorsOnRemainingLengthChange(); // Call to update colors
-                    OnPropertyChanged(nameof(RemainingLength));
+                    if (_RemainingLength < 0)
+                    {
+                        RectangleColor = new SolidColorBrush(Colors.Red);
+                        BackgroundColor = new SolidColorBrush(Colors.Pink);
+                    }
+                    else
+                    {
+                        RectangleColor = new SolidColorBrush(Colors.Black);
+                        BackgroundColor = new SolidColorBrush(Colors.Transparent);
+                    }
+                    OnPropertyChanged(nameof(BackgroundColor));
+                    OnPropertyChanged(nameof(RectangleColor)); // Notify that RectangleColor has changed
+                    OnPropertyChanged(nameof(RemainingLength)); // Notify that RemainingLength has changed
                 }
             }
         }
 
+        private int _Length
+        {
+            get;
+            set;
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private void UpdateColorsOnRemainingLengthChange()
-        {
-            if (_RemainingLength < 0)
-            {
-                UpdateColorsOnUIThread(new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Pink));
-            }
-            else
-            {
-                UpdateColorsOnUIThread(new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.Transparent));
-            }
-        }
-
-
-        private void UpdateColorsOnUIThread(IBrush rectangleColor, IBrush backgroundColor)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                RectangleColor = rectangleColor;
-                BackgroundColor = backgroundColor;
-                OnPropertyChanged(nameof(RectangleColor));
-                OnPropertyChanged(nameof(BackgroundColor));
-            });
-        }
-
+        
         public Part insert_part(Part part)
         {
             PartsInside.Add(part);
@@ -128,7 +124,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             {
                 RemainingLength -= SettingsViewModel.CuttingLoss;
             }
-
+            
             return part;
         }
 
@@ -144,7 +140,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     RemainingLength += SettingsViewModel.CuttingLoss;
                 }
             }
-
+            
             int fitLength = FindShortestLengthPossibleWhenRemovePart(part);
             if (fitLength != -1)
             {
@@ -163,10 +159,10 @@ namespace SharedProject_IS_HeavyIndustry.Models
             {
                 // Sorting in Descending order
                 lengthOptions.Sort((a, b) => b.CompareTo(a));
-
+                
                 int lengthNeeded = Length - RemainingLength;
-                int remaining = int.MaxValue;
-
+                int remaining = Int32.MaxValue;
+                
                 foreach (var len in lengthOptions)
                 {
                     if (len >= lengthNeeded && len - lengthNeeded < remaining)
@@ -177,26 +173,32 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 }
             }
 
-            return chosenLength != -1 ? chosenLength : -1;
+            if (chosenLength != -1)
+                return chosenLength;
+            
+            return -1;
         }
 
         public bool isAddingPossible(Part part)
         {
-            return RemainingLength - part.Length - SettingsViewModel.CuttingLoss >= 0;
+            if (RemainingLength - part.Length - SettingsViewModel.CuttingLoss >= 0)
+                return true;
+            
+            return false;
         }
-
+        
         public int findPossibleRawLengthToIncrease(Part part)
         {
             // key의 형태가 "SS275,H194*150*6*9" 이런식이라 뒤에꺼만 따로 추출해야 함..
             string key = MainWindowViewModel.SelectedKey;
             key = key.Split(',')[1];
-
+            
             List<int> lengthSet = SettingsViewModel.GetLengthOption(key);
-
+            
             // Sorting in Descending order
             lengthSet.Sort((a, b) => b.CompareTo(a));
             int remainingLengthIfPartAdded = RemainingLength - part.Length - SettingsViewModel.CuttingLoss;
-
+            
             int chosenLength = -1;
             if (lengthSet.Count > 1)
             {
@@ -209,22 +211,25 @@ namespace SharedProject_IS_HeavyIndustry.Models
                         Console.WriteLine("Possible Length Check Passed");
                         chosenLength = len;
                     }
-                }
+                }    
             }
 
-            return chosenLength == -1 ? -1 : chosenLength;
+            if (chosenLength == -1)
+                return -1;
+            
+            return chosenLength;
         }
 
         public bool increaseRawLength(int possibleLength, Part part)
         {
             string key = MainWindowViewModel.SelectedKey;
             key = key.Split(',')[1];
-
+            
             List<int> lengthSet = SettingsViewModel.GetLengthOption(key);
-
+            
             int lengthNeeded = (Length - RemainingLength) + part.Length + SettingsViewModel.CuttingLoss;
             int lengthExtended = possibleLength - Length;
-
+            
             if (lengthSet.Contains(possibleLength))
             {
                 Length = possibleLength;
@@ -236,18 +241,19 @@ namespace SharedProject_IS_HeavyIndustry.Models
 
             return false;
         }
-
+        
+        
         public ObservableCollection<Part> get_parts_inside()
         {
             return PartsInside;
         }
-
+        
         public RawMaterial(int length)
         {
-            Length = length;
-            PartsInside = new ObservableCollection<Part>();
-            RemainingLength = length;
-            TotalPartsLength = 0;
+            this.Length = length;
+            this.PartsInside = new ObservableCollection<Part>();
+            this.RemainingLength = length;
+            this.TotalPartsLength = 0;
         }
         
         public override string ToString()

@@ -88,16 +88,9 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         private async void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
         {
-            var viewModel = DataContext as ReportTabViewModel;
-
             // those that have not been worked on (not arranged).
             List<string> emptyKeys = FindEmptyKeys();
-
-            // Initialize the progress bar
-            if (viewModel != null)
-            {
-                viewModel.Progress = 0;
-            }
+            MyProgressBar.Maximum = emptyKeys.Count;
 
             // do the arrangement on the empty keys here.
             await Task.Run(() =>
@@ -106,16 +99,19 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 for (int i = 0; i < emptyKeys.Count; i++)
                 {
                     string key = emptyKeys[i];
-                    // Perform arrangement for each part
-                    ArrangePartsForEmptyKey(key);
+
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            // Perform arrangement for each part
+                            ArrangePartsForEmptyKey(key);
+                        }
+                    );
+                    
 
                     // Update progress on the UI thread
                     Dispatcher.UIThread.Post(() =>
                     {
-                        if (viewModel != null)
-                        {
-                            viewModel.Progress = ((i + 1) / (double)emptyKeys.Count) * 100;
-                        }
+                        MyProgressBar.Value = i + 1;
                     });
                 }
             });
@@ -140,11 +136,12 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
             // Create the ArrangePartsService instance
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength, lengthOptions);
+            var res = service.GetArrangedRawMaterials();
 
             // Update the RawMaterialSet and TempPartSet
             if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))
             {
-                MainWindowViewModel.RawMaterialSet.TryAdd(key, service.GetArrangedRawMaterials());
+                MainWindowViewModel.RawMaterialSet.TryAdd(key, res);
             }
         }
         

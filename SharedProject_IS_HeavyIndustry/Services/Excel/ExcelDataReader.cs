@@ -11,6 +11,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
     public static class ExcelDataReader
     {
         private static string noRawLengthData = "";
+        private static bool missingDataCheck = false;
         public static XLWorkbook Read(string filePath)
         {
             try
@@ -26,6 +27,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         
         public static List<Part> PartListFromExcel(IXLWorksheet worksheet)
         {
+            missingDataCheck = false;
             var parts = new List<Part>();
             var row = FindStartingRow(worksheet);
             
@@ -38,14 +40,14 @@ namespace SharedProject_IS_HeavyIndustry.Models
 
                 row++;
             }
-            MessageService.Send("규격 정보 없음\n" + noRawLengthData);
+            if(missingDataCheck)
+                MessageService.Send("누락된 규격 정보가 있습니다\n");
 
             return parts;
         }
 
         public static Dictionary<string, RawLengthSet> RawLengthSettingsFromExcel(string filePath)
         {
-            Console.WriteLine(filePath);
             var dictionary = new Dictionary<string, RawLengthSet>();
 
             using var workbook = Read(filePath);
@@ -112,6 +114,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 if (type.Equals(hyungGangType.Trim()))
                     part.IsExcluded = false;
             }
+            //형강목록에 없는 형강 알림윈도우에 띄움
             if (part.IsExcluded)
                 AlarmWindowViewModel.AddToMissingHyungGangBuffer(type);
             
@@ -121,6 +124,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 part.IsExcluded = true;
                 //noRawLengthData = part.Desc + "\n";
                 AlarmWindowViewModel.AddToMissingStandardBuffer(part.Desc.ToString());
+                missingDataCheck = true;
             }
             else if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))
                 part.IsOverLenth = true;

@@ -104,8 +104,8 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels
 
             if (!File.Exists(filePath))
             {
-                Width = 430;
-                Height = 320;
+                Width = 409;
+                Height = 38;
                 IsVisible = true;
 
                 using (var writer = new StreamWriter(filePath))

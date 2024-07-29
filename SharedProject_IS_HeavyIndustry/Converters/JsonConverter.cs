@@ -12,6 +12,17 @@ namespace SharedProject_IS_HeavyIndustry.Converters;
 
 public static class JsonConverter
 { 
+    
+    private static string GetDatabasePath()
+    {
+        string appDataDirectory = "C:\\RedHood";
+        if (!Directory.Exists(appDataDirectory))
+        {
+            Directory.CreateDirectory(appDataDirectory);
+        }
+        return Path.Combine(appDataDirectory, "db_test.db");
+    }
+    
     public static Dictionary<string, RawLengthSet>? ReadDictionaryFromJson()
     {
         try

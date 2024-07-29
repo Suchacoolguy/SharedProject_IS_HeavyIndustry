@@ -155,7 +155,8 @@ public class ArrangePartsService
             }
         }
 
-        int firstPartNoCuttingLoss = 0;
+        
+        bool flag = false;
         // the sum of the lengths of the items in each bin must be less than or equal to the bin's capacity.
         for (int j = 0; j < data.NumBins; j++)
         {
@@ -171,11 +172,13 @@ public class ArrangePartsService
             // since we set the lower bound to 0, the sum of the lengths of the items in the bin must be less than or equal to the bin's capacity.
             for (int i = 0; i < data.NumItems; i++)
             {
-                constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length - (SettingsViewModel.CuttingLoss * firstPartNoCuttingLoss));
-                if (x[i, j].SolutionValue() == 1)
-                    firstPartNoCuttingLoss = 1;
+                constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length - SettingsViewModel.CuttingLoss);
             }
+            
+            // Add cutting loss to the constraint
+            constraint.SetBounds(-SettingsViewModel.CuttingLoss, Double.PositiveInfinity);
         }
+        
 
         Objective objective = solver.Objective();
         // set the objective to minimize the total sum of the remaining lengths of the bins.

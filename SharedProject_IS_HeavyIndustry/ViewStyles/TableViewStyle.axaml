@@ -1,16 +1,6 @@
 ﻿<Style xmlns="https://github.com/avaloniaui"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
        <Design.PreviewWith>
-              <Panel Width="400" Height="400">
-                     <StackPanel Width="200" Height="200" Background="Aqua" Orientation="Horizontal">
-                            <TextBox Height="19" Margin="0,0,2,0" />
-                            <Button Content="적용" Margin="0,0,4,0"/>
-
-                            <ToggleButton Content="제외" Background="LightGray"></ToggleButton>
-                            <ToggleButton Content="분리" Background="Yellow" IsChecked="True"></ToggleButton>
-                            <ToggleButton Content="분리필요" Background="Yellow"></ToggleButton>
-                     </StackPanel>
-              </Panel>
        </Design.PreviewWith>
        <Style Selector="Button.FilterButton">
               <Setter Property="Button.Padding" Value="5"/>

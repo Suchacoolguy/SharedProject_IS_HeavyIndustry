@@ -48,6 +48,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
             //시트를 선택하면 시트의 part정보를 뽑아옴
             try
             {
+                AlarmWindowViewModel.Clear();
                 List<Part> partsFromBOM = ExcelDataReader.PartListFromExcel(_sheet);
                 MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM); 
                 BOMDataTabView.OffSwitches();

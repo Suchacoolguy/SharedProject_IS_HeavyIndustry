@@ -22,4 +22,12 @@ public class AlarmWindowViewModel
         if (_missingStandardBuffer.Add(item))
             MissingStandardBuffer.Add(item);
     }
+
+    public static void Clear()
+    {
+        _missingHyungGangBuffer.Clear();
+        _missingStandardBuffer.Clear();
+        MissingHyungGangBuffer.Clear();
+        MissingStandardBuffer.Clear();
+    }
 }

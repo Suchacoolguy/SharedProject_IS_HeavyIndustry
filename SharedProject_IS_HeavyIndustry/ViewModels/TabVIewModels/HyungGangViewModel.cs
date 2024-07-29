@@ -19,20 +19,22 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
         public string Title { get; } = "형강 설정";
         public string SubTitle { get; } = "정보 필요";
         private Dictionary<string, string> HyungGangSet { get; set; }
-        public ObservableCollection<HyungGang > HyungGangList { get; set; }
+        public ObservableCollection<HyungGang> HyungGangList { get; set; }
 
-        public ICommand SaveCommand { get; } 
+        public ICommand SaveCommand { get; }
         public ICommand PasteCommand { get; }
+        public ICommand AutoInsertCommand { get; }
 
         public HyungGangViewModel()
         {
             HyungGangSet = JsonConverter.ReadHyungGangSetFromJson() ?? new Dictionary<string, string>();
-            HyungGangList = [];
+            HyungGangList = new ObservableCollection<HyungGang>();
             foreach (var kvp in HyungGangSet)
                 HyungGangList.Add(new HyungGang(kvp.Key, kvp.Value));
 
             SaveCommand = new RelayCommand(Save);
             PasteCommand = new RelayCommand(Paste);
+            AutoInsertCommand = new RelayCommand(AutoInsertDefaults);
 
             HyungGangList.CollectionChanged += HyungGangList_CollectionChanged!;
         }
@@ -41,7 +43,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
         {
             ApplyChanges();
         }
-        
+
         private bool ApplyChanges()
         {
             HyungGangSet.Clear();
@@ -58,10 +60,10 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             MessageService.Send("총 " + cnt + " 개의 중복된 형강이 존재합니다.\n" + msg);
             return false;
         }
-        
+
         private void Save()
         {
-            if (ApplyChanges()) 
+            if (ApplyChanges())
                 JsonConverter.WriteDictionaryToJson(HyungGangSet);
         }
 
@@ -97,6 +99,32 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
                     OnPropertyChanged(nameof(HyungGangList));
                 }
             }*/
+        }
+
+        private void AutoInsertDefaults()
+        {
+            if (!HyungGangList.Any())
+            {
+                var defaultData = new Dictionary<string, string>
+                {
+                    { "H", "H-BEAM" },
+                    { "I", "I-BEAM" },
+                    { "L", "ANGLE" },
+                    { "C", "C-CHANNEL" },
+                    { "ㄷ", "CHANNEL" },
+                    { "RB", "환봉" },
+                    { "D", "환봉" },
+                    { "TB", "각관" },
+                    { "PD", "PIPE" }
+                };
+
+                foreach (var kvp in defaultData)
+                {
+                    HyungGangList.Add(new HyungGang(kvp.Key, kvp.Value));
+                }
+
+                Save();
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -80,40 +80,83 @@ public class ArrangePartsService
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
-
-
-        int totalPartsLength = GetTotalPartsLength(partList);
-        int avgPartsLength = totalPartsLength / partList.Count;
-        int partCnt = partList.Count;
-        int medianLength = partList[partCnt / 2].Length;
         
+        // 블록마크 기준으로 파트들을 그룹화
+        Dictionary<string, List<Part>> partsByMark = GroupPartsByMark(partList);
+
+        foreach (var kvp in partsByMark)
+        {
+            int totalLength = GetTotalPartsLength(kvp.Value);
+            
+            
+            int bestFitRawMaterial = Int32.MaxValue;
+            foreach (var rawLength in _lengthOptionsRawMaterial)
+            {
+                // 블록마크 같은 애들 길이를 다 합쳤을 때 하나의 원자재 길이보다 작은 경우
+                if (totalLength / rawLength == 0 && bestFitRawMaterial > rawLength)
+                {
+                    bestFitRawMaterial = rawLength;
+                }
+            }
+            
+            
+            // 하나의 원자재에 모두 배치할 수 있다면~
+            if (bestFitRawMaterial != Int32.MaxValue)
+            {
+                // 원자재 생성하고 파트 생성해서 넣어주기
+                RawMaterial rawMaterial = new RawMaterial(bestFitRawMaterial);
+                foreach (var part in kvp.Value)
+                {
+                    rawMaterial.insert_part(part);
+                }
+                rawMaterialsUsed.Add(rawMaterial);
+            }
+            else
+            {
+                // DoTheArrangement 함수로 파트 배치하고 Append 하는 작업
+                rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));
+            }
+        }
+        
+        rawMaterialsUsed.Sort((x, y) => x.Length.CompareTo(y.Length));
+        ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
+        return res;
+    }
+
+    private static List<RawMaterial> DoTheArrangement(List<Part> partsToBeArranged)
+    {
+        int totalPartsLength = GetTotalPartsLength(partsToBeArranged);
+        int avgPartsLength = totalPartsLength / partsToBeArranged.Count;
+        int partCnt = partsToBeArranged.Count;
+        int medianLength = partsToBeArranged[partCnt / 2].Length;
+
         Console.WriteLine("Average Parts Length: " + avgPartsLength);
         Console.WriteLine("Median Length: " + medianLength);
-        
+
         // Create the linear solver with the SCIP backend.
         Solver solver = Solver.CreateSolver("SCIP");
-        
+
 
         DataModel data;
-        
+
         if (partCnt > 200)
         {
             if (avgPartsLength < _lengthOptionsRawMaterial[0] * 0.2 &&
                 medianLength < _lengthOptionsRawMaterial[0] * 0.2)
             {
                 Console.WriteLine("2차원 배열 사이즈 팍 줄인다 실시!");
-                data = new DataModel(partList, _lengthOptionsRawMaterial, Convert.ToInt32(partCnt / 8 + 10));   
+                data = new DataModel(partsToBeArranged, _lengthOptionsRawMaterial, Convert.ToInt32(partCnt / 8 + 10));
             }
-            else 
+            else
             {
-                data = new DataModel(partList, _lengthOptionsRawMaterial);
+                data = new DataModel(partsToBeArranged, _lengthOptionsRawMaterial);
             }
         }
         else
         {
-            data = new DataModel(partList, _lengthOptionsRawMaterial);
+            data = new DataModel(partsToBeArranged, _lengthOptionsRawMaterial);
         }
-        
+
         // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
         Variable[,] x = new Variable[data.NumItems, data.NumBins];
         for (int i = 0; i < data.NumItems; i++)
@@ -124,6 +167,7 @@ public class ArrangePartsService
                 x[i, j] = solver.MakeIntVar(0, 1, $"x_{i}_{j}");
             }
         }
+
         // row i represents the i-th bin and column j represents the length of the bin.
         Variable[,] y = new Variable[data.NumBins, data.NumRawMaterialOptions];
         for (int i = 0; i < data.NumBins; i++)
@@ -132,9 +176,9 @@ public class ArrangePartsService
             {
                 // y[i, j] is 1 if bin i has length j. otherwise 0.
                 y[i, j] = solver.MakeIntVar(0, 1, $"y_{i}_{j}");
-            }    
+            }
         }
-        
+
         for (int i = 0; i < data.NumItems; i++)
         {
             // each item is in exactly one bin. every item must be in one bin.
@@ -155,30 +199,30 @@ public class ArrangePartsService
             }
         }
 
-        
+
         bool flag = false;
         // the sum of the lengths of the items in each bin must be less than or equal to the bin's capacity.
         for (int j = 0; j < data.NumBins; j++)
         {
             Constraint constraint = solver.MakeConstraint(0, Double.PositiveInfinity, "");
-            
+
             // get the length of the bin.
             for (int i = 0; i < data.NumRawMaterialOptions; i++)
             {
                 constraint.SetCoefficient(y[j, i], DataModel.lengthOptionsRawMaterial[i]);
             }
-            
+
             // BinCapacity - (Sum of the lengths of the items in the bin) >= 0
             // since we set the lower bound to 0, the sum of the lengths of the items in the bin must be less than or equal to the bin's capacity.
             for (int i = 0; i < data.NumItems; i++)
             {
                 constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length - SettingsViewModel.CuttingLoss);
             }
-            
+
             // Add cutting loss to the constraint
             constraint.SetBounds(-SettingsViewModel.CuttingLoss, Double.PositiveInfinity);
         }
-        
+
 
         Objective objective = solver.Objective();
         // set the objective to minimize the total sum of the remaining lengths of the bins.
@@ -190,80 +234,105 @@ public class ArrangePartsService
                 // Objective: minimize the total waste
                 objective.SetCoefficient(y[j, k], DataModel.lengthOptionsRawMaterial[k]);
             }
+
             for (int i = 0; i < data.NumItems; i++)
             {
                 // Subtract the parts lengths from the total raw material length
                 objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
             }
         }
-        
+
         objective.SetMinimization();
 
         Console.WriteLine("Ready to solve.");
 
-        solver.SetSolverSpecificParametersAsString("limits/solutions = 50");
-        solver.SetTimeLimit(15000);
-        
-        var watch = System.Diagnostics.Stopwatch.StartNew();
+        // solver.SetSolverSpecificParametersAsString("limits/solutions = 50");
+        // solver.SetTimeLimit(15000);
+
+        // var watch = System.Diagnostics.Stopwatch.StartNew();
         Solver.ResultStatus resultStatus = solver.Solve();
-        watch.Stop();
-        var elapsedMs = watch.ElapsedMilliseconds;
-        Console.WriteLine("Elapsed Time: " + elapsedMs);
+        // watch.Stop();
+        // var elapsedMs = watch.ElapsedMilliseconds;
+        // Console.WriteLine("Elapsed Time: " + elapsedMs);
 
         Console.WriteLine("Solved.");
-        
+
         Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
-        
+
         if (resultStatus == Solver.ResultStatus.NOT_SOLVED || resultStatus == Solver.ResultStatus.ABNORMAL)
         {
             Console.WriteLine("파트 배치에 실패하였습니다. 다시 시도해주세요.");
-            return new ObservableCollection<RawMaterial>();
+            return new List<RawMaterial>();
         }
-        else if (resultStatus == Solver.ResultStatus.INFEASIBLE)
+
+        if (resultStatus == Solver.ResultStatus.INFEASIBLE)
         {
             // 파트가 없거나 하나밖에 없을 때 솔루션을 찾지 못하는 경우 여기로 들어옴.
             MessageService.Send("파트 배치가 불가능합니다. 규격 설정과 분리 설정을 확인해주세요.");
-            return new ObservableCollection<RawMaterial>();
+            return new List<RawMaterial>();
         }
-        else
-        {
-            int howManyTimes = 0;
-            int TotalScrap = 0;
-            int BinLength = 0;
-        
-            bool foundBin = false;
-            for (int j = 0; j < data.NumBins; ++j)
-            {
-                RawMaterial rawMaterial = null;
-                for (int i = 0; i < data.NumRawMaterialOptions; i++)
-                {
-                    if (y[j, i].SolutionValue() == 1)
-                    {
-                    
-                        BinLength = DataModel.lengthOptionsRawMaterial[i];
-                        rawMaterial = new RawMaterial(BinLength);
-                    }
-                }
 
-                for (int i = 0; i < data.NumItems; i++)
+        int howManyTimes = 0;
+        int TotalScrap = 0;
+        int BinLength = 0;
+        List<RawMaterial> res = new List<RawMaterial>();
+
+        bool foundBin = false;
+        for (int j = 0; j < data.NumBins; ++j)
+        {
+            RawMaterial rawMaterial = null;
+            for (int i = 0; i < data.NumRawMaterialOptions; i++)
+            {
+                if (y[j, i].SolutionValue() == 1)
                 {
-                    if (x[i, j].SolutionValue() == 1)
-                    {
-                        howManyTimes++;
-                        rawMaterial.insert_part(DataModel.parts[i]);
-                    }
+
+                    BinLength = DataModel.lengthOptionsRawMaterial[i];
+                    rawMaterial = new RawMaterial(BinLength);
                 }
-                if (rawMaterial != null)
-                    rawMaterialsUsed.Add(rawMaterial);
             }
-            Console.WriteLine("How Many Times: " + howManyTimes);
-            rawMaterialsUsed.Sort((x, y) => x.Length.CompareTo(y.Length));
-            ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
-            return res;
+
+            for (int i = 0; i < data.NumItems; i++)
+            {
+                if (x[i, j].SolutionValue() == 1)
+                {
+                    howManyTimes++;
+                    rawMaterial.insert_part(DataModel.parts[i]);
+                }
+            }
+
+            if (rawMaterial != null)
+                res.Add(rawMaterial);
         }
+
+        return res;
     }
 
-private static int GetTotalPartsLength(List<Part> partList)
+    private static Dictionary<string, List<Part>> GroupPartsByMark(List<Part> parts)
+    {
+        var partsByMark = new Dictionary<string, List<Part>>();
+
+        foreach (var part in parts)
+        {
+            if (!partsByMark.ContainsKey(part.Mark))
+            {
+                partsByMark[part.Mark] = new List<Part>();
+            }
+            partsByMark[part.Mark].Add(part);
+        }
+
+        return partsByMark;
+    }
+
+    private static int GetSumOfLengthsForKey(List<Part> parts)
+    {
+        if (parts != null && parts.Count > 0)
+        {
+            return parts.Sum(part => part.Length);
+        }
+        return 0;
+    }
+
+    private static int GetTotalPartsLength(List<Part> partList)
     {
         int totalPartsLength = 0;
         foreach (var part in partList)

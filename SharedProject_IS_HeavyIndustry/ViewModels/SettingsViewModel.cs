@@ -78,7 +78,9 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
 
         public static List<string> GetHyungGangList()
         {
-            return HyungGangSet.Count > 0 ? new List<string>(HyungGangSet.Keys) : [];
+            if (HyungGangSet == null)
+                return [];
+            return HyungGangSet.Count > 0 ? [..HyungGangSet.Keys] : [];
         }
     }
 }

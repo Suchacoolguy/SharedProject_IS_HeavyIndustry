@@ -83,4 +83,15 @@ public partial class RawStandardTabView : TabView
     {
         throw new NotImplementedException();
     }
+
+    private void DataGrid_PreparingCellForEdit(object? sender, DataGridPreparingCellForEditEventArgs e)
+    {
+        var cell = e.EditingElement as TextBox;
+        if (cell != null)
+        {
+            // 포커스를 설정하고, 모든 텍스트를 선택하여 편집이 즉시 가능하도록 합니다.
+            cell.Focus();
+            cell.SelectAll();
+        }
+    }
 }

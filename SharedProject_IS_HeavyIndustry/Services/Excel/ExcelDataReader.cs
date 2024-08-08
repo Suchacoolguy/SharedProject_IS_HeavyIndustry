@@ -5,6 +5,7 @@ using System.Linq;
 using ClosedXML.Excel;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
+using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Models
 {
@@ -123,7 +124,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             {
                 part.IsExcluded = true;
                 //noRawLengthData = part.Desc + "\n";
-                AlarmWindowViewModel.AddToMissingStandardBuffer(part.Desc.ToString());
+                RawStandardViewModel.AddToMissingStandardBuffer(part.Desc.ToString());
                 missingDataCheck = true;
             }
             else if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))

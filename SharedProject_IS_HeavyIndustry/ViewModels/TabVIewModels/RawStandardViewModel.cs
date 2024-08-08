@@ -26,6 +26,9 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
         private Dictionary<string, RawLengthSet> LengthSetDictionary { get; set; }
         public static ObservableCollection<RawLengthSet> LengthSetList { get; set; } = null!;
         public static ObservableCollection<RawLengthSet> TempLengthSetList { get; set; } = null!;
+        
+        private static HashSet<string> _missingStandardBuffer = new HashSet<string>();
+        public static ObservableCollection<string> MissingStandardBuffer { get; } = new ObservableCollection<string>();
 
         public ICommand SaveCommand { get; }
         public ICommand PasteCommand { get; }
@@ -41,6 +44,25 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             PasteCommand = new RelayCommand(Paste);
 
             LengthSetList.CollectionChanged += LengthSetList_CollectionChanged!;
+        }
+
+        public static void AddMissingData()
+        {
+            if (MissingStandardBuffer.Count <= 0) return;
+            foreach (var value in MissingStandardBuffer)
+            {
+                LengthSetList.Add(new RawLengthSet(value, 0, ""));
+                TempLengthSetList.Add(new RawLengthSet(value, 0, ""));
+            }
+            MissingStandardBuffer.Clear();
+            _missingStandardBuffer.Clear();
+            //MessageService.Send("규격목록에 정의 되지 않은 형강이 존재합니다.");
+        }
+        
+        public static void AddToMissingStandardBuffer(string item)
+        {
+            if (_missingStandardBuffer.Add(item))
+                MissingStandardBuffer.Add(item);
         }
 
         private void LengthSetList_CollectionChanged(object sender,
@@ -122,6 +144,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
                 result.Add(value);
             return result;
         }
+        
     }
 
 

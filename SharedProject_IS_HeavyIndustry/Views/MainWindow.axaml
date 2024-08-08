@@ -49,7 +49,7 @@
                 <Button Name="Bell" Click="Bell_Click_Event" Margin="10,0" Background="Transparent" IsVisible="False" DockPanel.Dock="Right">
                     <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/Bell.png" Width="25" Height="25"/>
                 </Button>
-                <Button Name="BellActive" Click="Bell_Click_Event" Margin="10,0" Background="Transparent" IsVisible="True" DockPanel.Dock="Right">
+                <Button Name="BellActive" Click="Bell_Click_Event" Margin="10,0" Background="Transparent" IsVisible="False" DockPanel.Dock="Right">
                     <Image Source="avares://SharedProject_IS_HeavyIndustry/Assets/Bell_Active.png" Width="25" Height="25"/>
                 </Button>
                 <Button Background="Transparent" DockPanel.Dock="Right"/>

@@ -40,7 +40,7 @@
                 </DockPanel>
                 <Panel Name="TablePanel" Margin="4,4,4,0">
                     <DataGrid Name="Table" ItemsSource="{Binding LengthSetList}"
-                              AutoGenerateColumns="False" IsReadOnly="False">
+                              AutoGenerateColumns="False" IsReadOnly="False" PreparingCellForEdit="DataGrid_PreparingCellForEdit">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="규격" Binding="{Binding Description}" Width="Auto"/>
                             <DataGridTextColumn Header="단중" Binding="{Binding Weight}" Width="*"/>

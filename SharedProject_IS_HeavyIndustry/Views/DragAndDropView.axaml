@@ -12,6 +12,8 @@
 
     <UserControl.Resources>
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
+        <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
+        <converters:DivideByTwentyConverter x:Key="DivideByTwentyConverter"/>
     </UserControl.Resources>
     
     <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
@@ -21,9 +23,110 @@
         </Grid.ColumnDefinitions>
 
         <!-- Existing content -->
-             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5" Background="Transparent">
+             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5" Background="Transparent" >
                  <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
                 <!-- Parts arranged inside raw materials -->
+                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent" >
+                    <StackPanel.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem Header="원자재 길이 기준 오름차순" Click="SortByRawMaterialLength_Ascending"/>
+                            <MenuItem Header="원자재 길이 기준 내림차순" Click="SortByRawMaterialLength_Descending"/>
+                            <MenuItem Header="잔량 기준 오름차순" Click="SortByScrapAscending"/>
+                            <MenuItem Header="잔량 기준 내림차순" Click="SortByScrapDescending"/>
+                        </MenuFlyout>
+                    </StackPanel.ContextFlyout>
+                    <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas Name="MyCanvas" Height="55" Width="1000" HorizontalAlignment="Center">
+                                        <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="-300"  Canvas.Top="0" DragDrop.AllowDrop="True" >
+                                            <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource RawMaterialConverter}}"
+                                                       Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" >
+                                            </Rectangle>
+                                            <!--<Border.RenderTransform>
+                                                <ScaleTransform ScaleX="0.5"></ScaleTransform>
+                                            </Border.RenderTransform>-->
+                                        </Border> 
+                                    <!-- Raw material -->
+                                    
+                                    <TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="-300" Canvas.Top="35" />
+                                    <TextBlock Text="{Binding TotalPartsLength}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" 
+                                               TextAlignment="Center" Canvas.Top="35" Canvas.Left="-300"/>
+                                    <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" 
+                                               Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35" Canvas.Left="-300"/>
+
+                                    
+                                    <!-- Parts -->
+                                    <ItemsControl ItemsSource="{Binding PartsInside}" HorizontalAlignment="Left" Canvas.Left="-300">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                </StackPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                    <Grid Background="Gold" HorizontalAlignment="Left">
+                                                        <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Padding="0" Margin="0">
+                                                            <Rectangle Margin="0" Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                                       Fill="#E8B989" DragDrop.AllowDrop="True" Tag="{Binding }">
+                                                            </Rectangle>
+                                                        </Border>
+                                                        <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                                HorizontalContentAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+                                                        </Label>
+                                                    </Grid>    
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                        <!--<ItemsControl.RenderTransform>
+                                            <ScaleTransform ScaleX="0.5"></ScaleTransform>
+                                        </ItemsControl.RenderTransform>-->
+                                    </ItemsControl>
+                                    <Canvas.RenderTransform>
+                                        <ScaleTransform ScaleX="0.5"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    
+                </StackPanel>
+                </ScrollViewer>
+    </Grid>
+        
+        <views:TempPartsView Grid.Column="1" DataContext="{Binding}"/>
+        
+        <!-- Our ghost rectangle -->
+            <Rectangle Height="30" Width="100" Fill="#E8B989" Name="GhostItem" Opacity="0.8"
+                       DragDrop.AllowDrop="True" Tag="{Binding }"/>
+        </Grid>
+</UserControl>
+<!--<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SharedProject_IS_HeavyIndustry.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
+             x:Class="SharedProject_IS_HeavyIndustry.Views.DragAndDropView"
+             xmlns:converters="using:SharedProject_IS_HeavyIndustry.Converters"
+             xmlns:views="clr-namespace:SharedProject_IS_HeavyIndustry.Views"
+             x:DataType="vm:MainWindowViewModel"
+             >
+
+    <UserControl.Resources>
+        <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
+    </UserControl.Resources>
+    
+    <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        ~1~ Existing content @1@
+             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5" Background="Transparent">
+                 <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
+                ~1~ Parts arranged inside raw materials @1@
                 <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent" HorizontalAlignment="Center">
                     <StackPanel.ContextFlyout>
                         <MenuFlyout>
@@ -38,7 +141,7 @@
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Width="850" Height="55" Background="{Binding BackgroundColor}" HorizontalAlignment="Stretch">
                                     
-                                    <!-- Raw material -->
+                                    ~1~ Raw material @1@
                                     <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="0" Canvas.Top="0" DragDrop.AllowDrop="True">
                                         <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
                                                    Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" />
@@ -50,7 +153,7 @@
                                                Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35"/>
 
                                     
-                                    <!-- Parts -->
+                                    ~1~ Parts @1@
                                     
                                     <ItemsControl ItemsSource="{Binding PartsInside}">
                                         <ItemsControl.ItemsPanel>
@@ -71,6 +174,10 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
+                                    <Canvas.RenderTransform>
+                                        <ScaleTransform ScaleX="0.5"/>
+                                    </Canvas.RenderTransform>
+    
                                 </Canvas>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -82,10 +189,10 @@
         
         <views:TempPartsView Grid.Column="1" DataContext="{Binding}"/>
         
-        <!-- Our ghost rectangle -->
+        ~1~ Our ghost rectangle @1@
             <Rectangle Height="30" Width="100" Fill="#E8B989" Name="GhostItem" Opacity="0.8"
                        DragDrop.AllowDrop="True" Tag="{Binding }"/>
         </Grid>
     
     
-</UserControl>
+</UserControl>-->

@@ -10,7 +10,7 @@ namespace SharedProject_IS_HeavyIndustry.Converters
         {
             if (value is int intValue)
             {
-                return (double)intValue / 10 - 2;
+                return (double)intValue - 2;
             }
             Console.WriteLine("DivideByTenConverter: value is not int");
             return value;

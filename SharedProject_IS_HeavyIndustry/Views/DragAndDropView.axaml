@@ -83,7 +83,7 @@
                                         </ItemsControl.RenderTransform>-->
                                     </ItemsControl>
                                     <Canvas.RenderTransform>
-                                        <ScaleTransform ScaleX="0.5"/>
+                                        <ScaleTransform ScaleX="0.05"/>
                                     </Canvas.RenderTransform>
                                 </Canvas>
                             </DataTemplate>

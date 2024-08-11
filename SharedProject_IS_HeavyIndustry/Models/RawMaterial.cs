@@ -140,7 +140,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 {
                     RemainingLength += SettingsViewModel.CuttingLoss;
                 }
-
+                
                 part.LengthForUI = part.Length; // 파트 제외할 떄 UI용 Length 다시 초기화
             }
             

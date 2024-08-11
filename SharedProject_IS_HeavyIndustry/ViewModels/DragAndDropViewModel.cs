@@ -204,10 +204,10 @@ public class DragAndDropViewModel
                 if (rawMaterialTo != null)  // 원자재 위에다 드랍한 경우
                 {
                     // 여기도 원자재 길이 변경하는 코드~
-                    int bestLengthOption = rawMaterialTo.findPossibleRawLengthToIncrease(part);
-                    if (!rawMaterialTo.isAddingPossible(part) && bestLengthOption != -1)
+                    int bestLengthOption = rawMaterialTo.findPossibleRawLengthToIncrease(tempPart);
+                    if (!rawMaterialTo.isAddingPossible(tempPart) && bestLengthOption != -1)
                     {
-                        rawMaterialTo.increaseRawLength(bestLengthOption, part);
+                        rawMaterialTo.increaseRawLength(bestLengthOption, tempPart);
                     }
                     
                     

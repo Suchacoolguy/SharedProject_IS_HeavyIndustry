@@ -14,6 +14,8 @@
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
         <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
         <converters:DivideByTwentyConverter x:Key="DivideByTwentyConverter"/>
+        <converters:LengthToMarginConverter x:Key="LengthToMarginConverter"/>
+
     </UserControl.Resources>
     
     <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
@@ -39,7 +41,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Height="55" Width="1000" HorizontalAlignment="Center">
-                                        <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="-300"  Canvas.Top="0" DragDrop.AllowDrop="True" >
+                                        <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="-8000"  Canvas.Top="0" DragDrop.AllowDrop="True" >
                                             <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource RawMaterialConverter}}"
                                                        Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" >
                                             </Rectangle>
@@ -49,27 +51,56 @@
                                         </Border> 
                                     <!-- Raw material -->
                                     
-                                    <TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="-300" Canvas.Top="35">
+                                    <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                           Canvas.Left="-8000" Canvas.Top="35">
+                                        <!-- Define three columns -->
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" /> <!-- Left -->
+                                            <ColumnDefinition Width="*" /> <!-- Center -->
+                                            <ColumnDefinition Width="*" /> <!-- Right -->
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Length}"
+                                                   Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <TextBlock.RenderTransform>
+                                                <ScaleTransform ScaleX="20"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding TotalPartsLength}" 
+                                                   Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock.RenderTransform>
+                                                <ScaleTransform ScaleX="20"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                        <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}"
+                                                   Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <TextBlock.RenderTransform>
+                                                <ScaleTransform ScaleX="20"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </Grid>
+                                    <!--<TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="-8000" Canvas.Top="35">
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>
                                     </TextBlock>
                                     <TextBlock Text="{Binding TotalPartsLength}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" 
-                                               TextAlignment="Center" Canvas.Top="35" Canvas.Left="-300">
+                                               TextAlignment="Center" Canvas.Top="35" Canvas.Left="-8000">
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>
                                     </TextBlock>
                                     <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" 
-                                               Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35" Canvas.Left="-300">
+                                               Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35" Canvas.Left="-10000">
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>
                                     </TextBlock>
+                                    -->
 
                                     
                                     <!-- Parts -->
-                                    <ItemsControl ItemsSource="{Binding PartsInside}" HorizontalAlignment="Left" Canvas.Left="-300">
+                                    <ItemsControl ItemsSource="{Binding PartsInside}" HorizontalAlignment="Left" Canvas.Left="-8000">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

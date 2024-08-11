@@ -27,11 +27,18 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Canvas Name="MyCanvas" Width="600" Height="55" Canvas.Top="5">
-                        <Border BorderBrush="Black" BorderThickness="1">
+                        <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="-300">
                             <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Fill="BurlyWood"
                                        PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Tag="{Binding }"/>
                         </Border>
-                            <TextBlock Text="{Binding Length}" Canvas.Left="0" Canvas.Top="35"/>
+                            <TextBlock Text="{Binding Length}" Canvas.Left="-300" Canvas.Top="35">
+                                <TextBlock.RenderTransform>
+                                    <ScaleTransform ScaleX="20"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                            <Canvas.RenderTransform>
+                                <ScaleTransform ScaleX="0.05"/>
+                            </Canvas.RenderTransform>
                             </Canvas>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

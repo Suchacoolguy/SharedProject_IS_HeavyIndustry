@@ -22,7 +22,7 @@
             public static ObservableCollection<Part> PartsToSeparate {
                 get
                 {
-                    return new ObservableCollection<Part>(PartsFiltered.Where(part => part.IsOverLenth && !string.IsNullOrEmpty(part.lengthToBeSeparated)));
+                    return new ObservableCollection<Part>(PartsFiltered.Where(part => part.IsOverLenth));
                 }
             }// 제외 False, 분리 True
             
@@ -57,7 +57,7 @@
                 foreach (var part in AllParts)
                 {
                     if (part.IsExcluded) continue;
-                    CopyPartList(part, part.NeedSeparate ? PartsToSeparate : PartsForTask);
+                    CopyPartList(part, part.IsOverLenth ? PartsToSeparate : PartsForTask);
                 }
             }
 

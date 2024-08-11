@@ -20,7 +20,13 @@ public class ArrangePartsService
     public static List<int> _lengthOptionsRawMaterial { get; set; }
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
     private static List<Part> _separatedParts;
+    private static ObservableCollection<Part> _partsCanNotBeArranged = new ObservableCollection<Part>();
 
+    public ObservableCollection<Part> getPartsCanNotBeArranged()
+    {
+        return _partsCanNotBeArranged;
+    }
+    
     // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, List<int> lengthOptions)
     {
@@ -59,6 +65,11 @@ public class ArrangePartsService
                     replacedParts.Add(restPart);
                 }
             }
+            else
+            {
+                if (string.IsNullOrEmpty(ppp.lengthToBeSeparated) || Convert.ToInt32(ppp.lengthToBeSeparated) == 0)
+                    _partsCanNotBeArranged.Add(ppp);
+            }
         }
 
         _separatedParts = replacedParts;
@@ -67,6 +78,7 @@ public class ArrangePartsService
             Console.WriteLine(VARIABLE);
         }
         parts.AddRange(_separatedParts);
+        
         _rawMaterialsUsed = ArrangeParts(parts);
 
     }
@@ -282,6 +294,8 @@ public class ArrangePartsService
         {
             totalPartsLength += part.Length;
         }
+        
+        totalPartsLength += (partList.Count - 1) * SettingsViewModel.CuttingLoss;
 
         return totalPartsLength;
     }

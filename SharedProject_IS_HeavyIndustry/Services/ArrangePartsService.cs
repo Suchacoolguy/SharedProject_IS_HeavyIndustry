@@ -125,184 +125,65 @@ public class ArrangePartsService
 
     private static List<RawMaterial> DoTheArrangement(List<Part> partsToBeArranged)
     {
-        int totalPartsLength = GetTotalPartsLength(partsToBeArranged);
-        int avgPartsLength = totalPartsLength / partsToBeArranged.Count;
-        int partCnt = partsToBeArranged.Count;
-        int medianLength = partsToBeArranged[partCnt / 2].Length;
-
-        Console.WriteLine("Average Parts Length: " + avgPartsLength);
-        Console.WriteLine("Median Length: " + medianLength);
-
-        // Create the linear solver with the SCIP backend.
-        Solver solver = Solver.CreateSolver("SCIP");
-
-
-        DataModel data;
-
-        if (partCnt > 200)
-        {
-            if (avgPartsLength < _lengthOptionsRawMaterial[0] * 0.2 &&
-                medianLength < _lengthOptionsRawMaterial[0] * 0.2)
-            {
-                Console.WriteLine("2차원 배열 사이즈 팍 줄인다 실시!");
-                data = new DataModel(partsToBeArranged, _lengthOptionsRawMaterial, Convert.ToInt32(partCnt / 8 + 10));
-            }
-            else
-            {
-                data = new DataModel(partsToBeArranged, _lengthOptionsRawMaterial);
-            }
-        }
-        else
-        {
-            data = new DataModel(partsToBeArranged, _lengthOptionsRawMaterial);
-        }
-
-        // create 2d array of variables. x[i, j] is 1 if item i is in bin j.
-        Variable[,] x = new Variable[data.NumItems, data.NumBins];
-        for (int i = 0; i < data.NumItems; i++)
-        {
-            for (int j = 0; j < data.NumBins; j++)
-            {
-                // x[i, j] is 1 if item i is packed in bin j. otherwise 0.
-                x[i, j] = solver.MakeIntVar(0, 1, $"x_{i}_{j}");
-            }
-        }
-
-        // row i represents the i-th bin and column j represents the length of the bin.
-        Variable[,] y = new Variable[data.NumBins, data.NumRawMaterialOptions];
-        for (int i = 0; i < data.NumBins; i++)
-        {
-            for (int j = 0; j < data.NumRawMaterialOptions; j++)
-            {
-                // y[i, j] is 1 if bin i has length j. otherwise 0.
-                y[i, j] = solver.MakeIntVar(0, 1, $"y_{i}_{j}");
-            }
-        }
-
-        for (int i = 0; i < data.NumItems; i++)
-        {
-            // each item is in exactly one bin. every item must be in one bin.
-            Constraint constraint = solver.MakeConstraint(1, 1, "");
-            for (int j = 0; j < data.NumBins; j++)
-            {
-                constraint.SetCoefficient(x[i, j], 1);
-            }
-        }
-
-        for (int i = 0; i < data.NumBins; i++)
-        {
-            // each bin has exactly one length. every bin must have one length.
-            Constraint constraint = solver.MakeConstraint(0, 1, "");
-            for (int j = 0; j < data.NumRawMaterialOptions; j++)
-            {
-                constraint.SetCoefficient(y[i, j], 1);
-            }
-        }
-
-
-        bool flag = false;
-        // the sum of the lengths of the items in each bin must be less than or equal to the bin's capacity.
-        for (int j = 0; j < data.NumBins; j++)
-        {
-            Constraint constraint = solver.MakeConstraint(0, Double.PositiveInfinity, "");
-
-            // get the length of the bin.
-            for (int i = 0; i < data.NumRawMaterialOptions; i++)
-            {
-                constraint.SetCoefficient(y[j, i], DataModel.lengthOptionsRawMaterial[i]);
-            }
-
-            // BinCapacity - (Sum of the lengths of the items in the bin) >= 0
-            // since we set the lower bound to 0, the sum of the lengths of the items in the bin must be less than or equal to the bin's capacity.
-            for (int i = 0; i < data.NumItems; i++)
-            {
-                constraint.SetCoefficient(x[i, j], -DataModel.parts[i].Length - SettingsViewModel.CuttingLoss);
-            }
-
-            // Add cutting loss to the constraint
-            constraint.SetBounds(-SettingsViewModel.CuttingLoss, Double.PositiveInfinity);
-        }
-
-
-        Objective objective = solver.Objective();
-        // set the objective to minimize the total sum of the remaining lengths of the bins.
-        // 목적함수를 설정해두면 이걸 최소화하도록 하는 메소드를 사용하는 것임.
-        for (int j = 0; j < data.NumBins; j++)
-        {
-            for (int k = 0; k < data.NumRawMaterialOptions; k++)
-            {
-                // Objective: minimize the total waste
-                objective.SetCoefficient(y[j, k], DataModel.lengthOptionsRawMaterial[k]);
-            }
-
-            for (int i = 0; i < data.NumItems; i++)
-            {
-                // Subtract the parts lengths from the total raw material length
-                objective.SetCoefficient(x[i, j], -DataModel.parts[i].Length);
-            }
-        }
-
-        objective.SetMinimization();
-
-        Console.WriteLine("Ready to solve.");
-
-        // solver.SetSolverSpecificParametersAsString("limits/solutions = 50");
-        // solver.SetTimeLimit(15000);
-
-        // var watch = System.Diagnostics.Stopwatch.StartNew();
-        Solver.ResultStatus resultStatus = solver.Solve();
-        // watch.Stop();
-        // var elapsedMs = watch.ElapsedMilliseconds;
-        // Console.WriteLine("Elapsed Time: " + elapsedMs);
-
-        Console.WriteLine("Solved.");
-
-        Console.WriteLine($"Total Scrap: {solver.Objective().Value()}");
-
-        if (resultStatus == Solver.ResultStatus.NOT_SOLVED || resultStatus == Solver.ResultStatus.ABNORMAL)
-        {
-            Console.WriteLine("파트 배치에 실패하였습니다. 다시 시도해주세요.");
-            return new List<RawMaterial>();
-        }
-
-        if (resultStatus == Solver.ResultStatus.INFEASIBLE)
-        {
-            // 파트가 없거나 하나밖에 없을 때 솔루션을 찾지 못하는 경우 여기로 들어옴.
-            MessageService.Send("파트 배치가 불가능합니다. 규격 설정과 분리 설정을 확인해주세요.");
-            return new List<RawMaterial>();
-        }
-
-        int howManyTimes = 0;
-        int TotalScrap = 0;
-        int BinLength = 0;
         List<RawMaterial> res = new List<RawMaterial>();
-
-        bool foundBin = false;
-        for (int j = 0; j < data.NumBins; ++j)
+        int bestFitRawMaterial = _lengthOptionsRawMaterial[0];
+        int bestFitIndex = 0; int partLength = partsToBeArranged[0].Length;
+        
+        // 원자재 길이가 하나면 고마 bestFit이고 뭐고 찾을 것도 없지만~ 여러개면 bestFit 찾아야함
+        if (_lengthOptionsRawMaterial.Count > 1)
         {
-            RawMaterial rawMaterial = null;
-            for (int i = 0; i < data.NumRawMaterialOptions; i++)
+            for (int i = 1; i < _lengthOptionsRawMaterial.Count(); i++)
             {
-                if (y[j, i].SolutionValue() == 1)
+                int remainingPartsNum = partsToBeArranged.Count;
+                int LengthRawMaterial = _lengthOptionsRawMaterial[i];
+                
+                int remainingLengthInEach = LengthRawMaterial;
+                
+                
+                // 이 원자재 길이로 배치했을 때 하나의 원자재에 몇 개의 파트가 배치될 수 있는지 계산
+                bool isFirstTime = true;
+                int howManyPartsCanFitInEach = 0;
+                while (remainingLengthInEach >= (partLength + SettingsViewModel.CuttingLoss))
                 {
-
-                    BinLength = DataModel.lengthOptionsRawMaterial[i];
-                    rawMaterial = new RawMaterial(BinLength);
+                    if (isFirstTime)
+                    {
+                        remainingLengthInEach -= partLength;
+                        isFirstTime = false;
+                    }
+                    else
+                    {
+                        remainingLengthInEach -= (partLength + SettingsViewModel.CuttingLoss);
+                    }
+                    howManyPartsCanFitInEach++;
                 }
-            }
 
-            for (int i = 0; i < data.NumItems; i++)
-            {
-                if (x[i, j].SolutionValue() == 1)
+                int totalScrap = 0;
+                // 이 원자재 길이로 배치했을 때 총 스크랩 길이를 구한다.
+                while (remainingPartsNum / howManyPartsCanFitInEach > 0)
                 {
-                    howManyTimes++;
-                    rawMaterial.insert_part(DataModel.parts[i]);
+                    // for (int j = 0; j < howManyPartsCanFitInEach; j++)
+                    totalScrap += remainingLengthInEach;
+                    remainingPartsNum -= howManyPartsCanFitInEach;
                 }
+                
+                // 마지막 남은 파트들을 넣으면?
+                if (remainingPartsNum > 0)
+                {
+                    // 남은 파트 총 길이 계산
+                    
+                    // 가장 스크랩이 적게 남는 원자재 길이 선정 + 그 스크랩이 얼마인지 결정
+                }
+                
+                // 토탈 스크랩에 그 스크랩을 추가해서 총 스크랩 길이를 구한다.
             }
-
-            if (rawMaterial != null)
-                res.Add(rawMaterial);
         }
+        
+        // bestFitRawMaterial을 찾았으므로 이제 배치 시작
+        
+        // while   
+        
+        if (rawMaterial != null)
+            res.Add(rawMaterial);
 
         return res;
     }

@@ -12,6 +12,8 @@
 
     <UserControl.Resources>
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
+        <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
+        <converters:DivideByTwentyConverter x:Key="DivideByTwentyConverter"/>
     </UserControl.Resources>
     
     <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
@@ -21,10 +23,10 @@
         </Grid.ColumnDefinitions>
 
         <!-- Existing content -->
-             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5" Background="Transparent">
+             <Grid DragDrop.AllowDrop="True" Grid.Column="0" Margin="5" Background="Transparent" >
                  <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
                 <!-- Parts arranged inside raw materials -->
-                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent" HorizontalAlignment="Center">
+                <StackPanel Name="MyStackPanel" Orientation="Vertical" DragDrop.AllowDrop="True" Background="Transparent" >
                     <StackPanel.ContextFlyout>
                         <MenuFlyout>
                             <MenuItem Header="원자재 길이 기준 오름차순" Click="SortByRawMaterialLength_Ascending"/>
@@ -36,40 +38,49 @@
                     <ItemsControl Name="RawMaterialList" ItemsSource="{Binding DragAndDropViewModel.ArrangedRawMaterials}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Canvas Name="MyCanvas" Width="850" Height="55" Background="{Binding BackgroundColor}" HorizontalAlignment="Stretch">
-                                    
+                                <Canvas Name="MyCanvas" Height="55" Width="1000" HorizontalAlignment="Center">
+                                        <Border BorderBrush="Black" BorderThickness="1"  Canvas.Top="0" DragDrop.AllowDrop="True" >
+                                            <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource RawMaterialConverter}}"
+                                                       Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" >
+                                            </Rectangle>
+                                            <Border.RenderTransform>
+                                                <ScaleTransform ScaleX="0.5"></ScaleTransform>
+                                            </Border.RenderTransform>
+                                        </Border> 
                                     <!-- Raw material -->
-                                    <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="0" Canvas.Top="0" DragDrop.AllowDrop="True">
-                                        <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                   Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" />
-                                    </Border>
-                                    <TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="0" Canvas.Top="35"/>
-                                    <TextBlock Text="{Binding TotalPartsLength}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" 
-                                               TextAlignment="Center" Canvas.Left="0" Canvas.Top="35" />
+                                    
+                                    <TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="250" Canvas.Top="35" />
+                                    <TextBlock Text="{Binding TotalPartsLength}" Width="{Binding Length, Converter={StaticResource DivideByTwentyConverter}}" 
+                                               TextAlignment="Center" Canvas.Top="35" Canvas.Left="250"/>
                                     <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" 
-                                               Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35"/>
+                                               Width="{Binding Length, Converter={StaticResource DivideByTwentyConverter}}" TextAlignment="Right" Canvas.Top="35" Canvas.Left="250"/>
 
-                                    
+
                                     <!-- Parts -->
-                                    
-                                    <ItemsControl ItemsSource="{Binding PartsInside}">
+                                    <ItemsControl ItemsSource="{Binding PartsInside}" HorizontalAlignment="Left" Canvas.Left="0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal"/>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                </StackPanel>
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid>
-                                                    <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" >
-                                                        <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                                   Fill="#E8B989" DragDrop.AllowDrop="True" Tag="{Binding }"/>
-                                                    </Border>
-                                                    <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
-                                                           HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
-                                                </Grid>
+                                                    <Grid Background="Gold" HorizontalAlignment="Left">
+                                                        <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True">
+                                                            <Rectangle Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                                       Fill="#E8B989" DragDrop.AllowDrop="True" Tag="{Binding }">
+                                                            </Rectangle>
+                                                        </Border>
+                                                        <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                                HorizontalContentAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+                                                        </Label>
+                                                    </Grid>    
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
+                                        <ItemsControl.RenderTransform>
+                                            <ScaleTransform ScaleX="0.5"></ScaleTransform>
+                                        </ItemsControl.RenderTransform>
                                     </ItemsControl>
                                 </Canvas>
                             </DataTemplate>

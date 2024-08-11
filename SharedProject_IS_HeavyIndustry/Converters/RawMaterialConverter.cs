@@ -1,8 +1,12 @@
+
 using Avalonia.Data.Converters;
 using System;
 using System.Globalization;
 
-
+using Avalonia.Data.Converters;
+using System;
+using System.Globalization;
+    
 namespace SharedProject_IS_HeavyIndustry.Converters
 {
     public class RawMaterialConverter : IValueConverter
@@ -23,3 +27,4 @@ namespace SharedProject_IS_HeavyIndustry.Converters
         }
     }
 }
+

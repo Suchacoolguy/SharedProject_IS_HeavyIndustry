@@ -182,8 +182,8 @@ public class ArrangePartsService
         
         // while   
         
-        if (rawMaterial != null)
-            res.Add(rawMaterial);
+        // if (rawMaterial != null)
+        //     res.Add(rawMaterial);
 
         return res;
     }

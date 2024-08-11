@@ -12,6 +12,7 @@ public class Part : INotifyPropertyChanged
     private string descString;
     private bool _isOverLenth, _isExcluded, _needSeparate;
     private string _lengthToBeSeparated;
+    public int LengthForUI { get; set; } // 파트 길이에 컷팅 로스 반영하기 위한 UI용 Length
     public string lengthToBeSeparated
     {
         get => _lengthToBeSeparated;
@@ -42,6 +43,7 @@ public class Part : INotifyPropertyChanged
         _isExcluded = true;
         _needSeparate = false;
         _lengthToBeSeparated = "";
+        LengthForUI = length;
     }
     
     public Description Desc

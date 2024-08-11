@@ -54,8 +54,12 @@ public partial class BOMDataTabView : TabView
             MessageService.Send("시트를 선택해 주세요");
             return;
         }
-        if(MainWindowViewModel.RawMaterialSet.Count != 0)
+
+        if (MainWindowViewModel.RawMaterialSet.Count != 0)
+        {
             MainWindowViewModel.RawMaterialSet.Clear();
+            MainWindowViewModel.TempPartSet.Clear();
+        }
         BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
         mainWindow?.AddTab("파트 배치");
     }

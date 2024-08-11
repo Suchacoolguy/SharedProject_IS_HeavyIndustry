@@ -36,8 +36,19 @@ public partial class RawStandardTabView : TabView
 
     private void deleteItem(object? sender, RoutedEventArgs routedEventArgs)
     {
-        // JsonConverter.DeleteItemByDescription("Hello");
-        // SettingsViewModel.Refresh();
+        if (Table.ItemsSource is ObservableCollection<RawLengthSet> items)
+        {
+            // Copy the selected items to a list to avoid modifying the collection while iterating
+            var selectedItems = Table.SelectedItems.Cast<RawLengthSet>().ToList();  // Replace YourItemType with the actual type.
+
+            // Remove each selected item from the source collection
+            foreach (var item in selectedItems)
+            {
+                items.Remove(item);
+                JsonConverter.DeleteItemByDescription(item.Description);
+            }
+        }
+        SettingsViewModel.Refresh();
     }
 
     private void Search_btn_click(object? sender, RoutedEventArgs e)
@@ -89,7 +100,7 @@ public partial class RawStandardTabView : TabView
         var cell = e.EditingElement as TextBox;
         if (cell != null)
         {
-            // 포커스를 설정하고, 모든 텍스트를 선택하여 편집이 즉시 가능하도록 합니다.
+            // 포커스를 설정하고, 모든 텍스트를 선택하여 편집모드로 들어가게함
             cell.Focus();
             cell.SelectAll();
         }

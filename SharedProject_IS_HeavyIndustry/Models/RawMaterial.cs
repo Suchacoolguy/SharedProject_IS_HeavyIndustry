@@ -123,6 +123,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             if (PartsInside.Count > 1)
             {
                 RemainingLength -= SettingsViewModel.CuttingLoss;
+                part.LengthForUI += SettingsViewModel.CuttingLoss; // Part개수가 2개 이상이 추가된 파트 길이에 컷팅로스 추가
             }
             
             return part;
@@ -139,6 +140,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 {
                     RemainingLength += SettingsViewModel.CuttingLoss;
                 }
+
+                part.LengthForUI = part.Length; // 파트 제외할 떄 UI용 Length 다시 초기화
             }
             
             int fitLength = FindShortestLengthPossibleWhenRemovePart(part);

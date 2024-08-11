@@ -68,7 +68,7 @@
                                             <DataTemplate>
                                                     <Grid Background="Gold" HorizontalAlignment="Left">
                                                         <Border Name="PartBorder" BorderBrush="Black" BorderThickness="1" PointerPressed="Part_PointerPressed" DragDrop.AllowDrop="True" Padding="0" Margin="0">
-                                                            <Rectangle Margin="0" Name="PartRectangle" Height="30" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                            <Rectangle Margin="0" Name="PartRectangle" Height="30" Width="{Binding LengthForUI, Converter={StaticResource DivideByTenConverter}}"
                                                                        Fill="#E8B989" DragDrop.AllowDrop="True" Tag="{Binding }">
                                                             </Rectangle>
                                                         </Border>

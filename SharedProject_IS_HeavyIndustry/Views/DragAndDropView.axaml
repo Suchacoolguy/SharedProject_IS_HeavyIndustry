@@ -14,7 +14,6 @@
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
         <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
         <converters:DivideByTwentyConverter x:Key="DivideByTwentyConverter"/>
-        <converters:LengthToMarginConverter x:Key="LengthToMarginConverter"/>
 
     </UserControl.Resources>
     

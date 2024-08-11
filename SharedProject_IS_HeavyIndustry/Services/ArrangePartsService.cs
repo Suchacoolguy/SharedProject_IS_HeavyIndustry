@@ -141,27 +141,16 @@ public class ArrangePartsService
 
                 // 이 원자재 길이로 배치했을 때 하나의 원자재에 몇 개의 파트가 배치될 수 있는지 계산
                 bool isFirstTime = true;
-                int howManyPartsCanFitInEach = 0;
-                while (remainingLengthInEach >= (partLength + SettingsViewModel.CuttingLoss))
-                {
-                    if (isFirstTime)
-                    {
-                        remainingLengthInEach -= partLength;
-                        isFirstTime = false;
-                    }
-                    else
-                    {
-                        remainingLengthInEach -= (partLength + SettingsViewModel.CuttingLoss);
-                    }
-                    howManyPartsCanFitInEach++;
-                }
-
+                int howManyPartsCanFitInEach = ArrangePartsService.howManyPartsCanFitInEach(remainingLengthInEach, partLength);
+                int bestScrapSoFar = Int32.MaxValue;
                 int totalScrap = 0;
+                int totalPartsLengthInEach = howManyPartsCanFitInEach * partLength + (SettingsViewModel.CuttingLoss * (howManyPartsCanFitInEach - 1));
+                int scrapInEachRawMaterial = LengthRawMaterial - totalPartsLengthInEach;
                 // 이 원자재 길이로 배치했을 때 총 스크랩 길이를 구한다.
                 while (remainingPartsNum / howManyPartsCanFitInEach > 0)
                 {
                     // for (int j = 0; j < howManyPartsCanFitInEach; j++)
-                    totalScrap += remainingLengthInEach;
+                    totalScrap += scrapInEachRawMaterial;
                     remainingPartsNum -= howManyPartsCanFitInEach;
                 }
                 
@@ -169,20 +158,76 @@ public class ArrangePartsService
                 if (remainingPartsNum > 0)
                 {
                     // 남은 파트 총 길이 계산
-                    
+                    int totalLengthOfRemainingParts = partLength * remainingPartsNum + (SettingsViewModel.CuttingLoss * (remainingPartsNum - 1));
                     // 가장 스크랩이 적게 남는 원자재 길이 선정 + 그 스크랩이 얼마인지 결정
+                    int remainingScrapForLastParts = LengthRawMaterial - totalLengthOfRemainingParts;
+                    foreach (var rawLen in _lengthOptionsRawMaterial)
+                    {
+                        if (rawLen - totalLengthOfRemainingParts < remainingScrapForLastParts)
+                        {
+                            remainingScrapForLastParts = rawLen - totalLengthOfRemainingParts;
+                        }
+                    }
+                    totalScrap += remainingScrapForLastParts;
                 }
                 
                 // 토탈 스크랩에 그 스크랩을 추가해서 총 스크랩 길이를 구한다.
+                if (totalScrap < bestScrapSoFar)
+                {
+                    bestFitIndex = i;
+                }
             }
         }
+        bestFitRawMaterial = _lengthOptionsRawMaterial[bestFitIndex];
 
         // bestFitRawMaterial을 찾았으므로 이제 배치 시작
-        
-        // while   
-        
-        if (rawMaterial != null)
+        int partsCount = partsToBeArranged.Count;
+        int howManyPartsCanFit = howManyPartsCanFitInEach(bestFitRawMaterial, partLength);
+        int partIndex = 0;
+        while (partsCount / howManyPartsCanFit > 0)
+        {
+            RawMaterial rawMaterial = new RawMaterial(bestFitRawMaterial);
+            for (int i = 0; i < howManyPartsCanFit; i++)
+            {
+                if (partIndex < partsToBeArranged.Count)
+                {
+                    rawMaterial.insert_part(partsToBeArranged[partIndex]);
+                    partIndex++;    
+                }
+            }
+            
             res.Add(rawMaterial);
+            partsCount -= howManyPartsCanFit;
+        }
+
+        // 나머지 파트 배치
+        if (partsCount > 0)
+        {
+            int totalLengthOfRemainingParts = partLength * partsCount + (SettingsViewModel.CuttingLoss * (partsCount - 1));
+            int bestScrapForRemainingParts = Int32.MaxValue;
+            // bestFitRawMaterial 찾기
+            foreach (var rawLen in _lengthOptionsRawMaterial)
+            {
+                if (totalLengthOfRemainingParts <= rawLen && rawLen - totalLengthOfRemainingParts < bestScrapForRemainingParts)
+                {
+                    bestScrapForRemainingParts = rawLen - totalLengthOfRemainingParts;
+                    bestFitRawMaterial = rawLen;
+                }
+            }
+            
+            RawMaterial rawMaterial = new RawMaterial(bestFitRawMaterial);
+            while (partsCount > 0)
+            {
+                if (partIndex < partsToBeArranged.Count)
+                {
+                    rawMaterial.insert_part(partsToBeArranged[partIndex]);
+                    partIndex++;
+                    partsCount--;
+                }
+            }
+            
+            res.Add(rawMaterial);
+        }
 
         return res;
     }
@@ -210,6 +255,24 @@ public class ArrangePartsService
             return parts.Sum(part => part.Length);
         }
         return 0;
+    }
+    
+    private static int howManyPartsCanFitInEach(int rawMaterialLength, int partLength)
+    {
+        int remainingLengthOfRawMaterial = rawMaterialLength;
+        int howManyPartsCanFit = 0;
+        for (int i = 0; remainingLengthOfRawMaterial - partLength - (SettingsViewModel.CuttingLoss * i) >= 0; i++)
+        {
+            remainingLengthOfRawMaterial -= partLength;
+            
+            // 두 번째 부터는 컷팅로스 길이도 추가해야 함.
+            if (i != 0)
+                remainingLengthOfRawMaterial -= SettingsViewModel.CuttingLoss;
+            
+            howManyPartsCanFit++;
+        }
+
+        return howManyPartsCanFit;
     }
 
     private static int GetTotalPartsLength(List<Part> partList)

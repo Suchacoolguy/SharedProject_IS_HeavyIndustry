@@ -49,11 +49,23 @@
                                         </Border> 
                                     <!-- Raw material -->
                                     
-                                    <TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="-300" Canvas.Top="35" />
+                                    <TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="-300" Canvas.Top="35">
+                                        <TextBlock.RenderTransform>
+                                            <ScaleTransform ScaleX="20"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
                                     <TextBlock Text="{Binding TotalPartsLength}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" 
-                                               TextAlignment="Center" Canvas.Top="35" Canvas.Left="-300"/>
+                                               TextAlignment="Center" Canvas.Top="35" Canvas.Left="-300">
+                                        <TextBlock.RenderTransform>
+                                            <ScaleTransform ScaleX="20"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
                                     <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" 
-                                               Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35" Canvas.Left="-300"/>
+                                               Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35" Canvas.Left="-300">
+                                        <TextBlock.RenderTransform>
+                                            <ScaleTransform ScaleX="20"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
 
                                     
                                     <!-- Parts -->
@@ -74,6 +86,9 @@
                                                         </Border>
                                                         <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
                                                                 HorizontalContentAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+                                                            <Label.RenderTransform>
+                                                                <ScaleTransform ScaleX="20"/>
+                                                            </Label.RenderTransform>
                                                         </Label>
                                                     </Grid>    
                                             </DataTemplate>

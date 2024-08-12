@@ -80,7 +80,15 @@ public class ArrangePartsService
         }
         parts.AddRange(_separatedParts);
         
-        _rawMaterialsUsed = ArrangeParts(parts);
+        if (parts.Any())
+        {
+            _rawMaterialsUsed = ArrangeParts(parts);
+        }
+        else
+        {
+            Console.WriteLine("No parts to arrange");
+        }
+        
 
     }
 
@@ -155,6 +163,10 @@ public class ArrangePartsService
                 // 이 원자재 길이로 배치했을 때 하나의 원자재에 몇 개의 파트가 배치될 수 있는지 계산
                 bool isFirstTime = true;
                 int howManyPartsCanFitInEach = ArrangePartsService.howManyPartsCanFitInEach(remainingLengthInEach, partLength);
+                
+                if (howManyPartsCanFitInEach == 0)
+                    continue;
+                
                 int bestScrapSoFar = Int32.MaxValue;
                 int totalScrap = 0;
                 int totalPartsLengthInEach = howManyPartsCanFitInEach * partLength + (SettingsViewModel.CuttingLoss * (howManyPartsCanFitInEach - 1));

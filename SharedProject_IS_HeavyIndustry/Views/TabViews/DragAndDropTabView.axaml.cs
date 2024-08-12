@@ -84,12 +84,11 @@ public partial class DragAndDropTabView : TabView
         MainWindowViewModel.DragAndDropViewModel =
             new DragAndDropViewModel(service.GetArrangedRawMaterials(), MainWindowViewModel.SelectedKey);
         DragAndDropViewModel.TempPartList = service.getPartsCanNotBeArranged();
-
-
+        
         if (!MainWindowViewModel.RawMaterialSet.ContainsKey(MainWindowViewModel.SelectedKey))
         {
             MainWindowViewModel.RawMaterialSet.TryAdd(MainWindowViewModel.SelectedKey, service.GetArrangedRawMaterials());
-            MainWindowViewModel.TempPartSet.TryAdd(MainWindowViewModel.SelectedKey, DragAndDropViewModel.TempPartList);
+            MainWindowViewModel.TempPartSet.TryAdd(MainWindowViewModel.SelectedKey, DragAndDropViewModel.Clone(DragAndDropViewModel.TempPartList));
         }
             
     }

@@ -30,6 +30,7 @@ public class ArrangePartsService
     // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, List<int> lengthOptions)
     {
+        _partsCanNotBeArranged.Clear();
         foreach (var part in overSizeParts)
         {
             Console.WriteLine("분리길이 : " + part.lengthToBeSeparated);

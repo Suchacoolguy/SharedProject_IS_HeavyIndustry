@@ -322,4 +322,12 @@ public class DragAndDropViewModel
     {
         return ArrangePartsService.GetLengthOptionsRawMaterial();
     }
+    
+    public static ObservableCollection<Part> Clone(ObservableCollection<Part> list)
+    {
+        ObservableCollection<Part> result = [];
+        foreach (var value in list)
+            result.Add(value);
+        return result;
+    }
 }

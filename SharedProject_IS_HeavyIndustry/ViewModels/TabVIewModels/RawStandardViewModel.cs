@@ -51,11 +51,13 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             if (MissingStandardBuffer.Count <= 0) return;
             foreach (var value in MissingStandardBuffer)
             {
-                LengthSetList.Add(new RawLengthSet(value, 0, ""));
-                TempLengthSetList.Add(new RawLengthSet(value, 0, ""));
+                var newData = new RawLengthSet(value, 0, "");
+                LengthSetList.Insert(0, newData);
+                TempLengthSetList.Insert(0, newData);
             }
-            MissingStandardBuffer.Clear();
-            _missingStandardBuffer.Clear();
+
+            /*MissingStandardBuffer.Clear();
+            _missingStandardBuffer.Clear();*/
             //MessageService.Send("규격목록에 정의 되지 않은 형강이 존재합니다.");
         }
         
@@ -90,9 +92,33 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 
         private void Save()
         {
+            if (!CheckAllFieldFill())
+            {
+                MessageService.Send("길이가 설정되지 않은 규격이 있습니다.");
+                return;
+            }
             // 여기 디비
             if (ApplyChanges())
+            {
                 JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
+                foreach (var part in BOMDataViewModel.PartsFiltered)
+                {
+                    if (MissingStandardBuffer.Contains(part.Desc.ToString()))
+                        part.IsExcluded = false;
+                }
+                SettingsViewModel.Refresh();
+                MissingStandardBuffer.Clear();
+                _missingStandardBuffer.Clear();
+            }
+            
+        }
+
+        private bool CheckAllFieldFill()
+        {
+            foreach (var value in LengthSetList)
+                if (value.Lengths.Length == 0)
+                    return false;
+            return true;
         }
 
         [Obsolete("Obsolete")]

@@ -15,7 +15,7 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 public partial class BOMDataTabView : TabView
 {
     private readonly MainWindow mainWindow;
-    private TableView tableView;
+    private static TableView tableView;
     private bool initialToggleState = true;
     private static ToggleButton exclude, separate, needSeparate;
     
@@ -25,7 +25,12 @@ public partial class BOMDataTabView : TabView
         this.mainWindow = mainWindow;
         DataContext = new ExcelTabViewModel();
     }
-    
+
+    public static void RefreshTableView()
+    {
+        MainWindow.SetSheet(BOMDataViewModel.SheetName);
+        tableView = new TableView();
+    }
     private async void ReadExcelBtn_Click(object? sender, RoutedEventArgs e)
     {
         await mainWindow?.OpenSheetSelectWindow()!;

@@ -10,7 +10,7 @@ using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 
 namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 
-public partial class DragAndDropTabView : TabView
+public partial lass DragAndDropTabView : TabView
 {
     private MainWindow mainWindow;
     

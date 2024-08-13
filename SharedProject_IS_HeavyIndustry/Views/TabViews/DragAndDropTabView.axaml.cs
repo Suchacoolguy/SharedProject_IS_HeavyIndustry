@@ -27,6 +27,12 @@ public partial class DragAndDropTabView : TabView
         var selectedDescription = this.FindControl<ComboBox>("Description")!.SelectedItem?.ToString();
         var dockPanel = this.FindControl<Panel>("Parent_DragAndDrop");
         
+        foreach (KeyValuePair<string, ObservableCollection<Part>> item in MainWindowViewModel.TempPartSet)
+        {
+            // Printing the key and value to the console
+            Console.WriteLine($"Key: {item.Key}, Value: {item.Value.Count}");
+        }
+        
         if (selectedMaterial != null && selectedDescription != null)
         {
             // _key = selectedMaterial + "," + selectedDescription;
@@ -37,7 +43,9 @@ public partial class DragAndDropTabView : TabView
             {
                 dockPanel!.Children.RemoveAll(dockPanel.Children);
                 DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
-                // DragAndDropViewModel.TempPartList = [];
+                
+                if (MainWindowViewModel.TempPartSet.TryGetValue(MainWindowViewModel.SelectedKey, out var overSizedParts))  // 여기!!
+                    DragAndDropViewModel.TempPartList = overSizedParts;
                 
                 ArrangePartsService._lengthOptionsRawMaterial = SettingsViewModel.GetLengthOption(selectedDescription);
                 if (MainWindowViewModel.TempPartSet.TryGetValue(MainWindowViewModel.SelectedKey, out var value))
@@ -46,20 +54,16 @@ public partial class DragAndDropTabView : TabView
                 return;
             }
             
+            // 처음 선택한 규격인 경우 (이미 배치한 파트가 없는 경우)
             BuildDragAndDropData(selectedMaterial, selectedDescription);
             
-            if (!dockPanel!.Children.Any())
-            {
-                var dragAndDropView = new DragAndDropView(mainWindow);
-                dockPanel.Children.Add(dragAndDropView);
-            }
-            else
+            if (dockPanel!.Children.Any())
             {
                 dockPanel.Children.RemoveAll(dockPanel.Children);
-                
-                var dragAndDropView = new DragAndDropView(mainWindow);
-                dockPanel.Children.Add(dragAndDropView);
             }
+            
+            var dragAndDropView = new DragAndDropView(mainWindow);
+            dockPanel.Children.Add(dragAndDropView);
         }
         else
             MessageService.Send("재질과 규격을 선택하세요");
@@ -82,14 +86,17 @@ public partial class DragAndDropTabView : TabView
         var service = new ArrangePartsService(new List<Part>(parts), partsOverLength,
             SettingsViewModel.GetLengthOption(selectedDescription));
         MainWindowViewModel.DragAndDropViewModel =
-            new DragAndDropViewModel(service.GetArrangedRawMaterials(), MainWindowViewModel.SelectedKey);
-        DragAndDropViewModel.TempPartList = service.getPartsCanNotBeArranged();
+            new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.getPartsCanNotBeArranged(), MainWindowViewModel.SelectedKey);
 
 
         if (!MainWindowViewModel.RawMaterialSet.ContainsKey(MainWindowViewModel.SelectedKey))
         {
             MainWindowViewModel.RawMaterialSet.TryAdd(MainWindowViewModel.SelectedKey, service.GetArrangedRawMaterials());
-            MainWindowViewModel.TempPartSet.TryAdd(MainWindowViewModel.SelectedKey, DragAndDropViewModel.TempPartList);
+        }
+        
+        if (!MainWindowViewModel.TempPartSet.ContainsKey(MainWindowViewModel.SelectedKey))
+        {
+            MainWindowViewModel.TempPartSet.TryAdd(MainWindowViewModel.SelectedKey, service.getPartsCanNotBeArranged());
         }
             
     }

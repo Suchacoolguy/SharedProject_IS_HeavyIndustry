@@ -20,7 +20,7 @@ public class ArrangePartsService
     public static List<int> _lengthOptionsRawMaterial { get; set; }
     private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
     private static List<Part> _separatedParts;
-    private static ObservableCollection<Part> _partsCanNotBeArranged = new ObservableCollection<Part>();
+    private ObservableCollection<Part> _partsCanNotBeArranged = new ObservableCollection<Part>();
 
     public ObservableCollection<Part> getPartsCanNotBeArranged()
     {

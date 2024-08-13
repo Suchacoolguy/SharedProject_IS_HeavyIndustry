@@ -43,6 +43,8 @@ public partial class TempPartsView : UserControl
             if (!DragAndDropViewModel.TempPartList.Contains(part) && rawMaterialFrom != null)
             {
                 DragAndDropViewModel.TempPartList.Add(part);
+                MainWindowViewModel.TempPartSet[MainWindowViewModel.SelectedKey] = DragAndDropViewModel.TempPartList;
+                
                 rawMaterialFrom.removePart(part);
                 if (rawMaterialFrom.PartsInside.Count == 0)
                 {

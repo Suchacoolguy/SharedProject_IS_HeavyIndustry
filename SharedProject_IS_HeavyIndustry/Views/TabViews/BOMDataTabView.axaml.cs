@@ -55,11 +55,11 @@ public partial class BOMDataTabView : TabView
             return;
         }
 
-        if (MainWindowViewModel.RawMaterialSet.Count != 0)
-        {
+        if (MainWindowViewModel.RawMaterialSet.Count > 0)
             MainWindowViewModel.RawMaterialSet.Clear();
+        if (MainWindowViewModel.TempPartSet.Count > 0)
             MainWindowViewModel.TempPartSet.Clear();
-        }
+
         BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
         mainWindow?.AddTab("파트 배치");
     }

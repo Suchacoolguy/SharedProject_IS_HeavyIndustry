@@ -14,6 +14,7 @@ using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.Services;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using DynamicData;
 
@@ -23,6 +24,8 @@ public partial class DragAndDropView : TabView
 {
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
+    private bool _bomSortCheck = false, _scrapSortCheck = false;
+    private MenuItem bomAscending, bomDescending, scrapAscending, scrapDescending;
     
     protected override void OnLoaded(RoutedEventArgs e)
     {
@@ -47,6 +50,11 @@ public partial class DragAndDropView : TabView
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
         AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
         
+        
+        bomAscending = this.FindControl<MenuItem>("BomAscending")!;
+        bomDescending = this.FindControl<MenuItem>("BomDescending")!;
+        scrapAscending = this.FindControl<MenuItem>("ScrapAscending")!;
+        scrapDescending = this.FindControl<MenuItem>("ScrapDescending")!;
     }
     
     private void RawMaterial_DragOver(object sender, DragEventArgs e)
@@ -122,79 +130,121 @@ public partial class DragAndDropView : TabView
         
     }
     
-    private void SortByRawMaterialLength_Ascending(object? sender, RoutedEventArgs e)
+    private void SortByRawMaterialLength_Ascending()
     {
         MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
         if (rawMaterials != null)
         {
             List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => x.Length.CompareTo(y.Length));
 
-            // 이미 오름차순으로 정렬되어 있는지 확인
-            if (!rawList.SequenceEqual(rawList.OrderBy(x => x.Length)))
-            {
-                rawList.Sort((x, y) => x.Length.CompareTo(y.Length));
-
-                DragAndDropViewModel.ArrangedRawMaterials.Clear();
-                DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-                MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
-            }
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
         }
     }
     
-    private void SortByRawMaterialLength_Descending(object? sender, RoutedEventArgs e)
+    private void SortByRawMaterialLength_Descending()
     {
         MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
         if (rawMaterials != null)
         {
             List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => y.Length.CompareTo(x.Length));
 
-            // 이미 내림차순으로 정렬되어 있는지 확인
-            if (!rawList.SequenceEqual(rawList.OrderByDescending(x => x.Length)))
-            {
-                rawList.Sort((x, y) => y.Length.CompareTo(x.Length));
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
 
-                DragAndDropViewModel.ArrangedRawMaterials.Clear();
-                DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-                MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
-            }
         }
     }
     
-    private void SortByScrapAscending(object? sender, RoutedEventArgs e)
+    private void SortByScrapAscending()
     {
         MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
         if (rawMaterials != null)
         {
             List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => x.RemainingLength.CompareTo(y.RemainingLength));
 
-            // 이미 오름차순으로 정렬되어 있는지 확인
-            if (!rawList.SequenceEqual(rawList.OrderBy(x => x.RemainingLength)))
-            {
-                rawList.Sort((x, y) => x.RemainingLength.CompareTo(y.RemainingLength));
-
-                DragAndDropViewModel.ArrangedRawMaterials.Clear();
-                DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-                MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
-            }
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
         }
     }
     
-    private void SortByScrapDescending(object? sender, RoutedEventArgs e)
+    private void SortByScrapDescending()
     {
         MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
         if (rawMaterials != null)
         {
             List<RawMaterial> rawList = rawMaterials.ToList();
+            rawList.Sort((x, y) => y.RemainingLength.CompareTo(x.RemainingLength));
 
-            // 이미 내림차순으로 정렬되어 있는지 확인
-            if (!rawList.SequenceEqual(rawList.OrderByDescending(x => x.RemainingLength)))
+            DragAndDropViewModel.ArrangedRawMaterials.Clear();
+            DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+        }
+    }
+    
+    private void Sort(object? sender, RoutedEventArgs e)
+    {
+        MenuCheck((sender as MenuItem)!);
+        
+        if ((bomAscending.Icon != null || bomDescending.Icon != null) &&
+            (scrapAscending.Icon != null || scrapDescending.Icon != null))
+            SortTwoCondition();
+        else
+        {
+            if(bomAscending.Icon != null)
+                SortByRawMaterialLength_Ascending();
+            else if(bomDescending.Icon != null)
+                SortByRawMaterialLength_Descending();
+            else if(scrapAscending.Icon != null)
+                SortByScrapAscending();
+            else if(scrapDescending.Icon != null)
+                SortByScrapDescending();
+        }
+    }
+    
+    private void MenuCheck(MenuItem clickedItem)
+    {
+        if (clickedItem!.Icon != null)
+            clickedItem.Icon = null;
+        else
+        {
+            clickedItem.Icon = new TextBlock { Text = "\u2714" };
+            if (clickedItem!.Name!.Equals("BomAscending") || clickedItem!.Name!.Equals("BomDescending"))
             {
-                rawList.Sort((x, y) => y.RemainingLength.CompareTo(x.RemainingLength));
-
-                DragAndDropViewModel.ArrangedRawMaterials.Clear();
-                DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-                MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+                if (bomAscending.IsSelected)
+                    bomDescending.Icon = null;
+                else
+                    bomAscending.Icon = null;
+            }
+            else if (clickedItem!.Name!.Equals("ScrapAscending") || clickedItem!.Name!.Equals("ScrapDescending"))
+            {
+                if (scrapAscending.IsSelected)
+                    scrapDescending.Icon = null;
+                else
+                    scrapAscending.Icon = null;
             }
         }
+    }
+
+    private void SortTwoCondition()
+    {
+        MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var rawMaterials);
+        if (rawMaterials == null) return;
+        IOrderedEnumerable<RawMaterial> tempList = null!;
+        List<RawMaterial> rawList = null!;
+        tempList = bomAscending.Icon != null ? 
+            rawMaterials.OrderBy(x => x.Length) : rawMaterials.OrderByDescending(x => x.Length);
+
+        rawList = scrapAscending.Icon != null ? 
+            tempList.ThenBy(x => x.RemainingLength).ToList() : tempList.ThenByDescending(x => x.RemainingLength).ToList();
+        
+        DragAndDropViewModel.ArrangedRawMaterials.Clear();
+        DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
+        MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
     }
 }

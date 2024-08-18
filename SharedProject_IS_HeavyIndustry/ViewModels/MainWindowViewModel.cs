@@ -56,6 +56,4 @@ public class MainWindowViewModel : ViewModelBase
             TempPartSet.TryAdd(key, tempPartSet);
         }
     }
-
-    
 }

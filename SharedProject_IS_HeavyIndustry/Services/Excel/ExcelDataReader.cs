@@ -124,7 +124,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             {
                 part.IsExcluded = true;
                 //noRawLengthData = part.Desc + "\n";
-                RawStandardViewModel.AddToMissingStandardBuffer(part.Desc.ToString());
+                RawStandardViewModel.AddToMissingStandardBuffer(part.Desc.ToString().Replace(" ", ""));
                 missingDataCheck = true;
             }
             else if (!part.IsExcluded && length > SettingsViewModel.GetMaxLen(description.ToString()))

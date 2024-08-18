@@ -10,7 +10,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
         // 절단 손실분 (mm 단위)
         public static int CuttingLoss = 3;
         public static Dictionary<string, string> HyungGangSet { get; set; }
-        private static Dictionary<string, List<int>> LengthOptionSet { get; set; }
+        public static Dictionary<string, List<int>> LengthOptionSet { get; set; }
         public static List<string> MissingKeys { get; private set; } = [];
 
         static SettingsViewModel()
@@ -63,6 +63,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
         {
             InitializeLengthOptionSet();
             InitializeHyungGangSet();
+            InitializeLengthOptionSet();
             MissingKeys.Clear(); // Refresh할 때 누락된 키 리스트 초기화
         }
 

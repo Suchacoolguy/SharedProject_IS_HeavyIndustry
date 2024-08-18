@@ -101,12 +101,19 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             if (ApplyChanges())
             {
                 JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
-                foreach (var part in BOMDataViewModel.PartsFiltered)
-                {
-                    if (MissingStandardBuffer.Contains(part.Desc.ToString()))
-                        part.IsExcluded = false;
-                }
                 SettingsViewModel.Refresh();
+                foreach (var part in BOMDataViewModel.AllParts)
+                {
+                    if (_missingStandardBuffer.Contains(part.Desc.ToString()))
+                    {
+                        part.IsExcluded = false;
+                        if (SettingsViewModel.LengthOptionSet.ContainsKey(part.Desc.ToString()))
+                        {
+                            if (SettingsViewModel.LengthOptionSet[part.Desc.ToString()].Max() <= part.Length)
+                                part.IsOverLenth = true;
+                        }
+                    }
+                }
                 MissingStandardBuffer.Clear();
                 _missingStandardBuffer.Clear();
             }

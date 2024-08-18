@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -59,6 +60,8 @@ public partial class BOMDataTabView : TabView
             MessageService.Send("시트를 선택해 주세요");
             return;
         }
+
+        if (!SeparateLengthValidCheck()) return;
 
         if (MainWindowViewModel.RawMaterialSet.Count > 0)
             MainWindowViewModel.RawMaterialSet.Clear();
@@ -157,6 +160,33 @@ public partial class BOMDataTabView : TabView
         }
 
         inputBox.Text = "";
+
+    }
+
+    private bool SeparateLengthValidCheck()
+    {
+        HashSet<string> descSet = [];
+        List<string> descList = [];
+        foreach (var part in BOMDataViewModel.AllParts.Where(p => p.NeedSeparate))
+        {
+            if (string.IsNullOrEmpty(part.lengthToBeSeparated))
+            {
+                if (descSet.Add(part.Desc.ToString()))
+                    descList.Add(part.Desc.ToString());
+            }
+            else
+            {
+                if (!(SettingsViewModel.GetMaxLen(part.Desc.ToString()) < int.Parse(part.lengthToBeSeparated)))
+                    continue;
+                if (descSet.Add(part.Desc.ToString()))
+                    descList.Add(part.Desc.ToString());
+            }
+        }
+
+        if (descList.Count <= 0) return true;
+        var msg = descList.Aggregate("", (current, desc) => current + (desc + "\n")) + "위 항목의 분리 길이를 다시 설정해주세요";
+        MessageService.Send(msg);
+        return false;
 
     }
 }

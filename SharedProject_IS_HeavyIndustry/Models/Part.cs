@@ -18,7 +18,13 @@ public class Part : INotifyPropertyChanged
         get => _lengthToBeSeparated;
         set
         {
-            if (!int.TryParse(value, out _)) return;
+            if (string.IsNullOrEmpty(value))
+            {
+                _lengthToBeSeparated = "";
+                OnPropertyChanged();
+                return;
+            }
+            if (!int.TryParse(value, out var intLen) || intLen <= 0) return;
             if (_lengthToBeSeparated == value) return;
             _lengthToBeSeparated = value;
             OnPropertyChanged();

@@ -37,6 +37,7 @@ public partial class DragAndDropTabView : TabView
         {
             // _key = selectedMaterial + "," + selectedDescription;
             MainWindowViewModel.SelectedKey = selectedMaterial + "," + selectedDescription;
+            Console.WriteLine("현재 키 : " + MainWindowViewModel.SelectedKey);
             
             //딕셔너리에 키가 존재하는지 확인 -> 존재하면 한번 DragAndDrop처리 했던것이므로 해당 값 불러와서 DragAndDropView추가 
             if (MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var arrangedRawMaterials))  // 여기!!

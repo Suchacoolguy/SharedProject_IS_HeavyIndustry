@@ -255,4 +255,9 @@ public partial class DragAndDropView : TabView
         scrapAscending.Icon = null;
         scrapDescending.Icon = null;
     }
+
+    public void GitHubTest()
+    {
+        
+    }
 }

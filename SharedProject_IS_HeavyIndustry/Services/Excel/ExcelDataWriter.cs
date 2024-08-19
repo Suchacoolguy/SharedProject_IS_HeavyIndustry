@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using DynamicData;
 using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
@@ -47,6 +49,9 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 string type, size;
                 foreach (var kvp in rawMaterialSet)
                 {
+                    // 파트배치 완료된 자슥들과 파트배치 불가능했던 자슥들을 합칠 리스트
+                    List<RawMaterial> extendedList = new List<RawMaterial>();
+                    
                     _row = 13; // _row 변수 초기화
                     var sheetName = ConvertSheetName(kvp.Key);
                     var worksheet = workbook.Worksheets.Add(sheetName);
@@ -58,9 +63,41 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     var material = match.Groups[1].Value;
                     type = match.Groups[2].Value;
                     size = match.Groups[3].Value;
+                    
+                    // 일단 파트배치 완료된 애들부터 넣어주고~
+                    extendedList.AddRange(kvp.Value);
+                    
+                    // 원자재 길이 오름차순으로 정렬하고, 원자재 길이가 같은 것들은 잔량 기준으로 내림차순 정렬
+                    extendedList = extendedList.OrderBy(p => p.Length).ThenBy(p => p.RemainingLength).ToList();
+                    
+                    // 리스트를 ObservableCollection로 변환
+                    ObservableCollection<RawMaterial> extendedCollection = new ObservableCollection<RawMaterial>(extendedList);
+                    
+                    // 파트배치 불가능했던 애들도 있으면 넣어주자~
+                    if (MainWindowViewModel.TempPartSet.TryGetValue(kvp.Key, out var tempParts))
+                    {
+                        // 파트배치 불가능한 애들 찾아서 넣어줄 리스트 생성~
+                        ObservableCollection<RawMaterial> toBeAdded = new ObservableCollection<RawMaterial>();
+                        
+                        // 최대 길이 찾아서 가져오기~
+                        int maxLen = SettingsViewModel.GetMaxLen(type + size);
+                        
+                        // 규격 정보가 없으면 maxLen 값이 0이 되버리는데 이건 안되니까~
+                        // 아니다 없으면 그냥 0으로 나오는 것도 나쁘지 않을지도?
+                        // if (maxLen == 0)
+                        
+                        foreach (var tempPart in tempParts)
+                        {
+                            var rawMaterial = new RawMaterial(maxLen);
+                            rawMaterial.insert_part(tempPart);
+                            toBeAdded.Add(rawMaterial);
+                        }
+                        extendedCollection.AddRange(toBeAdded);
+                    }
+                        
 
                     MakeHeader(worksheet, type, type + size, material, kvp.Value);
-                    MakeChart(worksheet, kvp.Value);
+                    MakeChart(worksheet, extendedCollection);
                 }
 
                 // 다운로드 폴더 경로 생성

@@ -49,10 +49,6 @@
         
         <!-- Progress Bar -->
        <Border Background="White" Margin="4" BorderBrush="Gray" BorderThickness="1" DockPanel.Dock="Top">
-           <StackPanel>
-               <TextBlock Padding="2" Text="Processing" VerticalAlignment="Center" Foreground="Black"/>
-               <ProgressBar Name="MyProgressBar" Minimum="0" Maximum="100" Value="0" Height="20" Margin="4"/>
-           </StackPanel>
        </Border>
     </DockPanel>
 </UserControl>

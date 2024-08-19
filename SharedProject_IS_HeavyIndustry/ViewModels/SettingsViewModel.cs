@@ -67,14 +67,14 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels
             MissingKeys.Clear(); // Refresh할 때 누락된 키 리스트 초기화
         }
 
-        public static double GetMaxLen(string desc)
+        public static int GetMaxLen(string desc)
         {
             if (LengthOptionSet.TryGetValue(desc, out var lengths))
                 return lengths.Max();
             else
                 Console.WriteLine($"Key not found: 규격목록에 {desc} 정보 없음");
             MissingKeys.Add(desc);
-            return 0.0; // 혹은 다른 적절한 기본값을 반환
+            return 0; // 혹은 다른 적절한 기본값을 반환
         }
 
         public static List<string> GetHyungGangList()

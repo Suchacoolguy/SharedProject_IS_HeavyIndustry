@@ -65,7 +65,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     if (_RemainingLength < 0)
                     {
                         RectangleColor = new SolidColorBrush(Colors.Red);
-                        BackgroundColor = new SolidColorBrush(Colors.Red);
+                        BackgroundColor = new SolidColorBrush(Colors.Pink);
                     }
                     else
                     {

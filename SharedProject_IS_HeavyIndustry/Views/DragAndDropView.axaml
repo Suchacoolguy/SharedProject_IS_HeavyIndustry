@@ -114,7 +114,7 @@
                                                                        Fill="#E8B989" DragDrop.AllowDrop="True" Tag="{Binding }">
                                                             </Rectangle>
                                                         </Border>
-                                                        <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                                        <Label Content="{Binding Length}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Foreground="Black"
                                                                 HorizontalContentAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
                                                             <Label.RenderTransform>
                                                                 <ScaleTransform ScaleX="20"/>

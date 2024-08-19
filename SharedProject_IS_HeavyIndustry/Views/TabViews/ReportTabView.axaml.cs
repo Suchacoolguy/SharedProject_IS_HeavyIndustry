@@ -12,8 +12,10 @@ using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 namespace SharedProject_IS_HeavyIndustry.Views
@@ -132,15 +134,35 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
             // Get the length options from settings
             var lengthOptions = SettingsViewModel.GetLengthOption(key.Split(',')[1]);
+            int maxLen = lengthOptions.Max();
 
             // Create the ArrangePartsService instance
             var service = new ArrangePartsService(new List<Part>(parts), partsOverLength, lengthOptions);
-            var res = service.GetArrangedRawMaterials();
+            var temp_res = service.GetArrangedRawMaterials();
+            var temp_res_overSize = service.getPartsCanNotBeArranged();
 
+            List<RawMaterial> res = temp_res.ToList();
+            
+            // 원자재 길이 오름차순으로 정렬하고, 원자재 길이가 같은 것들은 잔량 기준으로 내림차순 정렬
+            res = res.OrderBy(p => p.Length).ThenByDescending(p => p.RemainingLength).ToList();
+                    
+            // 리스트를 ObservableCollection로 변환
+            ObservableCollection<RawMaterial> arrangedPartsCollectionSorted = new ObservableCollection<RawMaterial>(res);
+            
             // Update the RawMaterialSet and TempPartSet
             if (!MainWindowViewModel.RawMaterialSet.ContainsKey(key))
             {
-                MainWindowViewModel.RawMaterialSet.TryAdd(key, res);
+                MainWindowViewModel.RawMaterialSet.TryAdd(key, arrangedPartsCollectionSorted);
+            }
+                    
+            // 파트배치 불가능했던 애들도 있으면 넣어주자~
+            List<Part> res_overSize = temp_res_overSize.ToList();
+            res_overSize = res_overSize.OrderBy(p => p.Length).ToList();
+            ObservableCollection<Part> overSizeCollectionSorted = new ObservableCollection<Part>(res_overSize);
+            
+            if (!MainWindowViewModel.TempPartSet.ContainsKey(key))
+            {
+                MainWindowViewModel.TempPartSet.TryAdd(key, overSizeCollectionSorted);
             }
         }
         

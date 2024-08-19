@@ -199,6 +199,13 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 worksheet.Cell(_row, 1).Value = i;
                 worksheet.Cell(_row, 2).Value = rawMaterial.Length;
                 worksheet.Cell(_row, 9).Value = rawMaterial.RemainingLength;
+                var lengthCell = worksheet.Cell(_row, 9);
+                lengthCell.Value = rawMaterial.RemainingLength;
+
+                // part.Length가 음수일 경우 텍스트 색깔을 빨간색으로 설정
+                if (rawMaterial.RemainingLength < 0)
+                    lengthCell.Style.Font.FontColor = XLColor.Red;
+
                 worksheet.Cell(_row, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
                 worksheet.Cell(_row, 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
                 worksheet.Cell(_row, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;

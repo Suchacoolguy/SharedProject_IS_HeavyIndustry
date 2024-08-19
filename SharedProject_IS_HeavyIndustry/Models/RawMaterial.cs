@@ -273,7 +273,9 @@ namespace SharedProject_IS_HeavyIndustry.Models
             return result;
         }
         
-        public SKBitmap GenerateBarChartImage()
+        
+        
+        /*public SKBitmap GenerateBarChartImage()
         {
             int width = 430;
             int height = 15;
@@ -330,6 +332,90 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     lineX = (int)Math.Round((double)accumulatedLength / totalLength * (width - 2));
                     canvas.DrawLine(lineX, 0, lineX, height - 1, paint);
 
+                    i++;
+                }
+            }
+            return image;
+        }*/
+        public SKBitmap GenerateBarChartImage()
+        {
+            int width = 430;
+            int height = 15;
+            SKBitmap image = new SKBitmap(width, height);
+
+            int totalLength = Length;
+
+            using (SKCanvas canvas = new SKCanvas(image))
+            {
+                canvas.Clear(SKColors.Transparent);
+                SKPaint paint = new SKPaint
+                {
+                    Color = SKColors.Black,
+                    StrokeWidth = 1, // 테두리 선의 굵기를 1로 변경
+                    Style = SKPaintStyle.Stroke
+                };
+                canvas.DrawRect(0, 0, width - 1, height - 1, paint);
+            }
+
+            using (SKCanvas canvas = new SKCanvas(image))
+            {
+                SKPaint blackPaint = new SKPaint
+                {
+                    Color = SKColors.Black,
+                    StrokeWidth = 2, // 내부 선의 굵기는 1로 유지
+                    IsAntialias = true // 안티앨리어싱 활성화
+                };
+
+                SKPaint redPaint = new SKPaint
+                {
+                    Color = SKColors.Red,
+                    StrokeWidth = 2, // 초과된 부분의 선 굵기
+                    IsAntialias = true // 안티앨리어싱 활성화
+                };
+
+                int accumulatedLength = 0;
+                int i = 1;
+                int previousLineX = 0;
+
+                foreach (var part in PartsInside)
+                {
+                    accumulatedLength += part.Length;
+
+                    // 파트 번호 텍스트 설정
+                    string label = i.ToString();
+                    SKPaint textPaint = new SKPaint
+                    {
+                        TextSize = 8, // 텍스트 크기를 작게 조정
+                        IsAntialias = true, // 안티앨리어싱 활성화
+                        Color = SKColors.Black,
+                        TextAlign = SKTextAlign.Left,
+                        Typeface = SKTypeface.FromFamilyName("Arial")
+                    };
+
+                    float textX = previousLineX + 4; // 텍스트를 왼쪽으로 조금 이동
+                    float textY = height / 2 + textPaint.TextSize / 2; // 중앙에 위치
+
+                    canvas.DrawText(label, textX, textY, textPaint);
+
+                    // 선 그리기
+                    int lineX = (int)Math.Round((double)accumulatedLength / totalLength * (width - 2));
+
+                    if (lineX > width - 2) // 바깥 막대의 길이를 초과할 경우
+                    {
+                        // 초과하지 않은 부분은 검은색으로 그리기
+                        if (previousLineX < width - 2)
+                        {
+                            canvas.DrawLine(previousLineX, 0, width - 2, height - 1, blackPaint);
+                        }
+                        // 초과된 부분은 빨간색으로 그리기
+                        canvas.DrawLine(width - 2, 0, lineX, height - 1, redPaint);
+                    }
+                    else
+                    {
+                        canvas.DrawLine(lineX, 0, lineX, height - 1, blackPaint);
+                    }
+
+                    previousLineX = lineX;
                     i++;
                 }
             }

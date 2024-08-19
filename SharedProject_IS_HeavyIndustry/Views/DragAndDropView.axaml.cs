@@ -25,7 +25,7 @@ public partial class DragAndDropView : TabView
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
     private bool _bomSortCheck = false, _scrapSortCheck = false;
-    private MenuItem bomAscending, bomDescending, scrapAscending, scrapDescending;
+    public static MenuItem bomAscending, bomDescending, scrapAscending, scrapDescending;
     
     protected override void OnLoaded(RoutedEventArgs e)
     {
@@ -185,6 +185,14 @@ public partial class DragAndDropView : TabView
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
             MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
         }
+    }
+    
+    public static void InitializeSortOption()
+    {
+        bomAscending.Icon = null;
+        bomDescending.Icon = null;
+        scrapAscending.Icon = null;
+        scrapDescending.Icon = null;
     }
     
     private void Sort(object? sender, RoutedEventArgs e)

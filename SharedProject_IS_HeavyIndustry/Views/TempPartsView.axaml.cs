@@ -29,6 +29,8 @@ public partial class TempPartsView : UserControl
     
     public void Part_Drop(object sender, DragEventArgs e)
     {
+        DragAndDropView.InitializeSortOption();
+        
         // var part = (sender as Control)?.DataContext as Part;
         var data = e.Data as IDataObject;
         if (data == null)
@@ -52,6 +54,7 @@ public partial class TempPartsView : UserControl
                 }
             }
         }
+        
         
         // 여기가 오른쪽 패널에 드랍되고 나서 실행되는 부분
     }

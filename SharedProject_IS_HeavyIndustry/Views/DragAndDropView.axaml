@@ -50,7 +50,7 @@
                                         </Border> 
                                     <!-- Raw material -->
                                     
-                                    <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}"
+                                    <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Background="{Binding BackgroundColor}"
                                            Canvas.Left="-8000" Canvas.Top="35">
                                         <!-- Define three columns -->
                                         <Grid.ColumnDefinitions>
@@ -71,7 +71,7 @@
                                                 <ScaleTransform ScaleX="20"/>
                                             </TextBlock.RenderTransform>
                                         </TextBlock>
-                                        <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}"
+                                        <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" Foreground="{Binding RectangleColor}"
                                                    Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
                                             <TextBlock.RenderTransform>
                                                 <ScaleTransform ScaleX="20"/>
@@ -99,7 +99,7 @@
 
                                     
                                     <!-- Parts -->
-                                    <ItemsControl ItemsSource="{Binding PartsInside}" HorizontalAlignment="Left" Canvas.Left="-8000">
+                                    <ItemsControl ItemsSource="{Binding PartsInside}" HorizontalAlignment="Left" Canvas.Left="-8000" Foreground="{Binding BackgroundColor}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

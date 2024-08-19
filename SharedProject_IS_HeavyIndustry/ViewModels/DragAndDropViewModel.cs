@@ -149,6 +149,8 @@ public class DragAndDropViewModel
     
     public static void RawMaterial_Drop(object sender, DragEventArgs e)
     {
+        DragAndDropView.InitializeSortOption();
+        
         Console.WriteLine("RawMaterial_Drop Executed.");
         
         // the part object being dragged
@@ -310,10 +312,6 @@ public class DragAndDropViewModel
         {
             Console.WriteLine("RawMaterial_Drop - RawMaterial is null");
         }
-        
-        var partRectangle = data.Get("partRectangle");
-        if (partRectangle is Rectangle rect)
-            rect.Fill = Brushes.YellowGreen;
         
         // 여기에 RawMaterialSet, TempPartsSet 업데이트 코드 추가 안 해도 되는가??
         MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials, key);

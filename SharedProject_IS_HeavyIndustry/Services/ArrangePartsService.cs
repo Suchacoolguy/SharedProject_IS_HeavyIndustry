@@ -30,11 +30,6 @@ public class ArrangePartsService
     // Constructor
     public ArrangePartsService(List<Part> parts, ObservableCollection<Part> overSizeParts, List<int> lengthOptions)
     {
-        foreach (var part in overSizeParts)
-        {
-            Console.WriteLine("분리길이 : " + part.lengthToBeSeparated);
-        }
-        
         // 파트배치 완료된 것들
         _lengthOptionsRawMaterial = lengthOptions;
 
@@ -87,8 +82,6 @@ public class ArrangePartsService
         {
             Console.WriteLine("No parts to arrange");
         }
-        
-
     }
 
     public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts)
@@ -133,8 +126,63 @@ public class ArrangePartsService
             }
             else
             {
-                // DoTheArrangement 함수로 파트 배치하고 Append 하는 작업
-                rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));
+                // 블록마크가 J_로 시작하는 경우
+                // 분리가 된 파트들이기 때문에 두 가지 길이를 가지게 됨. (분리길이의 파트와 분리하고 남은 길이의 파트)
+                if (kvp.Key.Contains("J_"))
+                {
+                    var dict = GroupPartsByLength(kvp.Value);
+                    
+                    // 긴 놈이 누구냐
+                    int longerPartLength = int.MinValue;
+                    foreach (var partsByLength in dict)
+                    {
+                        if (longerPartLength < partsByLength.Key)
+                            longerPartLength = partsByLength.Key;
+                    }
+                    
+                    // 짧은 놈은 누구냐
+                    int shorterPartLength = -1;
+                    foreach (var partsByLength in dict)
+                    {
+                        if (partsByLength.Key != longerPartLength)
+                            shorterPartLength = partsByLength.Key;
+                    }
+                    
+                    // 일단 긴 것부터 배치하고
+                    if (longerPartLength != int.MinValue)
+                        rawMaterialsUsed.AddRange(DoTheArrangement(dict[longerPartLength]));
+                    
+                    // 이제 짧은 것 배치할 차례~
+                    bool placed = false;
+                    if (shorterPartLength != -1)
+                    {
+                        foreach (var part in dict[shorterPartLength])
+                        {
+                            placed = false;
+                            // 긴 것들 배치한 원자재들 중에 자리 있으면 거기 넣자
+                            foreach (var raw in rawMaterialsUsed)
+                            {
+                                if (raw.RemainingLength >= part.Length + SettingsViewModel.CuttingLoss)
+                                {
+                                    raw.insert_part(part);
+                                    placed = true;
+                                    break;
+                                }
+                            }
+                            
+                            // 자리 없으면 새로운 원자재 생성해서 넣자
+                            if (placed == false)
+                            {
+                                
+                            }
+                        }    
+                    }
+                }
+                else
+                {
+                    // DoTheArrangement 함수로 파트 배치하고 Append 하는 작업
+                    rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));                    
+                }
             }
         }
         
@@ -146,8 +194,13 @@ public class ArrangePartsService
     private static List<RawMaterial> DoTheArrangement(List<Part> partsToBeArranged)
     {
          List<RawMaterial> res = new List<RawMaterial>();
-        int bestFitRawMaterial = _lengthOptionsRawMaterial[0];
-        int bestFitIndex = 0; int partLength = partsToBeArranged[0].Length;
+         // if (_lengthOptionsRawMaterial.Count == 0)
+         // {
+         //     Console.WriteLine("No raw material length options available");
+         //     return res;
+         // }
+         int bestFitRawMaterial = _lengthOptionsRawMaterial[0];
+         int bestFitIndex = 0; int partLength = partsToBeArranged[0].Length;
         
         // 원자재 길이가 하나면 고마 bestFit이고 뭐고 찾을 것도 없지만~ 여러개면 bestFit 찾아야함
         if (_lengthOptionsRawMaterial.Count > 1)
@@ -270,6 +323,22 @@ public class ArrangePartsService
         }
 
         return partsByMark;
+    }
+    
+    private static Dictionary<int, List<Part>> GroupPartsByLength(List<Part> parts)
+    {
+        var partsByLength = new Dictionary<int, List<Part>>();
+
+        foreach (var part in parts)
+        {
+            if (!partsByLength.ContainsKey(part.Length))
+            {
+                partsByLength[part.Length] = new List<Part>();
+            }
+            partsByLength[part.Length].Add(part);
+        }
+
+        return partsByLength;
     }
 
     private static int GetSumOfLengthsForKey(List<Part> parts)

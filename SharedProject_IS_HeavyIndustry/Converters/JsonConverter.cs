@@ -96,6 +96,8 @@ namespace SharedProject_IS_HeavyIndustry.Converters
 
                         createTableCommand.ExecuteNonQuery();
                     }
+                    
+                    DeleteAllRawLengthSet();
 
                     foreach (var kvp in dictionary)
                     {
@@ -357,6 +359,36 @@ namespace SharedProject_IS_HeavyIndustry.Converters
             }
 
             return result;
+        }
+        
+        private static void DeleteAllRawLengthSet()
+        {
+            try
+            {
+                string dbPath = GetDatabasePath();
+                string connectionDB = $"Data Source={dbPath};";
+
+                using (SqliteConnection connection = new SqliteConnection(connectionDB))
+                {
+                    connection.Open();
+                    using (connection)
+                    {
+                        connection.Open();
+
+                        using (var command = connection.CreateCommand())
+                        {
+                            command.CommandText = "DELETE FROM RawLengthSet";
+                            int result = command.ExecuteNonQuery();
+
+                            Console.WriteLine($"Deleted {result} rows from RawLengthSet.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while trying to delete all items: {ex.Message}");
+            }
         }
     }
 }

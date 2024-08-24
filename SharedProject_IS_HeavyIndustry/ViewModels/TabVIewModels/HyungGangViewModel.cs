@@ -114,8 +114,9 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
                     { "ㄷ", "CHANNEL" },
                     { "RB", "환봉" },
                     { "D", "환봉" },
-                    { "TB", "각관" },
-                    { "PD", "PIPE" }
+                    /*{ "TB", "각관" },*/
+                    { "PD", "PIPE" },
+                    {"PP", "테스트용"}
                 };
 
                 foreach (var kvp in defaultData)

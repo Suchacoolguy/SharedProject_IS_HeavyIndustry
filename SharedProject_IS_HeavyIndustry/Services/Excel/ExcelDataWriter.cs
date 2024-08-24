@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using DynamicData;
 using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
@@ -47,6 +49,9 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 string type, size;
                 foreach (var kvp in rawMaterialSet)
                 {
+                    // 파트배치 완료된 자슥들과 파트배치 불가능했던 자슥들을 합칠 리스트
+                    ObservableCollection<RawMaterial> extendedCollection = new ObservableCollection<RawMaterial>();
+                    
                     _row = 13; // _row 변수 초기화
                     var sheetName = ConvertSheetName(kvp.Key);
                     var worksheet = workbook.Worksheets.Add(sheetName);
@@ -58,9 +63,31 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     var material = match.Groups[1].Value;
                     type = match.Groups[2].Value;
                     size = match.Groups[3].Value;
+                    
+                    // 일단 파트배치 완료된 애들부터 넣어주고~
+                    extendedCollection.AddRange(kvp.Value);
+                    
+                    // 파트배치 불가능했던 애들도 있으면 넣어주자~
+                    if (MainWindowViewModel.TempPartSet.TryGetValue(kvp.Key, out var tempParts))
+                    {
+                        // 파트배치 불가능한 애들 찾아서 넣어줄 리스트 생성~
+                        ObservableCollection<RawMaterial> toBeAdded = new ObservableCollection<RawMaterial>();
+                        
+                        // 최대 길이 찾아서 가져오기~
+                        int maxLen = SettingsViewModel.GetMaxLen(type + size);
+                        
+                        foreach (var tempPart in tempParts)
+                        {
+                            var rawMaterial = new RawMaterial(maxLen);
+                            rawMaterial.insert_part(tempPart);
+                            toBeAdded.Add(rawMaterial);
+                        }
+                        extendedCollection.AddRange(toBeAdded);
+                    }
+                        
 
                     MakeHeader(worksheet, type, type + size, material, kvp.Value);
-                    MakeChart(worksheet, kvp.Value);
+                    MakeChart(worksheet, extendedCollection);
                 }
 
                 // 다운로드 폴더 경로 생성

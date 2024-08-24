@@ -140,7 +140,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
         }
     }
     
@@ -154,7 +154,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
 
         }
     }
@@ -169,7 +169,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
         }
     }
     
@@ -183,7 +183,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
         }
     }
     
@@ -253,6 +253,6 @@ public partial class DragAndDropView : TabView
         
         DragAndDropViewModel.ArrangedRawMaterials.Clear();
         DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-        MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+        MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
     }
 }

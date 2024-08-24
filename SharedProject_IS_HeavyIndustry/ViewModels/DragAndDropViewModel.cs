@@ -19,7 +19,6 @@ public class DragAndDropViewModel
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
     public static ObservableCollection<Part> TempPartList { get; set; } = new ObservableCollection<Part>();
-    public static string key { get; set; }
     public Part DraggedPart { get; set; }
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
@@ -28,7 +27,6 @@ public class DragAndDropViewModel
     {
         ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arrangedRawMaterials);
         TempPartList = new ObservableCollection<Part>(partsCanNotBeArranged);
-        DragAndDropViewModel.key = key;
     }
 
     public static void UpdateRawMaterial(RawMaterial from, RawMaterial to, Part part)
@@ -131,7 +129,7 @@ public class DragAndDropViewModel
             }
         }
         
-        MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials, key);
+        MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials);
     }
 
     public static int FindBestSizeRawMaterial(List<int> lengthOptions, Part part)
@@ -314,7 +312,7 @@ public class DragAndDropViewModel
         }
         
         // 여기에 RawMaterialSet, TempPartsSet 업데이트 코드 추가 안 해도 되는가??
-        MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials, key);
+        MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials);
     }
 
     public static List<int> GetLengthOptionsRawMaterial()

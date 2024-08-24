@@ -87,7 +87,7 @@ public partial class DragAndDropTabView : TabView
         var service = new ArrangePartsService(new List<Part>(parts), partsOverLength,
             SettingsViewModel.GetLengthOption(selectedDescription));
         MainWindowViewModel.DragAndDropViewModel =
-            new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.getPartsCanNotBeArranged(), MainWindowViewModel.SelectedKey);
+            new DragAndDropViewModel(service.GetArrangedRawMaterials(), service.getPartsCanNotBeArranged());
 
 
         if (!MainWindowViewModel.RawMaterialSet.ContainsKey(MainWindowViewModel.SelectedKey))

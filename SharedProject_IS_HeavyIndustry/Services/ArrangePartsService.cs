@@ -44,7 +44,7 @@ public class ArrangePartsService
         foreach (var ppp in overSizeParts)
         {
             int length = ppp.Length;
-            if (!string.IsNullOrEmpty(ppp.lengthToBeSeparated))
+            if (ppp.NeedSeparate && !string.IsNullOrEmpty(ppp.lengthToBeSeparated))
             {
                 int lengthToBeSeperated = Convert.ToInt32(ppp.lengthToBeSeparated);
                 while (length > lengthToBeSeperated)
@@ -67,7 +67,9 @@ public class ArrangePartsService
             }
             else
             {
-                if (string.IsNullOrEmpty(ppp.lengthToBeSeparated) || Convert.ToInt32(ppp.lengthToBeSeparated) == 0)
+                if(!ppp.NeedSeparate) 
+                    _partsCanNotBeArranged.Add(ppp);
+                else if (string.IsNullOrEmpty(ppp.lengthToBeSeparated) || Convert.ToInt32(ppp.lengthToBeSeparated) == 0)
                     _partsCanNotBeArranged.Add(ppp);
             }
         }

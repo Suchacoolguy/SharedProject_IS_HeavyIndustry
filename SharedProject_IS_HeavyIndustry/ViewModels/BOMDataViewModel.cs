@@ -22,7 +22,7 @@
             public static ObservableCollection<Part> PartsToSeparate {
                 get
                 {
-                    return new ObservableCollection<Part>(PartsFiltered.Where(part => part.IsOverLenth));
+                    return new ObservableCollection<Part>(AllParts.Where(part => part.IsOverLenth));
                 }
             }// 제외 False, 분리 True
             

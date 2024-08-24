@@ -136,7 +136,15 @@ public class ArrangePartsService
             else
             {
                 // DoTheArrangement 함수로 파트 배치하고 Append 하는 작업
-                rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));
+                try
+                {
+                    rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));
+                }
+                catch
+                {
+                    MessageService.Send("해당 규격의 길이 정보가 없습니다");
+                    return [];
+                }
             }
         }
         

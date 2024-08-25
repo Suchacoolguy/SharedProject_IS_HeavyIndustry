@@ -153,4 +153,16 @@ public class Part : INotifyPropertyChanged
                pArea + " " + material;
     }
 
+    public Part Clone()
+    {
+        var newPart = new Part(Assem, Mark, Material, Length,
+            1, WeightOne, WeightSum, PArea, Desc);
+        newPart._isExcluded = _isExcluded;
+        newPart.IsOverLenth = IsOverLenth;
+        newPart.lengthToBeSeparated = lengthToBeSeparated;
+        newPart.NeedSeparate = _needSeparate;
+
+        return newPart;
+    }
+
 }

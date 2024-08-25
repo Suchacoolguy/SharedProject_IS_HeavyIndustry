@@ -51,7 +51,7 @@ public partial class DragAndDropView : TabView
         // entireGrid.Children.Add(overSizePartsView);
         
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
-        AddHandler(DragDrop.DropEvent, MainWindowViewModel.DragAndDropViewModel.RawMaterial_Drop);
+        AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
         
         
         bomAscending = this.FindControl<MenuItem>("BomAscending")!;
@@ -144,7 +144,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
         }
     }
     
@@ -158,7 +158,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
 
         }
     }
@@ -173,7 +173,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
         }
     }
     
@@ -187,7 +187,7 @@ public partial class DragAndDropView : TabView
 
             DragAndDropViewModel.ArrangedRawMaterials.Clear();
             DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+            MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
         }
     }
     
@@ -257,6 +257,6 @@ public partial class DragAndDropView : TabView
         
         DragAndDropViewModel.ArrangedRawMaterials.Clear();
         DragAndDropViewModel.ArrangedRawMaterials.AddRange(rawList);
-        MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials, MainWindowViewModel.SelectedKey);
+        MainWindowViewModel.UpdateRawMaterialSet(DragAndDropViewModel.ArrangedRawMaterials);
     }
 }

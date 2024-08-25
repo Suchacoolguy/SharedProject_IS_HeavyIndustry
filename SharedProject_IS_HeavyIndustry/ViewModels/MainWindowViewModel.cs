@@ -43,16 +43,12 @@ public class MainWindowViewModel : ViewModelBase
         return DragAndDropViewModel.TempPartList.Count;
     }
     
-    public static void UpdateRawMaterialSet(ObservableCollection<RawMaterial?> rawMaterialSet, string key)
+    public static void UpdateRawMaterialSet(ObservableCollection<RawMaterial?> rawMaterialSet)
     {
-        if (RawMaterialSet.ContainsKey(key))
-        {
-            RawMaterialSet[key] = rawMaterialSet;
-        }
+        if (RawMaterialSet.ContainsKey(SelectedKey))
+            RawMaterialSet[SelectedKey] = rawMaterialSet;
         else
-        {
-            RawMaterialSet.TryAdd(key, rawMaterialSet);
-        }
+            RawMaterialSet.TryAdd(SelectedKey, rawMaterialSet);
     }
     
     public static void UpdateTempPartSet(ObservableCollection<Part> tempPartSet, string key)

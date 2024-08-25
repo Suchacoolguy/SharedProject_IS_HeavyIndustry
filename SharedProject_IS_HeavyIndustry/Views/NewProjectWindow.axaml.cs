@@ -12,7 +12,7 @@ namespace SharedProject_IS_HeavyIndustry.Views;
 public partial class NewProjectWindow : Window
 {
     private Window parentWindow;
-    private string filePath;
+    private string? filePath;
     public NewProjectWindow(Window parent)
     {
         parentWindow = parent;
@@ -32,7 +32,8 @@ public partial class NewProjectWindow : Window
         };
         var result = await dialog.ShowAsync(this);
 
-        filePath = result.FirstOrDefault();
+        if (result != null) 
+            filePath = result.FirstOrDefault();
 
         //텍스트 박스에 선택한 파일 경로 출력
         this.FindControl<TextBox>("FilePathBox")!.Text = filePath;
@@ -52,7 +53,9 @@ public partial class NewProjectWindow : Window
         if (!string.IsNullOrEmpty(filePath) && IsExcelFile())
         {
             ExcelTabViewModel.ExcelFilePath = filePath;
-            MainWindowViewModel.ProjectName = this.FindControl<TextBox>("ProjectName")?.Text;
+            var projectName = this.FindControl<TextBox>("ProjectName")?.Text;
+            if (projectName != null)
+                MainWindowViewModel.ProjectName = projectName;
             Close();
         }
         else

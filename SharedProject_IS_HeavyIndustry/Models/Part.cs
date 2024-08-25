@@ -31,8 +31,6 @@ public class Part : INotifyPropertyChanged
         }
     }
     
-    public Part() {}
-    
     public Part(string assem, string mark, string material, int length, int num, double weightOne, double weightSum, double pArea, Description desc)
     {
         this.assem = assem;
@@ -144,7 +142,7 @@ public class Part : INotifyPropertyChanged
     
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected void OnPropertyChanged(string propertyName = null)
+    protected void OnPropertyChanged(string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

@@ -17,9 +17,9 @@ namespace SharedProject_IS_HeavyIndustry.Services;
 
 public class ArrangePartsService
 {
-    public static List<int> _lengthOptionsRawMaterial { get; set; }
-    private static ObservableCollection<RawMaterial> _rawMaterialsUsed;
-    private static List<Part> _separatedParts;
+    public static List<int> _lengthOptionsRawMaterial { get; set; } = new List<int>();
+    private static ObservableCollection<RawMaterial?> _rawMaterialsUsed = new ObservableCollection<RawMaterial?>();
+    private static List<Part> _separatedParts = new List<Part>();
     private ObservableCollection<Part> _partsCanNotBeArranged = new ObservableCollection<Part>();
 
     public ObservableCollection<Part> getPartsCanNotBeArranged()
@@ -34,6 +34,9 @@ public class ArrangePartsService
         _lengthOptionsRawMaterial = lengthOptions;
 
         List<Part> replacedParts = new List<Part>();
+        
+        Console.WriteLine("파트 리스트 개수: " + parts.Count);
+        Console.WriteLine("오바사이즈 리스트 개수: " + overSizeParts.Count);
         
         // 파트배치 하기 전에 분리하는 작업
         foreach (var ppp in overSizeParts)
@@ -68,10 +71,7 @@ public class ArrangePartsService
         }
 
         _separatedParts = replacedParts;
-        foreach (var VARIABLE in _separatedParts)
-        {
-            Console.WriteLine(VARIABLE);
-        }
+        
         parts.AddRange(_separatedParts);
         
         if (parts.Any())
@@ -84,7 +84,7 @@ public class ArrangePartsService
         }
     }
 
-    public static ObservableCollection<RawMaterial> ArrangeParts(List<Part> parts)
+    public static ObservableCollection<RawMaterial?> ArrangeParts(List<Part> parts)
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
         // List<Part> partList = ExcelDataLoader.PartListFromExcel("/Users/suchacoolguy/Documents/BOM_test.xlsx");
@@ -97,10 +97,10 @@ public class ArrangePartsService
         // 블록마크 기준으로 파트들을 그룹화
         Dictionary<string, List<Part>> partsByMark = GroupPartsByMark(partList);
 
+        // 같은 블록마크들끼리 모였다고 보믄 되겄다.
         foreach (var kvp in partsByMark)
         {
             int totalLength = GetTotalPartsLength(kvp.Value);
-            
             
             int bestFitRawMaterial = Int32.MaxValue;
             foreach (var rawLength in _lengthOptionsRawMaterial)
@@ -127,58 +127,46 @@ public class ArrangePartsService
             else
             {
                 // 블록마크가 J_로 시작하는 경우
-                // 분리가 된 파트들이기 때문에 두 가지 길이를 가지게 됨. (분리길이의 파트와 분리하고 남은 길이의 파트)
+                // 분리가 된 파트들이기 때문에 다양한 길이를 가지게 됨. (분리길이의 파트와 분리하고 남은 길이의 파트)
                 if (kvp.Key.Contains("J_"))
                 {
+                    // 요래 길이별로 그룹화하면 길이가 긴 놈이랑 길이가 짧은 놈으로 두 가지가 나올것 
                     var dict = GroupPartsByLength(kvp.Value);
                     
-                    // 긴 놈이 누구냐
-                    int longerPartLength = int.MinValue;
-                    foreach (var partsByLength in dict)
-                    {
-                        if (longerPartLength < partsByLength.Key)
-                            longerPartLength = partsByLength.Key;
-                    }
+                    // 길이 기준으로 내림차순 정렬
+                    dict = dict.OrderByDescending(pair => pair.Key)
+                        .ToDictionary(pair => pair.Key, pair => pair.Value);
                     
-                    // 짧은 놈은 누구냐
-                    int shorterPartLength = -1;
-                    foreach (var partsByLength in dict)
-                    {
-                        if (partsByLength.Key != longerPartLength)
-                            shorterPartLength = partsByLength.Key;
-                    }
-                    
-                    // 일단 긴 것부터 배치하고
-                    if (longerPartLength != int.MinValue)
-                        rawMaterialsUsed.AddRange(DoTheArrangement(dict[longerPartLength]));
-                    
-                    // 이제 짧은 것 배치할 차례~
+                    Console.WriteLine("길이 몇개? : " + dict.Keys.Count);
+
                     bool placed = false;
-                    if (shorterPartLength != -1)
+                    foreach (var partsByLength in dict)
                     {
-                        foreach (var part in dict[shorterPartLength])
+                        // 길이별로 분류해둔 파트들을 돌면서~
+                        foreach (var part in partsByLength.Value)
                         {
                             placed = false;
-                            // 긴 것들 배치한 원자재들 중에 자리 있으면 거기 넣자
+                            // 긴 것들 배치한 원자재들 중에 남는 자리 있으면 거기 넣자
                             foreach (var raw in rawMaterialsUsed)
                             {
-                                if (raw.RemainingLength >= part.Length + SettingsViewModel.CuttingLoss)
+                                if (raw.RemainingLength >= part.Length + SettingsViewModel.CuttingLoss && placed == false && raw.PartsInside.Count > 0 &&
+                                    NormalizeMark(raw.PartsInside[0].Mark).Equals(NormalizeMark(part.Mark)))
                                 {
                                     raw.insert_part(part);
                                     placed = true;
                                     break;
                                 }
                             }
-                            
-                            // 자리 없으면 새로운 원자재 생성해서 넣자
+
+                            // 남는 자리가 없으면 새로 만들어서 넣어주는 것이 인지상정~
                             if (placed == false)
                             {
-                                
+                                rawMaterialsUsed.AddRange(DoTheArrangement(new List<Part> {part}));
                             }
-                        }    
+                        }
                     }
                 }
-                else
+                else    // 블록마크가 J_로 시작하지 않는 경우 (분리된 게 아닌 경우)
                 {
                     // DoTheArrangement 함수로 파트 배치하고 Append 하는 작업
                     rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));                    
@@ -187,7 +175,7 @@ public class ArrangePartsService
         }
         
         rawMaterialsUsed.Sort((x, y) => x.Length.CompareTo(y.Length));
-        ObservableCollection<RawMaterial> res = new ObservableCollection<RawMaterial>(rawMaterialsUsed); 
+        ObservableCollection<RawMaterial?> res = new ObservableCollection<RawMaterial?>(rawMaterialsUsed); 
         return res;
     }
 
@@ -213,7 +201,6 @@ public class ArrangePartsService
                 int remainingLengthInEach = LengthRawMaterial;
 
                 // 이 원자재 길이로 배치했을 때 하나의 원자재에 몇 개의 파트가 배치될 수 있는지 계산
-                bool isFirstTime = true;
                 int howManyPartsCanFitInEach = ArrangePartsService.howManyPartsCanFitInEach(remainingLengthInEach, partLength);
                 
                 if (howManyPartsCanFitInEach == 0)
@@ -340,14 +327,10 @@ public class ArrangePartsService
 
         return partsByLength;
     }
-
-    private static int GetSumOfLengthsForKey(List<Part> parts)
+    
+    private static string NormalizeMark(string mark)
     {
-        if (parts != null && parts.Count > 0)
-        {
-            return parts.Sum(part => part.Length);
-        }
-        return 0;
+        return mark.StartsWith("J_") ? mark.Substring(2) : mark;
     }
     
     private static int howManyPartsCanFitInEach(int rawMaterialLength, int partLength)
@@ -380,30 +363,10 @@ public class ArrangePartsService
 
         return totalPartsLength;
     }
-    
-    private static int FindLongestPartLength(List<Part> partList)
-    {
-        int longestLength = 0;
-        foreach (var part in partList)
-        {
-            if (longestLength < part.Length)
-                longestLength = part.Length;
-        }
 
-        if (longestLength > 0)
-            return longestLength;
-        else
-            return -1;
-    }
-
-    public ObservableCollection<RawMaterial> GetArrangedRawMaterials()
+    public ObservableCollection<RawMaterial?> GetArrangedRawMaterials()
     {
         return _rawMaterialsUsed;
-    }
-    
-    public List<Part> GetOverSizeParts()
-    {
-        return _separatedParts;
     }
     
     public static List<int> GetLengthOptionsRawMaterial()
@@ -424,34 +387,5 @@ public class ArrangePartsService
         
         Console.WriteLine("Total parts after 배치: " + count);
         Console.WriteLine("Total raw materials after 배치: " + rawMaterialUsed.Count);
-    }
-}
-
-public class VarArraySolutionPrinterWithLimit : CpSolverSolutionCallback
-{
-    
-    private int solution_count_;
-    private IntVar[][] variables_;
-    private int solution_limit_;
-    
-    public VarArraySolutionPrinterWithLimit(int solution_limit)
-    {
-        solution_limit_ = solution_limit;
-    }
-
-    public override void OnSolutionCallback()
-    {
-        Console.WriteLine(String.Format("Solution #{0}: time = {1:F2} s", solution_count_, WallTime()));
-        solution_count_++;
-        if (solution_count_ >= solution_limit_)
-        {
-            Console.WriteLine(String.Format("Stopping search after {0} solutions", solution_limit_));
-            StopSearch();
-        }
-    }
-
-    public int SolutionCount()
-    {
-        return solution_count_;
     }
 }

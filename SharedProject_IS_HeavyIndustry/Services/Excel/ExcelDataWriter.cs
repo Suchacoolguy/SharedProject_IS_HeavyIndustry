@@ -21,9 +21,6 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static string fileName = $"{DateTime.Now:yyyy.MM.dd} {MainWindowViewModel.ProjectName}.xlsx";
         private static int _row = 13;
         private static int _imgWidth = 0;
-
-        private ObservableCollection<RawMaterial> rawSet;
-        
         
         public static void main()
         {
@@ -36,13 +33,13 @@ namespace SharedProject_IS_HeavyIndustry.Models
             raw.PartsInside.Add(part);
             raw.PartsInside.Add(part);
             raw.PartsInside.Add(part);
-            ObservableCollection<RawMaterial> list = new ObservableCollection<RawMaterial>();
+            ObservableCollection<RawMaterial?> list = new ObservableCollection<RawMaterial?>();
             list.Add(raw);
-            var dictionary = new Dictionary<string, ObservableCollection<RawMaterial>>();
+            var dictionary = new Dictionary<string, ObservableCollection<RawMaterial?>>();
             dictionary.Add("SS275,"+ part.Desc.ToString(), list);
             Write(dictionary);
         }
-        public static void Write(Dictionary<string, ObservableCollection<RawMaterial>> rawMaterialSet)
+        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> rawMaterialSet)
         {
             using (var workbook = new XLWorkbook())
             {
@@ -65,7 +62,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     size = match.Groups[3].Value;
                     
                     // 일단 파트배치 완료된 애들부터 넣어주고~
-                    extendedCollection.AddRange(kvp.Value);
+                    extendedCollection!.AddRange(kvp.Value);
                     
                     // 파트배치 불가능했던 애들도 있으면 넣어주자~
                     if (MainWindowViewModel.TempPartSet.TryGetValue(kvp.Key, out var tempParts))
@@ -126,7 +123,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
         }
 
 
-        private static void MakeHeader(IXLWorksheet worksheet, string type, string desc, string material, ObservableCollection<RawMaterial> rawMaterials)
+        private static void MakeHeader(IXLWorksheet worksheet, string type, string desc, string material, ObservableCollection<RawMaterial?> rawMaterials)
         {
             // 엑셀 세로 폭 설정
             worksheet.Row(3).Height = worksheet.RowHeight / 2;

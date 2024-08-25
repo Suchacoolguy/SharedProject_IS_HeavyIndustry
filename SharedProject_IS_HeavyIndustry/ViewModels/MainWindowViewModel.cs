@@ -17,8 +17,8 @@ public class MainWindowViewModel : ViewModelBase
     //public static SettingsViewModel SettingsViewModel { get; set; }
     public static string ProjectName { get; set; } = "";
     public static string SelectedKey { get; set; } = "";
-    public static Dictionary<string, ObservableCollection<RawMaterial>> RawMaterialSet { get; set; } 
-        = new Dictionary<string, ObservableCollection<RawMaterial>>();
+    public static Dictionary<string, ObservableCollection<RawMaterial?>> RawMaterialSet { get; set; } 
+        = new Dictionary<string, ObservableCollection<RawMaterial?>>();
     
     public static Dictionary<string, ObservableCollection<Part>> TempPartSet { get; set; } 
         = new Dictionary<string, ObservableCollection<Part>>();
@@ -33,7 +33,17 @@ public class MainWindowViewModel : ViewModelBase
         rawMaterial.insert_part(part);
     }
     
-    public static void UpdateRawMaterialSet(ObservableCollection<RawMaterial> rawMaterialSet, string key)
+    public static void ClearTempPartList()
+    {
+        DragAndDropViewModel.TempPartList.Clear();
+    }
+    
+    public static int CountTempPartList()
+    {
+        return DragAndDropViewModel.TempPartList.Count;
+    }
+    
+    public static void UpdateRawMaterialSet(ObservableCollection<RawMaterial?> rawMaterialSet, string key)
     {
         if (RawMaterialSet.ContainsKey(key))
         {

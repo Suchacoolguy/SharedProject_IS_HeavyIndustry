@@ -16,10 +16,12 @@ namespace SharedProject_IS_HeavyIndustry.Views.TabViews;
 public partial class BOMDataTabView : TabView
 {
     private readonly MainWindow mainWindow;
-    private static TableView tableView;
+    private static TableView? tableView;
     private bool initialToggleState = true;
-    private static ToggleButton exclude, separate, needSeparate;
-    
+    private static ToggleButton? exclude;
+    private static ToggleButton? separate;
+    private static ToggleButton? needSeparate;
+
     public BOMDataTabView(MainWindow mainWindow)
     {
         InitializeComponent();
@@ -67,6 +69,9 @@ public partial class BOMDataTabView : TabView
             MainWindowViewModel.RawMaterialSet.Clear();
         if (MainWindowViewModel.TempPartSet.Count > 0)
             MainWindowViewModel.TempPartSet.Clear();
+        if (MainWindowViewModel.CountTempPartList() > 0)
+            MainWindowViewModel.ClearTempPartList();
+        // Console.WriteLine("-------------------" + MainWindowViewModel.DragAndDropViewModel.TempPartList.Count());
 
         BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 
         mainWindow?.AddTab("파트 배치");
@@ -84,22 +89,22 @@ public partial class BOMDataTabView : TabView
     
     private void SetExcludeTrue(object? sender, RoutedEventArgs e)
     {
-        tableView.SetExclude(true);
+        tableView?.SetExclude(true);
     }
     
     private void SetExcludeFalse(object? sender, RoutedEventArgs e)
     {
-        tableView.SetExclude(false);
+        tableView?.SetExclude(false);
     }
 
     private void SetSeparateTrue(object? sender, RoutedEventArgs e)
     {
-        tableView.SetSeparate(true);
+        tableView?.SetSeparate(true);
     }
     
     private void SetSeparateFalse(object? sender, RoutedEventArgs e)
     {
-        tableView.SetSeparate(false);
+        tableView?.SetSeparate(false);
     }
     
     

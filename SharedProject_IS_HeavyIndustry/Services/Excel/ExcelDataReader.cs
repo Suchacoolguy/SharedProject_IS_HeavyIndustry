@@ -22,6 +22,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             catch (Exception e)
             {
                 MessageService.Send("해당 엑셀파일이 사용중입니다.");
+                Console.WriteLine(e);
                 return null!;
             }
         }
@@ -56,7 +57,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 return new();
             var worksheet = workbook.Worksheets.First();
 
-            var rowCount = worksheet.LastRowUsed().RowNumber();
+            var rowCount = worksheet!.LastRowUsed()!.RowNumber();
             for (var row = 1; row <= rowCount; row++) 
             {
                 try

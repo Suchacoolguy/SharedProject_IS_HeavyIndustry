@@ -82,9 +82,9 @@ namespace SharedProject_IS_HeavyIndustry.Models
 
         private int _Length { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -231,6 +231,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
             this.PartsInside = new ObservableCollection<Part>();
             this.RemainingLength = length;
             this.TotalPartsLength = 0;
+            this.BackgroundColor = new SolidColorBrush(Colors.Transparent);
+            this.RectangleColor = new SolidColorBrush(Colors.Black);
         }
 
         public override string ToString()

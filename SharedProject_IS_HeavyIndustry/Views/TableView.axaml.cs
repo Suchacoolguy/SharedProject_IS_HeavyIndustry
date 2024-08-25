@@ -30,7 +30,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
             var filter = FilteringService.GetFilterMenu(columnHeader!);
 
             FlyoutBase.SetAttachedFlyout(button, filter);
-            filter.ShowAt(button);
+            filter?.ShowAt(button);
         }
 
         public void SetExclude(bool value)
@@ -59,13 +59,16 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 var textBox = e.EditingElement as TextBox;
                 if (textBox != null)
                 {
-                    string newValue = textBox.Text.Trim();
-                    if (e.Row.DataContext is Part part)
+                    if (textBox.Text != null)
                     {
-                        Console.WriteLine("sucess");
-                        part.lengthToBeSeparated = newValue;
+                        string newValue = textBox.Text.Trim();
+                        if (e.Row.DataContext is Part part)
+                        {
+                            Console.WriteLine("sucess");
+                            part.lengthToBeSeparated = newValue;
                         
-                        Console.WriteLine($"Before setting: Part {part.IsOverLenth} 분리길이: {part.lengthToBeSeparated}");
+                            Console.WriteLine($"Before setting: Part {part.IsOverLenth} 분리길이: {part.lengthToBeSeparated}");
+                        }
                     }
                 }
             }

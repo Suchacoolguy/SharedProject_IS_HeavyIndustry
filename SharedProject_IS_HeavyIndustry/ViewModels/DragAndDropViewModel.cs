@@ -15,7 +15,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
 public class DragAndDropViewModel
 {
-    public static ObservableCollection<RawMaterial> ArrangedRawMaterials { get; set; }
+    public static ObservableCollection<RawMaterial?> ArrangedRawMaterials { get; set; }
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
     public static ObservableCollection<Part> TempPartList { get; set; } = new ObservableCollection<Part>();
@@ -24,14 +24,16 @@ public class DragAndDropViewModel
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
 
-    public DragAndDropViewModel(ObservableCollection<RawMaterial> arrangedRawMaterials, ObservableCollection<Part> partsCanNotBeArranged, string key)
+    public DragAndDropViewModel(ObservableCollection<RawMaterial?> arrangedRawMaterials, ObservableCollection<Part> partsCanNotBeArranged, string key)
     {
-        ArrangedRawMaterials = new ObservableCollection<RawMaterial>(arrangedRawMaterials);
+        ArrangedRawMaterials = new ObservableCollection<RawMaterial?>(arrangedRawMaterials);
         TempPartList = new ObservableCollection<Part>(partsCanNotBeArranged);
         DragAndDropViewModel.key = key;
     }
+    
+    
 
-    public static void UpdateRawMaterial(RawMaterial from, RawMaterial to, Part part)
+    public static void UpdateRawMaterial(RawMaterial? from, RawMaterial? to, Part part)
     {
         int index_part = 0;
         
@@ -147,7 +149,7 @@ public class DragAndDropViewModel
         return bestLength;
     }
     
-    public static void RawMaterial_Drop(object sender, DragEventArgs e)
+    public void RawMaterial_Drop(object? sender, DragEventArgs e)
     {
         DragAndDropView.InitializeSortOption();
         
@@ -174,7 +176,7 @@ public class DragAndDropViewModel
         if (borderTo != null)
         {
             Console.WriteLine("보더에 드랍합!");
-            partTo = borderTo.Child.DataContext as Part;
+            partTo = borderTo.Child?.DataContext as Part;
             Console.WriteLine("파트의 정체는? " + partTo);
         }
         
@@ -223,7 +225,7 @@ public class DragAndDropViewModel
                 else if (partTo != null)    // 파트 위에다 드랍한 경우
                 {
                     // 파트가 속한 원자재 찾기
-                    foreach (RawMaterial raw in ArrangedRawMaterials)
+                    foreach (RawMaterial? raw in ArrangedRawMaterials)
                     {
                         foreach (Part p in raw.PartsInside)
                         {
@@ -283,7 +285,7 @@ public class DragAndDropViewModel
             {
                 if (partTo != null)
                 {
-                    foreach (RawMaterial raw in ArrangedRawMaterials)
+                    foreach (RawMaterial? raw in ArrangedRawMaterials)
                     {
                         foreach (Part p in raw.PartsInside)
                         {

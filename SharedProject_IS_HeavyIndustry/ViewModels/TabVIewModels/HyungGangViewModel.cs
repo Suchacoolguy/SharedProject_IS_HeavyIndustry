@@ -66,8 +66,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             if (ApplyChanges())
                 JsonConverter.WriteDictionaryToJson(HyungGangSet);
         }
-
-        [Obsolete("Obsolete")]
+        
         private async void Paste()
         {
             /*var dialog = new OpenFileDialog

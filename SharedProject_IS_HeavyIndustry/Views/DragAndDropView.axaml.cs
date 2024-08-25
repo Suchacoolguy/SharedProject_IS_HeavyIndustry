@@ -24,9 +24,12 @@ public partial class DragAndDropView : TabView
 {
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
-    private bool _bomSortCheck = false, _scrapSortCheck = false;
-    public static MenuItem bomAscending, bomDescending, scrapAscending, scrapDescending;
-    
+    private bool? _bomSortCheck = false, _scrapSortCheck = false;
+    public static MenuItem? bomAscending;
+    public static MenuItem? bomDescending;
+    public static MenuItem? scrapAscending;
+    public static MenuItem? scrapDescending;
+
     protected override void OnLoaded(RoutedEventArgs e)
     {
         GhostItem.IsVisible = false;
@@ -48,7 +51,7 @@ public partial class DragAndDropView : TabView
         // entireGrid.Children.Add(overSizePartsView);
         
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
-        AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
+        AddHandler(DragDrop.DropEvent, MainWindowViewModel.DragAndDropViewModel.RawMaterial_Drop);
         
         
         bomAscending = this.FindControl<MenuItem>("BomAscending")!;
@@ -57,7 +60,7 @@ public partial class DragAndDropView : TabView
         scrapDescending = this.FindControl<MenuItem>("ScrapDescending")!;
     }
     
-    private void RawMaterial_DragOver(object sender, DragEventArgs e)
+    private void RawMaterial_DragOver(object? sender, DragEventArgs e)
     {
         var currentPosition = e.GetPosition(EntireGrid);
 
@@ -86,12 +89,12 @@ public partial class DragAndDropView : TabView
     {
         var part = (sender as Control)?.DataContext as Part;
         var PartRectangle = (sender as Border);
-        RawMaterial originalRawMaterial = null;
+        RawMaterial? originalRawMaterial = null;
         
         if (part != null)
             MainWindowViewModel.DragAndDropViewModel.DraggedPart = part;
         
-        foreach (RawMaterial raw in DragAndDropViewModel.ArrangedRawMaterials)
+        foreach (RawMaterial? raw in DragAndDropViewModel.ArrangedRawMaterials)
         {
             foreach (Part p in raw.PartsInside)
             {
@@ -109,8 +112,9 @@ public partial class DragAndDropView : TabView
             var data = new DataObject();
             data.Set("part", part);
             data.Set("originalRawMaterial", originalRawMaterial);
-            data.Set("partRectangle", PartRectangle);
-            
+            if (PartRectangle != null) 
+                data.Set("partRectangle", PartRectangle);
+
             var ghostPos = GhostItem.Bounds.Position;
             _ghostPosition = new Point(ghostPos.X + _mouseOffset.X, ghostPos.Y + _mouseOffset.Y);
 
@@ -189,28 +193,28 @@ public partial class DragAndDropView : TabView
     
     public static void InitializeSortOption()
     {
-        bomAscending.Icon = null;
-        bomDescending.Icon = null;
-        scrapAscending.Icon = null;
-        scrapDescending.Icon = null;
+        if (bomAscending != null) bomAscending.Icon = null;
+        if (bomDescending != null) bomDescending.Icon = null;
+        if (scrapAscending != null) scrapAscending.Icon = null;
+        if (scrapDescending != null) scrapDescending.Icon = null;
     }
     
     private void Sort(object? sender, RoutedEventArgs e)
     {
         MenuCheck((sender as MenuItem)!);
         
-        if ((bomAscending.Icon != null || bomDescending.Icon != null) &&
-            (scrapAscending.Icon != null || scrapDescending.Icon != null))
+        if ((bomAscending?.Icon != null || bomDescending?.Icon != null) &&
+            (scrapAscending?.Icon != null || scrapDescending?.Icon != null))
             SortTwoCondition();
         else
         {
-            if(bomAscending.Icon != null)
+            if(bomAscending?.Icon != null)
                 SortByRawMaterialLength_Ascending();
-            else if(bomDescending.Icon != null)
+            else if(bomDescending?.Icon != null)
                 SortByRawMaterialLength_Descending();
-            else if(scrapAscending.Icon != null)
+            else if(scrapAscending?.Icon != null)
                 SortByScrapAscending();
-            else if(scrapDescending.Icon != null)
+            else if(scrapDescending?.Icon != null)
                 SortByScrapDescending();
         }
     }
@@ -245,10 +249,10 @@ public partial class DragAndDropView : TabView
         if (rawMaterials == null) return;
         IOrderedEnumerable<RawMaterial> tempList = null!;
         List<RawMaterial> rawList = null!;
-        tempList = bomAscending.Icon != null ? 
+        tempList = bomAscending?.Icon != null ? 
             rawMaterials.OrderBy(x => x.Length) : rawMaterials.OrderByDescending(x => x.Length);
 
-        rawList = scrapAscending.Icon != null ? 
+        rawList = scrapAscending?.Icon != null ? 
             tempList.ThenBy(x => x.RemainingLength).ToList() : tempList.ThenByDescending(x => x.RemainingLength).ToList();
         
         DragAndDropViewModel.ArrangedRawMaterials.Clear();

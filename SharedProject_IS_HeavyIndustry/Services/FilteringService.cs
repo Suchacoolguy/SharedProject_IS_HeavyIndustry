@@ -28,27 +28,28 @@ namespace SharedProject_IS_HeavyIndustry.Services
 {
     public class FilteringService
     {
-        private static string _key;
+        private static string? _key;
         private static OrderedDictionary filterSet = new();
         public static List<string> SelectedItems = [];
 
         [Obsolete("Obsolete")]
-        public static FlyoutBase GetFilterMenu(string tag) // filterStack에 필터 존재 여부 확인 후 반환, 없으면 추가후 반환
+        public static FlyoutBase? GetFilterMenu(string? tag) // filterStack에 필터 존재 여부 확인 후 반환, 없으면 추가후 반환
         {
 
             //필터셋에 이미 필터가 존재하는데 필터의 상태가 모두 선택이면 필터 없는것과 같으므로 해당 필터를 셋에서 제외
-            if (filterSet.Count > 0 && filterSet.Contains(_key))
+            if (_key != null && filterSet.Count > 0 && filterSet.Contains(_key))
             {
                 if (GetAllSelectCheckState(((FlyoutBase)filterSet[_key]!)))
                     filterSet.RemoveAt(filterSet.Count - 1);
             }
             _key = tag;
-            FlyoutBase filter = null;
+            FlyoutBase? filter = null;
             
-            if (filterSet.Contains(tag))
+            if (tag != null && filterSet.Contains(tag))
                 return ((FlyoutBase?)filterSet[tag])!;
             filter = GenerateFilter();
-            filterSet.Add(tag, filter);
+            if (tag != null) 
+                filterSet.Add(tag, filter);
             return filter;
         }
 
@@ -60,7 +61,7 @@ namespace SharedProject_IS_HeavyIndustry.Services
         }
         
         [Obsolete("Obsolete")]
-        private static FlyoutBase GenerateFilter()
+        private static FlyoutBase? GenerateFilter()
         {
             var contextFlyout = new Flyout
             {

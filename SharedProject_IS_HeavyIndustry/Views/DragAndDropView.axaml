@@ -13,7 +13,6 @@
     <UserControl.Resources>
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
         <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
-        <converters:DivideByTwentyConverter x:Key="DivideByTwentyConverter"/>
 
     </UserControl.Resources>
     
@@ -139,10 +138,10 @@
                 </ScrollViewer>
     </Grid>
         
-        <views:TempPartsView Grid.Column="1" DataContext="{Binding}"/>
+        <views:TempPartsView Grid.Column="1"/>
         
         <!-- Our ghost rectangle -->
-            <Rectangle Height="30" Width="100" Fill="#E8B989" Name="GhostItem" Opacity="0.8"
+            <Rectangle Grid.Column="0" Height="30" Width="100" Fill="#E8B989" Name="GhostItem" Opacity="0.8"
                        DragDrop.AllowDrop="True" Tag="{Binding }"/>
         </Grid>
 </UserControl>

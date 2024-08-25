@@ -16,18 +16,21 @@ public partial class TempPartsView : UserControl
     public TempPartsView()
     {
         InitializeComponent();
+        
+        Console.WriteLine("MainWindowViewModel - Temp Part List:" + MainWindowViewModel.CountTempPartList());
+        Console.WriteLine("MainWindowViewModel - Temp Part List:" + DragAndDropViewModel.TempPartList.Count);
 
         AddHandler(DragDrop.DropEvent, TempPart_DragOver);
         AddHandler(DragDrop.DropEvent, Part_Drop);
     }
     
-    private void TempPart_DragOver(object sender, DragEventArgs e)
+    private void TempPart_DragOver(object? sender, DragEventArgs e)
     {
         var data = e.Data.Get("temp part");
         if (data is not Part part) return;
     }
     
-    public void Part_Drop(object sender, DragEventArgs e)
+    public void Part_Drop(object? sender, DragEventArgs e)
     {
         DragAndDropView.InitializeSortOption();
         
@@ -65,8 +68,9 @@ public partial class TempPartsView : UserControl
         var part = (sender as Control)?.DataContext as Part;
 
         var data = new DataObject();
-        data.Set("temp part", part);
-        
+        if (part != null) 
+            data.Set("temp part", part);
+
         try
         {
             var result = await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);

@@ -49,8 +49,7 @@ public partial class DragAndDropTabView : TabView
                     DragAndDropViewModel.TempPartList = overSizedParts;
                 
                 ArrangePartsService._lengthOptionsRawMaterial = SettingsViewModel.GetLengthOption(selectedDescription);
-                if (MainWindowViewModel.TempPartSet.TryGetValue(MainWindowViewModel.SelectedKey, out var value))
-                    DragAndDropViewModel.TempPartList = value;
+                
                 dockPanel.Children.Add(new DragAndDropView(mainWindow));
                 return;
             }
@@ -79,10 +78,15 @@ public partial class DragAndDropTabView : TabView
             BOMDataViewModel.PartsForTask);
         partsOverLength = GetFilteredParts(selectedMaterial, selectedDescription,
             BOMDataViewModel.PartsToSeparate);
-
+        
+        // Console.WriteLine("-------------------" + MainWindowViewModel.DragAndDropViewModel.TempPartList.Count());
+        Console.WriteLine("DND View Model - Temp Part List:" + DragAndDropViewModel.TempPartList.Count);
+        
         Console.WriteLine(selectedDescription);
-        Console.WriteLine("=================파트 개수: " + parts.Count + "=================");
-        Console.WriteLine("=================오바사이즈 개수: " + partsOverLength.Count + "=================");
+        foreach (var VARIABLE in BOMDataViewModel.PartsToSeparate)
+        {
+            Console.WriteLine(":::::" + VARIABLE + ":::::");
+        }
         
         var service = new ArrangePartsService(new List<Part>(parts), partsOverLength,
             SettingsViewModel.GetLengthOption(selectedDescription));

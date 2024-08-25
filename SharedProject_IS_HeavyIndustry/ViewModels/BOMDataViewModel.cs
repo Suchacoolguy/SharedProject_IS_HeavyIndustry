@@ -19,12 +19,7 @@
             public static string SheetName = null!;
             public static ObservableCollection<Part> AllParts { get; set; } = [];
             public static ObservableCollection<Part> PartsForTask { get; set; } = []; // 제외 False, 분리 False
-            public static ObservableCollection<Part> PartsToSeparate {
-                get
-                {
-                    return new ObservableCollection<Part>(PartsFiltered.Where(part => part.IsOverLenth));
-                }
-            }// 제외 False, 분리 True
+            public static ObservableCollection<Part> PartsToSeparate { get; set; } = []; 
             
             //필터 적용 후 파트 
             public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
@@ -54,6 +49,8 @@
             {
                 if(PartsForTask.Any())
                     PartsForTask.Clear();
+                if (PartsToSeparate.Any())
+                    PartsToSeparate.Clear();
                 foreach (var part in AllParts)
                 {
                     if (part.IsExcluded) continue;

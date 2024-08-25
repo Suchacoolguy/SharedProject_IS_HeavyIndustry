@@ -22,7 +22,7 @@ public class DragAndDropViewModel
     public Part DraggedPart { get; set; }
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
-
+    
     public DragAndDropViewModel(ObservableCollection<RawMaterial?> arrangedRawMaterials, ObservableCollection<Part> partsCanNotBeArranged)
     {
         ArrangedRawMaterials = new ObservableCollection<RawMaterial?>(arrangedRawMaterials);

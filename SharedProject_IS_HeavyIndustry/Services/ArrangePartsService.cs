@@ -42,7 +42,7 @@ public class ArrangePartsService
         foreach (var ppp in overSizeParts)
         {
             int length = ppp.Length;
-            if (!string.IsNullOrEmpty(ppp.lengthToBeSeparated))
+            if (ppp.NeedSeparate && !string.IsNullOrEmpty(ppp.lengthToBeSeparated))
             {
                 int lengthToBeSeperated = Convert.ToInt32(ppp.lengthToBeSeparated);
                 while (length > lengthToBeSeperated)
@@ -65,7 +65,9 @@ public class ArrangePartsService
             }
             else
             {
-                if (string.IsNullOrEmpty(ppp.lengthToBeSeparated) || Convert.ToInt32(ppp.lengthToBeSeparated) == 0)
+                if(!ppp.NeedSeparate) 
+                    _partsCanNotBeArranged.Add(ppp);
+                else if (string.IsNullOrEmpty(ppp.lengthToBeSeparated) || Convert.ToInt32(ppp.lengthToBeSeparated) == 0)
                     _partsCanNotBeArranged.Add(ppp);
             }
         }
@@ -166,10 +168,18 @@ public class ArrangePartsService
                         }
                     }
                 }
-                else    // 블록마크가 J_로 시작하지 않는 경우 (분리된 게 아닌 경우)
+                else // 블록마크가 J_로 시작하지 않는 경우 (분리된 게 아닌 경우)
                 {
                     // DoTheArrangement 함수로 파트 배치하고 Append 하는 작업
-                    rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));                    
+                    try
+                    {
+                        rawMaterialsUsed.AddRange(DoTheArrangement(kvp.Value));
+                    }
+                    catch
+                    {
+                        MessageService.Send("해당 규격의 길이 정보가 없습니다");
+                        return [];
+                    }
                 }
             }
         }

@@ -43,6 +43,7 @@ public class MainWindowViewModel : ViewModelBase
         return DragAndDropViewModel.TempPartList.Count;
     }
     
+    // 이전 방식 key값을 전달받아 사용 but key값은 MainwindowViewModel에서 static으로 관리하기 때문에 인자로 전달 필요 없음
     public static void UpdateRawMaterialSet(ObservableCollection<RawMaterial?> rawMaterialSet)
     {
         if (RawMaterialSet.ContainsKey(SelectedKey))

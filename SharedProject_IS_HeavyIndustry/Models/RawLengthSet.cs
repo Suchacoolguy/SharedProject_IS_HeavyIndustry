@@ -14,7 +14,13 @@ namespace SharedProject_IS_HeavyIndustry.Models
             get => lengths;
             set
             {
-                lengths = ListToString(StringToList(value).OrderBy(x => x).ToList());
+                var lengthList = StringToList(value).OrderBy(x => x).ToList();
+                if (lengthList.Any(x => x < 0))
+                {
+                    throw new ArgumentException("Lengths cannot contain values less than 0.");
+                }
+
+                lengths = ListToString(lengthList);
             }
         }
         public List<int> LengthsAsIntegerList()

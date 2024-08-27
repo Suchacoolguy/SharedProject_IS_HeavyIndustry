@@ -384,19 +384,4 @@ public class ArrangePartsService
     {
         return _lengthOptionsRawMaterial;
     }
-
-    private static void count_check(List<RawMaterial> rawMaterialUsed)
-    {
-        int count = 0;
-        foreach (var raw in rawMaterialUsed)
-        {
-            foreach (var part in raw.PartsInside)
-            {
-                count++;
-            }
-        }
-        
-        Console.WriteLine("Total parts after 배치: " + count);
-        Console.WriteLine("Total raw materials after 배치: " + rawMaterialUsed.Count);
-    }
 }

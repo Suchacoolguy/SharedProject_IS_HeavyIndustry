@@ -90,40 +90,28 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         private void PrintPlan_btn_click(object? sender, RoutedEventArgs e)
         {
-            // those that have not been worked on (not arranged).
             List<string> emptyKeys = FindEmptyKeys();
-            // MyProgressBar.Maximum = emptyKeys.Count;
 
             if (MainWindowViewModel.RawMaterialSet.Count < 1)
             {
                 MessageService.Send("최소한 하나의 규격에 대해 파트 배치를 진행한 뒤 진행해주세요.");
                 return;
             }
-
-            // Perform the arrangement on the empty keys here.
-            // await Task.Run(() =>
-            // {
-                for (int i = 0; i < emptyKeys.Count; i++)
+            for (int i = 0; i < emptyKeys.Count; i++)
+            {
+                string key = emptyKeys[i];
+                try
                 {
-                    string key = emptyKeys[i];
-                    
-                    // Perform arrangement for each part
                     ArrangePartsForEmptyKey(key);
-
-                    // Update the progress bar on the UI thread
-                    // Dispatcher.UIThread.InvokeAsync(() =>
-                    // {
-                    //     MyProgressBar.Value = i + 1;
-                    // });
                 }
-            // });
-
-            // After processing all keys, execute the following on the UI thread
-            // Dispatcher.UIThread.InvokeAsync(() =>
-            // {
-                WriteImageSizeFile();
-                ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
-            // });
+                catch (Exception exception)
+                {
+                    MessageService.Send(key + "\n 파트배치가 불가능합니다.");
+                    Console.WriteLine(exception);
+                }
+            }
+            WriteImageSizeFile();
+            ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
         }
 
         

@@ -149,172 +149,179 @@ public class DragAndDropViewModel
     
     public static void RawMaterial_Drop(object? sender, DragEventArgs e)
     {
-        DragAndDropView.InitializeSortOption();
-        
-        Console.WriteLine("RawMaterial_Drop Executed.");
-        
-        // the part object being dragged
-        var data = e.Data as IDataObject;
-        if (data == null)
+        try
         {
-            Console.WriteLine("Data is null");
-            return;
-        }
+            DragAndDropView.InitializeSortOption();
+        
+            Console.WriteLine("RawMaterial_Drop Executed.");
+        
+            // the part object being dragged
+            var data = e.Data as IDataObject;
+            if (data == null)
+            {
+                Console.WriteLine("Data is null");
+                return;
+            }
 
-        var part = data.Get("part") as Part;
-        var tempPart = data.Get("temp part") as Part;
-        var rawMaterialFrom = data.Get("originalRawMaterial") as RawMaterial;
+            var part = data.Get("part") as Part;
+            var tempPart = data.Get("temp part") as Part;
+            var rawMaterialFrom = data.Get("originalRawMaterial") as RawMaterial;
         
-        // Get the RawMaterial object from the sender
-        var rawMaterialTo = (e.Source as Control)?.Tag as RawMaterial;
+            // Get the RawMaterial object from the sender
+            var rawMaterialTo = (e.Source as Control)?.Tag as RawMaterial;
         
-        // 파트 위에다 드랍하는 경우 이 변수에 그 파트가 저장될 것
-        var partTo = (e.Source as Control)?.DataContext as Part;
-        var borderTo = (e.Source as Border);
-        if (borderTo != null)
-        {
-            Console.WriteLine("보더에 드랍합!");
-            partTo = borderTo.Child?.DataContext as Part;
-            Console.WriteLine("파트의 정체는? " + partTo);
-        }
+            // 파트 위에다 드랍하는 경우 이 변수에 그 파트가 저장될 것
+            var partTo = (e.Source as Control)?.DataContext as Part;
+            var borderTo = (e.Source as Border);
+            if (borderTo != null)
+            {
+                Console.WriteLine("보더에 드랍합!");
+                partTo = borderTo.Child?.DataContext as Part;
+                Console.WriteLine("파트의 정체는? " + partTo);
+            }
         
-        if (rawMaterialFrom == null)
-        {
-            Console.WriteLine("RawMaterial_Drop - from is null");    
+            if (rawMaterialFrom == null)
+            {
+                Console.WriteLine("RawMaterial_Drop - from is null");    
             
-            if (rawMaterialTo != null && part != null)
-            {
-                UpdateRawMaterial(null, rawMaterialTo, part);
-                Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
-            }
-            // 우측(TempPartsView)에서 좌측(DragAndDropView)의 빈 공간으로 드랍하는 경우
-            else if (e.Source is not DockPanel && rawMaterialTo == null && tempPart != null && partTo == null)
-            {
-                int bestLength = FindBestSizeRawMaterial(GetLengthOptionsRawMaterial(), tempPart);
-                RawMaterial newRawMaterial = new RawMaterial(bestLength);
-                newRawMaterial.insert_part(tempPart);
-                ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
-                
-                if (PartsCanNotBeArranged.Contains(tempPart))
+                if (rawMaterialTo != null && part != null)
                 {
-                    PartsCanNotBeArranged.Remove(tempPart);
+                    UpdateRawMaterial(null, rawMaterialTo, part);
+                    Console.WriteLine("RawMaterial_Drop - from: null, to: not null, part: not null");
                 }
-                // UpdateRawMaterial(rawMaterialFrom, null, tempPartpart);
-            }
-            // 우측(TempPartsView)에서 좌측(DragAndDropView)의 원자재/파트 위로 드랍하는 경우
-            else if ((rawMaterialTo != null || partTo != null) && tempPart != null)
-            {
-                if (rawMaterialTo != null)  // 원자재 위에다 드랍한 경우
+                // 우측(TempPartsView)에서 좌측(DragAndDropView)의 빈 공간으로 드랍하는 경우
+                else if (e.Source is not DockPanel && rawMaterialTo == null && tempPart != null && partTo == null)
                 {
-                    // 여기도 원자재 길이 변경하는 코드~
-                    int bestLengthOption = rawMaterialTo.findPossibleRawLengthToIncrease(tempPart);
-                    if (!rawMaterialTo.isAddingPossible(tempPart) && bestLengthOption != -1)
-                    {
-                        rawMaterialTo.increaseRawLength(bestLengthOption, tempPart);
-                    }
-                    
-                    
-                    rawMaterialTo.insert_part(tempPart);
+                    int bestLength = FindBestSizeRawMaterial(GetLengthOptionsRawMaterial(), tempPart);
+                    RawMaterial newRawMaterial = new RawMaterial(bestLength);
+                    newRawMaterial.insert_part(tempPart);
+                    ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
+                
                     if (PartsCanNotBeArranged.Contains(tempPart))
                     {
                         PartsCanNotBeArranged.Remove(tempPart);
                     }
+                    // UpdateRawMaterial(rawMaterialFrom, null, tempPartpart);
                 }
-                else if (partTo != null)    // 파트 위에다 드랍한 경우
+                // 우측(TempPartsView)에서 좌측(DragAndDropView)의 원자재/파트 위로 드랍하는 경우
+                else if ((rawMaterialTo != null || partTo != null) && tempPart != null)
                 {
-                    // 파트가 속한 원자재 찾기
-                    foreach (RawMaterial? raw in ArrangedRawMaterials)
+                    if (rawMaterialTo != null)  // 원자재 위에다 드랍한 경우
                     {
-                        foreach (Part p in raw.PartsInside)
-                        {
-                            if (ReferenceEquals(partTo, p))
-                            {
-                                rawMaterialTo = raw;
-                                break;
-                            }
-                        }   
-                    }
-
-                    if (rawMaterialTo != null)
-                    {
-                        // 해당 원자재에다 추가
-                        // 여기도 원자재 길이 변경하는 코드 추가~
+                        // 여기도 원자재 길이 변경하는 코드~
                         int bestLengthOption = rawMaterialTo.findPossibleRawLengthToIncrease(tempPart);
-                        Console.WriteLine("==========================================");
-                        Console.WriteLine(rawMaterialTo.isAddingPossible(tempPart));
-                        Console.WriteLine(bestLengthOption);
-                        Console.WriteLine("==========================================");
-                        
                         if (!rawMaterialTo.isAddingPossible(tempPart) && bestLengthOption != -1)
                         {
                             rawMaterialTo.increaseRawLength(bestLengthOption, tempPart);
                         }
-                        
-                        
+                    
+                    
                         rawMaterialTo.insert_part(tempPart);
                         if (PartsCanNotBeArranged.Contains(tempPart))
                         {
-                            // 이동한 원자재는 원래 있던 곳에서 제거
                             PartsCanNotBeArranged.Remove(tempPart);
+                        }
+                    }
+                    else if (partTo != null)    // 파트 위에다 드랍한 경우
+                    {
+                        // 파트가 속한 원자재 찾기
+                        foreach (RawMaterial? raw in ArrangedRawMaterials)
+                        {
+                            foreach (Part p in raw.PartsInside)
+                            {
+                                if (ReferenceEquals(partTo, p))
+                                {
+                                    rawMaterialTo = raw;
+                                    break;
+                                }
+                            }   
+                        }
+
+                        if (rawMaterialTo != null)
+                        {
+                            // 해당 원자재에다 추가
+                            // 여기도 원자재 길이 변경하는 코드 추가~
+                            int bestLengthOption = rawMaterialTo.findPossibleRawLengthToIncrease(tempPart);
+                            Console.WriteLine("==========================================");
+                            Console.WriteLine(rawMaterialTo.isAddingPossible(tempPart));
+                            Console.WriteLine(bestLengthOption);
+                            Console.WriteLine("==========================================");
+                        
+                            if (!rawMaterialTo.isAddingPossible(tempPart) && bestLengthOption != -1)
+                            {
+                                rawMaterialTo.increaseRawLength(bestLengthOption, tempPart);
+                            }
+                        
+                        
+                            rawMaterialTo.insert_part(tempPart);
+                            if (PartsCanNotBeArranged.Contains(tempPart))
+                            {
+                                // 이동한 원자재는 원래 있던 곳에서 제거
+                                PartsCanNotBeArranged.Remove(tempPart);
+                            }
                         }
                     }
                 }
             }
-        }
-        // rawMaterialFrom이 null이 아닌 경우
-        else if (rawMaterialTo != null && part != null)
-        {
-            // Update the ArrangedRawMaterials collection in the ViewModel
+            // rawMaterialFrom이 null이 아닌 경우
+            else if (rawMaterialTo != null && part != null)
+            {
+                // Update the ArrangedRawMaterials collection in the ViewModel
             
-            UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
-            Console.WriteLine("RawMaterial_Drop - from: not null, to: not null, part: not null");
-        }
-        else if ((partTo != null || rawMaterialTo == null) && part != null)
-        {
-            // if (e.Source is StackPanel || e.Source is TextBlock)
-            if (e.Source is not DockPanel && partTo == null)
-            {
-                if (rawMaterialTo == null)
-                {
-                    UpdateRawMaterial(rawMaterialFrom, null, part);
-                }
+                UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
+                Console.WriteLine("RawMaterial_Drop - from: not null, to: not null, part: not null");
             }
-            else
+            else if ((partTo != null || rawMaterialTo == null) && part != null)
             {
-                if (partTo != null)
+                // if (e.Source is StackPanel || e.Source is TextBlock)
+                if (e.Source is not DockPanel && partTo == null)
                 {
-                    foreach (RawMaterial? raw in ArrangedRawMaterials)
+                    if (rawMaterialTo == null)
                     {
-                        foreach (Part p in raw.PartsInside)
-                        {
-                            if (ReferenceEquals(partTo, p))
-                            {
-                                rawMaterialTo = raw;
-                                break;
-                            }
-                        }   
+                        UpdateRawMaterial(rawMaterialFrom, null, part);
                     }
-                    Console.WriteLine("여기다 여기" + rawMaterialTo);
-                    UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
-                }    
+                }
+                else
+                {
+                    if (partTo != null)
+                    {
+                        foreach (RawMaterial? raw in ArrangedRawMaterials)
+                        {
+                            foreach (Part p in raw.PartsInside)
+                            {
+                                if (ReferenceEquals(partTo, p))
+                                {
+                                    rawMaterialTo = raw;
+                                    break;
+                                }
+                            }   
+                        }
+                        Console.WriteLine("여기다 여기" + rawMaterialTo);
+                        UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
+                    }    
+                }
+            
+            
+                Console.WriteLine("RawMaterial_Drop - to: null, part: not null");
             }
-            
-            
-            Console.WriteLine("RawMaterial_Drop - to: null, part: not null");
-        }
         
 
-        if (part != null)
-        {
-            Console.WriteLine(part);
-        }
-        if (rawMaterialTo == null)
-        {
-            Console.WriteLine("RawMaterial_Drop - RawMaterial is null");
-        }
+            if (part != null)
+            {
+                Console.WriteLine(part);
+            }
+            if (rawMaterialTo == null)
+            {
+                Console.WriteLine("RawMaterial_Drop - RawMaterial is null");
+            }
         
-        // 여기에 RawMaterialSet, TempPartsSet 업데이트 코드 추가 안 해도 되는가??
-        MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials);
+            // 여기에 RawMaterialSet, TempPartsSet 업데이트 코드 추가 안 해도 되는가??
+            MainWindowViewModel.UpdateRawMaterialSet(ArrangedRawMaterials);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
     }
 
     public static List<int> GetLengthOptionsRawMaterial()

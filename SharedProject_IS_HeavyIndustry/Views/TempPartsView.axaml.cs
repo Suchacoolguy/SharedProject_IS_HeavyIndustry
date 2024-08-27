@@ -32,30 +32,37 @@ public partial class TempPartsView : UserControl
     
     public void Part_Drop(object? sender, DragEventArgs e)
     {
-        DragAndDropView.InitializeSortOption();
+        try
+        {
+            DragAndDropView.InitializeSortOption();
         
-        // var part = (sender as Control)?.DataContext as Part;
-        var data = e.Data as IDataObject;
-        if (data == null)
-        {
-            return;
-        }
-        var part = data.Get("part") as Part;
-        var rawMaterialFrom = data.Get("originalRawMaterial") as RawMaterial;
-
-        if (part != null)
-        {
-            if (!DragAndDropViewModel.PartsCanNotBeArranged.Contains(part) && rawMaterialFrom != null)
+            // var part = (sender as Control)?.DataContext as Part;
+            var data = e.Data as IDataObject;
+            if (data == null)
             {
-                DragAndDropViewModel.PartsCanNotBeArranged.Add(part);
-                MainWindowViewModel.TempPartSet[MainWindowViewModel.SelectedKey] = DragAndDropViewModel.PartsCanNotBeArranged;
-                
-                rawMaterialFrom.removePart(part);
-                if (rawMaterialFrom.PartsInside.Count == 0)
+                return;
+            }
+            var part = data.Get("part") as Part;
+            var rawMaterialFrom = data.Get("originalRawMaterial") as RawMaterial;
+
+            if (part != null)
+            {
+                if (!DragAndDropViewModel.PartsCanNotBeArranged.Contains(part) && rawMaterialFrom != null)
                 {
-                    DragAndDropViewModel.ArrangedRawMaterials.Remove(rawMaterialFrom);
+                    DragAndDropViewModel.PartsCanNotBeArranged.Add(part);
+                    MainWindowViewModel.TempPartSet[MainWindowViewModel.SelectedKey] = DragAndDropViewModel.PartsCanNotBeArranged;
+                
+                    rawMaterialFrom.removePart(part);
+                    if (rawMaterialFrom.PartsInside.Count == 0)
+                    {
+                        DragAndDropViewModel.ArrangedRawMaterials.Remove(rawMaterialFrom);
+                    }
                 }
             }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
         }
         
         

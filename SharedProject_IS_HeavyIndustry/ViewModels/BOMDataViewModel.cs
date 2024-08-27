@@ -54,7 +54,11 @@
                 foreach (var part in AllParts)
                 {
                     if (part.IsExcluded) continue;
-                    CopyPartList(part, part.IsOverLenth ? PartsToSeparate : PartsForTask);
+                    if (part.IsOverLenth || SettingsViewModel.GetLengthOption(part.Desc.ToString()).Count == 0)
+                        CopyPartList(part, PartsToSeparate);
+                    else
+                        CopyPartList(part, PartsForTask);
+                    // CopyPartList(part, part.IsOverLenth ? PartsToSeparate : PartsForTask);
                 }
             }
 

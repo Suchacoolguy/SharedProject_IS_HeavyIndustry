@@ -42,6 +42,7 @@ public partial class DragAndDropTabView : TabView
             //딕셔너리에 키가 존재하는지 확인 -> 존재하면 한번 DragAndDrop처리 했던것이므로 해당 값 불러와서 DragAndDropView추가 
             if (MainWindowViewModel.RawMaterialSet.TryGetValue(MainWindowViewModel.SelectedKey, out var arrangedRawMaterials))  // 여기!!
             {
+                Console.WriteLine("으하하하으하하하으하하하으하하하으하하하으하하하으하하하: " + arrangedRawMaterials.Count);
                 dockPanel!.Children.RemoveAll(dockPanel.Children);
                 DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
                 

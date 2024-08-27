@@ -69,8 +69,7 @@ public partial class BOMDataTabView : TabView
             MainWindowViewModel.RawMaterialSet.Clear();
         if (MainWindowViewModel.TempPartSet.Count > 0)
             MainWindowViewModel.TempPartSet.Clear();
-        // if (MainWindowViewModel.CountTempPartList() > 0)
-        //     MainWindowViewModel.ClearTempPartList();
+        // if ()
         // Console.WriteLine("-------------------" + MainWindowViewModel.DragAndDropViewModel.TempPartList.Count());
 
         BOMDataViewModel.ClassifyParts(); // Tbale view의 체크박스 상태에 따라 원본 리스트에서 작업용 리스트로 분리 

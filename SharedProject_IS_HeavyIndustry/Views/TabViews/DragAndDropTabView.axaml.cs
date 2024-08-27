@@ -46,7 +46,7 @@ public partial class DragAndDropTabView : TabView
                 DragAndDropViewModel.ArrangedRawMaterials = arrangedRawMaterials;
                 
                 if (MainWindowViewModel.TempPartSet.TryGetValue(MainWindowViewModel.SelectedKey, out var overSizedParts))  // 여기!!
-                    DragAndDropViewModel.TempPartList = overSizedParts;
+                    DragAndDropViewModel.PartsCanNotBeArranged = overSizedParts;
                 
                 ArrangePartsService._lengthOptionsRawMaterial = SettingsViewModel.GetLengthOption(selectedDescription);
                 
@@ -80,12 +80,13 @@ public partial class DragAndDropTabView : TabView
             BOMDataViewModel.PartsToSeparate);
         
         // Console.WriteLine("-------------------" + MainWindowViewModel.DragAndDropViewModel.TempPartList.Count());
-        Console.WriteLine("DND View Model - Temp Part List:" + DragAndDropViewModel.TempPartList.Count);
+        Console.WriteLine("DND View Model - Temp Part List:" + DragAndDropViewModel.PartsCanNotBeArranged.Count);
         
         Console.WriteLine(selectedDescription);
-        foreach (var VARIABLE in BOMDataViewModel.PartsToSeparate)
+        foreach (var VARIABLE in partsOverLength)
         {
             Console.WriteLine(":::::" + VARIABLE + ":::::");
+            Console.WriteLine(VARIABLE.NeedSeparate);
         }
         
         var service = new ArrangePartsService(new List<Part>(parts), partsOverLength,

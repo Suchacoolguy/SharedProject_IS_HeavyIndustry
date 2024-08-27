@@ -18,7 +18,7 @@ public class DragAndDropViewModel
     public static ObservableCollection<RawMaterial?> ArrangedRawMaterials { get; set; }
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
-    public static ObservableCollection<Part> TempPartList { get; set; } = new ObservableCollection<Part>();
+    public static ObservableCollection<Part> PartsCanNotBeArranged { get; set; } = new ObservableCollection<Part>();
     public Part DraggedPart { get; set; }
     private Point _ghostPosition = new(0,0);
     private readonly Point _mouseOffset = new(-5, -5);
@@ -26,7 +26,7 @@ public class DragAndDropViewModel
     public DragAndDropViewModel(ObservableCollection<RawMaterial?> arrangedRawMaterials, ObservableCollection<Part> partsCanNotBeArranged)
     {
         ArrangedRawMaterials = new ObservableCollection<RawMaterial?>(arrangedRawMaterials);
-        TempPartList = new ObservableCollection<Part>(partsCanNotBeArranged);
+        PartsCanNotBeArranged = new ObservableCollection<Part>(partsCanNotBeArranged);
     }
     
     
@@ -195,9 +195,9 @@ public class DragAndDropViewModel
                 newRawMaterial.insert_part(tempPart);
                 ArrangedRawMaterials.Insert(ArrangedRawMaterials.Count, newRawMaterial);
                 
-                if (TempPartList.Contains(tempPart))
+                if (PartsCanNotBeArranged.Contains(tempPart))
                 {
-                    TempPartList.Remove(tempPart);
+                    PartsCanNotBeArranged.Remove(tempPart);
                 }
                 // UpdateRawMaterial(rawMaterialFrom, null, tempPartpart);
             }
@@ -215,9 +215,9 @@ public class DragAndDropViewModel
                     
                     
                     rawMaterialTo.insert_part(tempPart);
-                    if (TempPartList.Contains(tempPart))
+                    if (PartsCanNotBeArranged.Contains(tempPart))
                     {
-                        TempPartList.Remove(tempPart);
+                        PartsCanNotBeArranged.Remove(tempPart);
                     }
                 }
                 else if (partTo != null)    // 파트 위에다 드랍한 경우
@@ -239,23 +239,23 @@ public class DragAndDropViewModel
                     {
                         // 해당 원자재에다 추가
                         // 여기도 원자재 길이 변경하는 코드 추가~
-                        int bestLengthOption = rawMaterialTo.findPossibleRawLengthToIncrease(part);
+                        int bestLengthOption = rawMaterialTo.findPossibleRawLengthToIncrease(tempPart);
                         Console.WriteLine("==========================================");
-                        Console.WriteLine(rawMaterialTo.isAddingPossible(part));
+                        Console.WriteLine(rawMaterialTo.isAddingPossible(tempPart));
                         Console.WriteLine(bestLengthOption);
                         Console.WriteLine("==========================================");
                         
-                        if (!rawMaterialTo.isAddingPossible(part) && bestLengthOption != -1)
+                        if (!rawMaterialTo.isAddingPossible(tempPart) && bestLengthOption != -1)
                         {
-                            rawMaterialTo.increaseRawLength(bestLengthOption, part);
+                            rawMaterialTo.increaseRawLength(bestLengthOption, tempPart);
                         }
                         
                         
                         rawMaterialTo.insert_part(tempPart);
-                        if (TempPartList.Contains(tempPart))
+                        if (PartsCanNotBeArranged.Contains(tempPart))
                         {
                             // 이동한 원자재는 원래 있던 곳에서 제거
-                            TempPartList.Remove(tempPart);
+                            PartsCanNotBeArranged.Remove(tempPart);
                         }
                     }
                 }

@@ -65,7 +65,8 @@ public class ArrangePartsService
             }
             else
             {
-                if(!ppp.NeedSeparate) 
+                // '분리' 체크가 되었는지
+                if(!ppp.NeedSeparate)
                     _partsCanNotBeArranged.Add(ppp);
                 else if (string.IsNullOrEmpty(ppp.lengthToBeSeparated) || Convert.ToInt32(ppp.lengthToBeSeparated) == 0)
                     _partsCanNotBeArranged.Add(ppp);

@@ -20,6 +20,7 @@
             public static ObservableCollection<Part> AllParts { get; set; } = [];
             public static ObservableCollection<Part> PartsForTask { get; set; } = []; // 제외 False, 분리 False
             public static ObservableCollection<Part> PartsToSeparate { get; set; } = []; 
+
             
             //필터 적용 후 파트 
             public static ObservableCollection<Part> PartsFiltered { get; set; } = [];
@@ -62,8 +63,14 @@
             {
                 if (part.Num > 1)
                     for (var i = 0; i < part.Num; i++)
-                        list.Add(new Part(part.Assem, part.Mark, part.Material, part.Length,
-                            1, part.WeightOne, part.WeightSum, part.PArea, part.Desc));
+                    {
+                        var newPart = new Part(part.Assem, part.Mark, part.Material, part.Length,
+                            1, part.WeightOne, part.WeightSum, part.PArea, part.Desc);
+                        newPart.NeedSeparate = part.NeedSeparate;
+                        newPart.lengthToBeSeparated = part.lengthToBeSeparated;
+                        newPart.IsOverLenth = part.IsOverLenth;
+                        list.Add(newPart);
+                    }
                 else
                     list.Add(part);
             }

@@ -18,7 +18,7 @@ public partial class TempPartsView : UserControl
         InitializeComponent();
         
         Console.WriteLine("MainWindowViewModel - Temp Part List:" + MainWindowViewModel.CountTempPartList());
-        Console.WriteLine("MainWindowViewModel - Temp Part List:" + DragAndDropViewModel.TempPartList.Count);
+        Console.WriteLine("MainWindowViewModel - Temp Part List:" + DragAndDropViewModel.PartsCanNotBeArranged.Count);
 
         AddHandler(DragDrop.DropEvent, TempPart_DragOver);
         AddHandler(DragDrop.DropEvent, Part_Drop);
@@ -45,10 +45,10 @@ public partial class TempPartsView : UserControl
 
         if (part != null)
         {
-            if (!DragAndDropViewModel.TempPartList.Contains(part) && rawMaterialFrom != null)
+            if (!DragAndDropViewModel.PartsCanNotBeArranged.Contains(part) && rawMaterialFrom != null)
             {
-                DragAndDropViewModel.TempPartList.Add(part);
-                MainWindowViewModel.TempPartSet[MainWindowViewModel.SelectedKey] = DragAndDropViewModel.TempPartList;
+                DragAndDropViewModel.PartsCanNotBeArranged.Add(part);
+                MainWindowViewModel.TempPartSet[MainWindowViewModel.SelectedKey] = DragAndDropViewModel.PartsCanNotBeArranged;
                 
                 rawMaterialFrom.removePart(part);
                 if (rawMaterialFrom.PartsInside.Count == 0)

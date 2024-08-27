@@ -35,12 +35,12 @@ public class MainWindowViewModel : ViewModelBase
     
     public static void ClearTempPartList()
     {
-        DragAndDropViewModel.TempPartList.Clear();
+        DragAndDropViewModel.PartsCanNotBeArranged.Clear();
     }
     
     public static int CountTempPartList()
     {
-        return DragAndDropViewModel.TempPartList.Count;
+        return DragAndDropViewModel.PartsCanNotBeArranged.Count;
     }
     
     // 이전 방식 key값을 전달받아 사용 but key값은 MainwindowViewModel에서 static으로 관리하기 때문에 인자로 전달 필요 없음

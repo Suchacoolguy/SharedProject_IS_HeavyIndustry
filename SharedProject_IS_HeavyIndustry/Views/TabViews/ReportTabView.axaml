@@ -24,7 +24,6 @@
             <StackPanel>
                 <TextBlock Padding="2" Text="입력값 조사 필요" VerticalAlignment="Center" Foreground="White" Background="DodgerBlue"/>
                 <DockPanel Margin="4" Name="ButtonPanel" DockPanel.Dock="Top">
-                    <Button Content="Cutting Plan 미리보기" Click="PlanReview_btn_click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left"/>
                     <Button Content= "Cutting Plan 출력" Click="PrintPlan_btn_click" FontSize="13" Background="White" BorderBrush="Black" BorderThickness="1" Margin="4,0,0,0" DockPanel.Dock="Left"/>
                     <StackPanel Name="HeightPanel" IsVisible="{Binding IsVisible}" DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,0">
                         <TextBlock Text="세로" VerticalAlignment="Center"/>

@@ -22,23 +22,6 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _row = 13;
         private static int _imgWidth = 0;
         
-        public static void main()
-        {
-            Part part = new Part("G", "Mark", "material", 500, 1, 300, 300, 2.5, new Description("D", "16"));
-            var raw = new RawMaterial(8010);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            raw.PartsInside.Add(part);
-            ObservableCollection<RawMaterial?> list = new ObservableCollection<RawMaterial?>();
-            list.Add(raw);
-            var dictionary = new Dictionary<string, ObservableCollection<RawMaterial?>>();
-            dictionary.Add("SS275,"+ part.Desc.ToString(), list);
-            Write(dictionary);
-        }
         public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> rawMaterialSet)
         {
             using (var workbook = new XLWorkbook())
@@ -46,6 +29,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 string type, size;
                 foreach (var kvp in rawMaterialSet)
                 {
+                    if (kvp.Value.Count == 0) continue;
                     // 파트배치 완료된 자슥들과 파트배치 불가능했던 자슥들을 합칠 리스트
                     ObservableCollection<RawMaterial> extendedCollection = new ObservableCollection<RawMaterial>();
                     
@@ -81,7 +65,6 @@ namespace SharedProject_IS_HeavyIndustry.Models
                         }
                         extendedCollection.AddRange(toBeAdded);
                     }
-                        
 
                     MakeHeader(worksheet, type, type + size, material, kvp.Value);
                     MakeChart(worksheet, extendedCollection);

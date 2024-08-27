@@ -25,7 +25,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 
         private Dictionary<string, RawLengthSet> LengthSetDictionary { get; set; }
         public static ObservableCollection<RawLengthSet> LengthSetList { get; set; } = null!;
-        public static ObservableCollection<RawLengthSet> TempLengthSetList { get; set; } = null!;
+        public static ObservableCollection<RawLengthSet> LengthSetListForUI { get; set; } = null!;
         
         private static HashSet<string> _missingStandardBuffer = new HashSet<string>();
         public static ObservableCollection<string> MissingStandardBuffer { get; } = new ObservableCollection<string>();
@@ -38,12 +38,12 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             // 여기 디비
             LengthSetDictionary = JsonConverter.ReadDictionaryFromJson() ?? new Dictionary<string, RawLengthSet>();
             LengthSetList = new ObservableCollection<RawLengthSet>(LengthSetDictionary.Values);
-            TempLengthSetList = Clone(LengthSetList);
+            LengthSetListForUI = Clone(LengthSetList);
 
             SaveCommand = new RelayCommand(Save);
             PasteCommand = new RelayCommand(Paste);
 
-            LengthSetList.CollectionChanged += LengthSetList_CollectionChanged!;
+            LengthSetListForUI.CollectionChanged += LengthSetList_CollectionChanged!;
         }
 
         public static void AddMissingData()
@@ -53,7 +53,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             {
                 var newData = new RawLengthSet(value, 0, "");
                 LengthSetList.Insert(0, newData);
-                TempLengthSetList.Insert(0, newData);
+                LengthSetListForUI.Insert(0, newData);
             }
 
             /*MissingStandardBuffer.Clear();
@@ -102,6 +102,8 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
             {
                 JsonConverter.WriteDictionaryToJson(LengthSetDictionary);
                 SettingsViewModel.Refresh();
+                
+                //규격목록 수정후 저장할 때 테이블 뷰에 값이 있으면 반영(제외, 분리필요 체크)
                 foreach (var part in BOMDataViewModel.AllParts)
                 {
                     if (_missingStandardBuffer.Contains(part.Desc.ToString()))

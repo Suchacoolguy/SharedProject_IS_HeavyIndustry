@@ -26,7 +26,7 @@ public partial class RawStandardTabView : TabView
         var dataGrid = this.FindControl<DataGrid>("Table")!;
         var items = (ObservableCollection<RawLengthSet>)dataGrid.ItemsSource;
         var newItem = new RawLengthSet("", 0, "");
-        RawStandardViewModel.TempLengthSetList.Add(newItem);
+        RawStandardViewModel.LengthSetList.Add(newItem);
         items.Add(newItem);
         if (items.Count > 0)
         {
@@ -54,10 +54,12 @@ public partial class RawStandardTabView : TabView
     private void Search_btn_click(object? sender, RoutedEventArgs e)
     {
         var input = this.FindControl<TextBox>("SearchBox")!.Text ?? "";
-        RawStandardViewModel.LengthSetList.Clear();
-        foreach (var value in RawStandardViewModel.TempLengthSetList)
+        input = input.ToUpper();
+        RawStandardViewModel.LengthSetListForUI.Clear();
+        foreach (var value in RawStandardViewModel.LengthSetList)
             if(value.Description.Contains(input!))
-                RawStandardViewModel.LengthSetList.Add(value);
+                RawStandardViewModel.LengthSetListForUI.Add(value);
+        Console.WriteLine(RawStandardViewModel.LengthSetListForUI.Count);
     }
     
     /*private void Search_btn_click(object? sender, RoutedEventArgs e)
@@ -83,18 +85,6 @@ public partial class RawStandardTabView : TabView
             items.Insert(0, matchingItems[i]);
         }
     }*/
-
-
-    private void Filter_Btn_Click(object? sender, RoutedEventArgs e)
-    {
-        GenerateFilter();
-    }
-
-    private void GenerateFilter()
-    {
-        throw new NotImplementedException();
-    }
-
     private void DataGrid_PreparingCellForEdit(object? sender, DataGridPreparingCellForEditEventArgs e)
     {
         var cell = e.EditingElement as TextBox;

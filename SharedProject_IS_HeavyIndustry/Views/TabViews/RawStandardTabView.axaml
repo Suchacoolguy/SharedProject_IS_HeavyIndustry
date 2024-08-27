@@ -39,7 +39,7 @@
                     <Button Background="White"/>
                 </DockPanel>
                 <Panel Name="TablePanel" Margin="4,4,4,0">
-                    <DataGrid Name="Table" ItemsSource="{Binding LengthSetList}"
+                    <DataGrid Name="Table" ItemsSource="{Binding LengthSetListForUI}"
                               AutoGenerateColumns="False" IsReadOnly="False" PreparingCellForEdit="DataGrid_PreparingCellForEdit">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="규격" Binding="{Binding Description}" Width="Auto"/>

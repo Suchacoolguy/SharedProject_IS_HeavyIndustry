@@ -48,12 +48,16 @@
                                             </Border.RenderTransform>-->
                                         </Border> 
                                     <!-- Raw material -->
-                                    
+                                    <TextBlock Name="Index" Text="100" Canvas.Left="-8500" Canvas.Top="5" Foreground="Red">
+                                        <TextBlock.RenderTransform>
+                                            <ScaleTransform ScaleX="20"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
                                     <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Background="{Binding BackgroundColor}"
                                            Canvas.Left="-8000" Canvas.Top="35">
                                         <!-- Define three columns -->
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" /> <!-- Left -->
+                                            <ColumnDefinition Width="*" /> <!-- Left  -->
                                             <ColumnDefinition Width="*" /> <!-- Center -->
                                             <ColumnDefinition Width="*" /> <!-- Right -->
                                         </Grid.ColumnDefinitions>

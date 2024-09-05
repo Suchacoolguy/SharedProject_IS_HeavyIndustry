@@ -22,8 +22,12 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _row = 13;
         private static int _imgWidth = 0;
         
-        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> rawMaterialSet)
+        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> dict)
         {
+            var rawMaterialSet = dict
+                .OrderBy(pair => pair.Key)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
             using (var workbook = new XLWorkbook())
             {
                 string type, size;

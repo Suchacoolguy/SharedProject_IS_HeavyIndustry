@@ -39,7 +39,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas Name="MyCanvas" Height="55" Width="1000" HorizontalAlignment="Center">
-                                        <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="-8000"  Canvas.Top="0" DragDrop.AllowDrop="True" >
+                                    <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="-8000"  Canvas.Top="0" DragDrop.AllowDrop="True" >
                                             <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource RawMaterialConverter}}"
                                                        Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" >
                                             </Rectangle>

@@ -48,7 +48,7 @@
                                             </Border.RenderTransform>-->
                                         </Border> 
                                     <!-- Raw material -->
-                                    <TextBlock Name="Index" Text="100" Canvas.Left="-8500" Canvas.Top="5" Foreground="Red">
+                                    <TextBlock Name="Index" Text="1" Canvas.Left="-8500" Canvas.Top="5" Foreground="Red">
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>

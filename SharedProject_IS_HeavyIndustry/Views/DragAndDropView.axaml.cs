@@ -68,19 +68,7 @@ public partial class DragAndDropView : TabView
         var offsetY = currentPosition.Y - _ghostPosition.Y;
 
         GhostItem.RenderTransform = new TranslateTransform(offsetX, offsetY);
-
-        // e.Source
-        // 만약 현재 마우스 포인터가 RawMaterial의 영역 안에 들어왔다면
-        // RawMaterial의 색을 바꿔주는 코드를 작성해야함
-        // 다만!!! RawMaterial의 크기를 늘릴 수 있는 경우에만 색을 바꿔줌!
-        // 흠,,, 시각적으로 보이는 크기도 키워주면 좋은데...
-        // RawMaterial 위에다가 드랍할 때만 바꿔주다가 아웃되면 다시 바꿔? -> 무리무리
-        // 그냥 드랍할 때만 바꿔주자
-        // 바꾸는 코드는 이곳이 아니라 드랍 함수에...
         
-        // set drag cursor icon
-        // e.DragEffects = DragDropEffects.Move;
-        // if (DataContext is not DragAndDropViewModel vm) return;
         var data = e.Data.Get("part");
         if (data is not Part part) return;
     }

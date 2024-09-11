@@ -180,10 +180,11 @@ public class DragAndDropViewModel
                 Console.WriteLine("파트의 정체는? " + partTo);
             }
         
+            // 이 경우는 우측(TempPartsView)에서 좌측(DragAndDropView)로 드랍하는 경우일 것
             if (rawMaterialFrom == null)
             {
                 Console.WriteLine("RawMaterial_Drop - from is null");    
-            
+                
                 if (rawMaterialTo != null && part != null)
                 {
                     UpdateRawMaterial(null, rawMaterialTo, part);
@@ -267,7 +268,7 @@ public class DragAndDropViewModel
             else if (rawMaterialTo != null && part != null)
             {
                 // Update the ArrangedRawMaterials collection in the ViewModel
-            
+                Console.WriteLine("여기일 걸?");
                 UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
                 Console.WriteLine("RawMaterial_Drop - from: not null, to: not null, part: not null");
             }
@@ -297,6 +298,20 @@ public class DragAndDropViewModel
                             }   
                         }
                         Console.WriteLine("여기다 여기" + rawMaterialTo);
+                        // ================================================
+                        var control = e.Source as Control;
+                        if (control == null) return;
+                        var dropPosition = e.GetPosition(control);
+                        var controlBounds = control.Bounds;
+
+                        double midpointX = controlBounds.Left + (controlBounds.Width / 2);
+                        
+                        if (dropPosition.X < midpointX)
+                            Console.WriteLine("왼쪽에 드랍");
+                        else
+                            Console.WriteLine("오른쪽에 드랍");
+                        
+                        // ================================================
                         UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
                     }    
                 }

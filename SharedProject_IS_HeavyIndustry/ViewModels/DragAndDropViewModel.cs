@@ -15,7 +15,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
 public class DragAndDropViewModel
 {
-    public static ObservableCollection<RawMaterial?> ArrangedRawMaterials { get; set; }
+    public static ObservableCollection<RawMaterial?> ArrangedRawMaterials { get; set; } = [];
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
     public static ObservableCollection<Part> PartsCanNotBeArranged { get; set; } = new ObservableCollection<Part>();
@@ -28,8 +28,6 @@ public class DragAndDropViewModel
         ArrangedRawMaterials = new ObservableCollection<RawMaterial?>(arrangedRawMaterials);
         PartsCanNotBeArranged = new ObservableCollection<Part>(partsCanNotBeArranged);
     }
-    
-    
 
     public static void UpdateRawMaterial(RawMaterial? from, RawMaterial? to, Part part)
     {

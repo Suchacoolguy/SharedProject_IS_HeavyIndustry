@@ -22,8 +22,13 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _row = 13;
         private static int _imgWidth = 0;
         
-        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> rawMaterialSet)
+        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> dict)
         {
+            //전달받은 RawMaterial딕셔너리를 오름차순 정렬하여 새로운 변수에 담는 코드 
+            var rawMaterialSet = dict
+                .OrderBy(pair => pair.Key)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
             using (var workbook = new XLWorkbook())
             {
                 string type, size;
@@ -37,7 +42,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     var sheetName = ConvertSheetName(kvp.Key);
                     var worksheet = workbook.Worksheets.Add(sheetName);
                     //_imgWidth = ModifyCellWidth(worksheet);
-                    worksheet.ColumnWidth = (int)worksheet.ColumnWidth + 1;
+                    //worksheet.ColumnWidth = (int)worksheet.ColumnWidth + 1;
                     worksheet.RowHeight = (int)worksheet.RowHeight;
 
                     var match = Regex.Match(kvp.Key, @"^(.*),([A-Za-z]+)([\d\*\.]+)$");

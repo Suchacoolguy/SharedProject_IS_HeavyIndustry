@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using Avalonia;
 using SharedProject_IS_HeavyIndustry.Models;
 
@@ -28,6 +31,7 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
         set
         {
             materialList = value;
+            materialList.Sort();
             OnPropertyChanged();
         }
     }
@@ -38,10 +42,29 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
         get => descriptionList;
         set
         {
-            descriptionList = value;
-            OnPropertyChanged();
+            if (descriptionList != value)
+            {
+                // 알파벳 기준으로 정렬하고 숫자는 자연순으로 정렬
+                descriptionList = new ObservableCollection<string>(
+                    value.OrderBy(x => x, new AlphanumericComparer())
+                );
+                OnPropertyChanged();
+            }
         }
     }
+
+    /*public ObservableCollection<string> DescriptionList
+    {
+        get => descriptionList;
+        set
+        {
+            descriptionList = value;
+            var temp = descriptionList.ToList();
+            temp.Sort();
+            descriptionList = new ObservableCollection<string>(temp);
+            OnPropertyChanged();
+        }
+    }*/
 
     private string selectedMaterial = ""; // 선택된 재질
     public string SelectedMaterial // 재질 선택시 규격 콤보박스 아이템 초기화
@@ -108,5 +131,44 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
     protected void OnPropertyChanged([CallerMemberName] string name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+    
+    //문자열을 알파벳과 숫자로 비교하는 클래스
+    public class AlphanumericComparer : IComparer<string>
+    {
+        public int Compare(string x, string y)
+        {
+            // 정규식을 사용해 숫자와 알파벳 분리
+            var regex = new Regex(@"(\D+)|(\d+)");
+            var xMatches = regex.Matches(x);
+            var yMatches = regex.Matches(y);
+
+            int len = Math.Min(xMatches.Count, yMatches.Count);
+            for (int i = 0; i < len; i++)
+            {
+                var xPart = xMatches[i].Value;
+                var yPart = yMatches[i].Value;
+
+                // 알파벳 비교
+                if (char.IsLetter(xPart[0]) && char.IsLetter(yPart[0]))
+                {
+                    int result = string.Compare(xPart, yPart, StringComparison.Ordinal);
+                    if (result != 0)
+                        return result;
+                }
+                // 숫자 비교
+                else if (char.IsDigit(xPart[0]) && char.IsDigit(yPart[0]))
+                {
+                    int xNumber = int.Parse(xPart);
+                    int yNumber = int.Parse(yPart);
+
+                    if (xNumber != yNumber)
+                        return xNumber.CompareTo(yNumber);
+                }
+            }
+
+            // 길이가 다를 경우 짧은 것이 먼저
+            return xMatches.Count.CompareTo(yMatches.Count);
+        }
     }
 }

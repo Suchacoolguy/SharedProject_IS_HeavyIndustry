@@ -17,7 +17,7 @@ public class IndexConverter : IValueConverter
         if (value != null)
         {
             var index = DragAndDropViewModel.ArrangedRawMaterials.IndexOf((RawMaterial)value);
-            return index >= 0 ? index.ToString() : "Unknown";
+            return index >= 0 ? (index + 1).ToString() : "Unknown";
         }
 
         return "Unknown";

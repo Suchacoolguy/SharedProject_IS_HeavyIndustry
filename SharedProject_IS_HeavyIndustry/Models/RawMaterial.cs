@@ -103,11 +103,29 @@ namespace SharedProject_IS_HeavyIndustry.Models
             return part;
         }
 
-        public void removePart(Part part)
+        public Part InsertPartAt(Part part, int index)
+        {
+            PartsInside.Insert(index, part);
+            
+            RemainingLength -= part.Length;
+            TotalPartsLength += part.Length;
+            if (PartsInside.Count > 1)
+            {
+                RemainingLength -= SettingsViewModel.CuttingLoss;
+                part.LengthForUI += SettingsViewModel.CuttingLoss; // Part개수가 2개 이상이 추가된 파트 길이에 컷팅로스 추가
+            }
+            return part;
+        }
+
+        public void removePart(Part part, int index = -1)
         {
             if (PartsInside.Contains(part))
             {
-                PartsInside.Remove(part);
+                if (index == -1)
+                    PartsInside.Remove(part);
+                else
+                    PartsInside.RemoveAt(index);
+                
                 TotalPartsLength -= part.Length;
                 RemainingLength += part.Length;
                 if (PartsInside.Count >= 1)
@@ -126,6 +144,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 RemainingLength = Length - lengthNeeded;
             }
         }
+        
 
         private int FindShortestLengthPossibleWhenRemovePart(Part part)
         {

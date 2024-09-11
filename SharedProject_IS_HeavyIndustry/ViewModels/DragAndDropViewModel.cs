@@ -31,7 +31,7 @@ public class DragAndDropViewModel
     
     
 
-    public static void UpdateRawMaterial(RawMaterial? from, RawMaterial? to, Part part)
+    public static void UpdateRawMaterial(RawMaterial? from, RawMaterial? to, Part part, int partToIndex = -1)
     {
         int index_part = 0;
         
@@ -120,13 +120,46 @@ public class DragAndDropViewModel
                     }
                     
                     // --------------------------------------------------------------------------------
-                    to.insert_part(part);
-                    from.removePart(part);
+                    if (partToIndex != -1)
+                    {
+                        int partFromIndex = from.PartsInside.IndexOf(part);
+                        // var lastOne = from.PartsInside.LastOrDefault(part);
+                        // if (partToIndex < partFromIndex && lastOne == part)
+                        //     partFromIndex = from.PartsInside.IndexOf(lastOne);
+                        Console.WriteLine("PartFromIndex: " + partFromIndex);
+                        Console.WriteLine("PartToIndex: " + partToIndex);
+                        
+                        to.InsertPartAt(part, partToIndex);
+
+                        if (partFromIndex != -1)
+                        {
+                            if (partToIndex <= partFromIndex)
+                                from.removePart(part, partFromIndex + 1);
+                            else
+                                from.removePart(part, partFromIndex);
+                        }
+                        else
+                            from.removePart(part);
+                        // From 이랑 To가 같으면 따로 처리를 해야하남?
+                        // 같으면 part가 두 개 들어있을텐데 이전에 추가했던 걸 빼야할 거 같은디
+                        // removePart하면 그냥 앞쪽에 있는 걸 빼지 않겠는가
+                        
+                        
+                        Console.WriteLine("내 추리가 맞다면 여기일텐데??");
+                        
+                    }
+                    else
+                    {
+                        to.insert_part(part);
+                        from.removePart(part);    
+                    }
+                    
                     if (from.PartsInside.Count == 0)
                     {
                         ArrangedRawMaterials.Remove(from);
                     }
                     Console.WriteLine("UpdateRawMaterial - from: not null, to: not null, part: not null");
+                    
                 }
             }
         }
@@ -153,8 +186,6 @@ public class DragAndDropViewModel
         {
             DragAndDropView.InitializeSortOption();
         
-            Console.WriteLine("RawMaterial_Drop Executed.");
-        
             // the part object being dragged
             var data = e.Data as IDataObject;
             if (data == null)
@@ -179,6 +210,7 @@ public class DragAndDropViewModel
                 partTo = borderTo.Child?.DataContext as Part;
                 Console.WriteLine("파트의 정체는? " + partTo);
             }
+                
         
             // 이 경우는 우측(TempPartsView)에서 좌측(DragAndDropView)로 드랍하는 경우일 것
             if (rawMaterialFrom == null)
@@ -303,16 +335,44 @@ public class DragAndDropViewModel
                         if (control == null) return;
                         var dropPosition = e.GetPosition(control);
                         var controlBounds = control.Bounds;
+                        int partToIndex = rawMaterialTo != null ? rawMaterialTo.PartsInside.IndexOf(partTo) : -1;
 
                         double midpointX = controlBounds.Left + (controlBounds.Width / 2);
-                        
-                        if (dropPosition.X < midpointX)
-                            Console.WriteLine("왼쪽에 드랍");
+
+                        if (partToIndex != -1)
+                        {
+                            // 첫 번째 파트 위에다 드랍한 경우
+                            // 마지막 파트 위에다 드랍한 경우
+                            // 그 외에는 인덱스에 +1 혹은 -1 해서 추가
+                            // 뒤에 있는 다른 파트 밀어내기
+                            if (partToIndex == 0)
+                            {
+                                UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, 0);
+                            }
+                            else if (partToIndex == rawMaterialTo.PartsInside.Count - 1)
+                            {
+                                UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part,
+                                    rawMaterialTo.PartsInside.Count);
+                            }
+                            else
+                            {
+                                if (dropPosition.X < midpointX)
+                                {
+                                    UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, partToIndex);
+                                    Console.WriteLine("좌측!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("우측!");
+                                    UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, partToIndex + 1);
+                                }
+                            }
+                        }
                         else
-                            Console.WriteLine("오른쪽에 드랍");
-                        
-                        // ================================================
-                        UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
+                        {
+                            UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part);
+                            Console.WriteLine("!!!!!!!     오잉??? PartToIndex가 -1?   !!!!!!!");
+                        }
                     }    
                 }
             

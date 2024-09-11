@@ -53,19 +53,6 @@ public class DragAndDropTabViewModel : AvaloniaObject, INotifyPropertyChanged
         }
     }
 
-    /*public ObservableCollection<string> DescriptionList
-    {
-        get => descriptionList;
-        set
-        {
-            descriptionList = value;
-            var temp = descriptionList.ToList();
-            temp.Sort();
-            descriptionList = new ObservableCollection<string>(temp);
-            OnPropertyChanged();
-        }
-    }*/
-
     private string selectedMaterial = ""; // 선택된 재질
     public string SelectedMaterial // 재질 선택시 규격 콤보박스 아이템 초기화
     {

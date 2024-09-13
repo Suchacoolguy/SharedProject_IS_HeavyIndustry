@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
         <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
-
+        <converters:ElementIndexConverter x:Key="ElementIndexConverter"/>
     </UserControl.Resources>
     
     <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
@@ -48,11 +48,23 @@
                                             </Border.RenderTransform>-->
                                         </Border> 
                                     <!-- Raw material -->
-                                    <TextBlock Name="Index" Text="1" Canvas.Left="-8500" Canvas.Top="5" Foreground="Red">
+                                    <!-- <MultiBinding Converter="{StaticResource ElementIndexConverter}"> -->
+                                    <!--     <Binding Path="$parent[ItemsControl].DataContext"/> -->
+                                    <!--     <Binding Path="."/> -->
+                                    <!-- </MultiBinding> -->
+                                    
+                                    <TextBlock Name="Index" Canvas.Left="-8500" Canvas.Top="5" Foreground="Red">
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource ElementIndexConverter}">
+                                                <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
+                                                <Binding Path="."/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
                                     </TextBlock>
+                                    
                                     <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Background="{Binding BackgroundColor}"
                                            Canvas.Left="-8000" Canvas.Top="35">
                                         <!-- Define three columns -->

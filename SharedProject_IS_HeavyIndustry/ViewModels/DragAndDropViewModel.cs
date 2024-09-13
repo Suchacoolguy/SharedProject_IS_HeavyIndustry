@@ -90,6 +90,7 @@ public class DragAndDropViewModel
                     if (from.PartsInside.Count == 0)
                     {
                         ArrangedRawMaterials.Remove(from);
+                        RefreshArrangedRawMaterials();
                     }
                 }
             }
@@ -123,6 +124,7 @@ public class DragAndDropViewModel
                     if (from.PartsInside.Count == 0)
                     {
                         ArrangedRawMaterials.Remove(from);
+                        RefreshArrangedRawMaterials();
                     }
                     Console.WriteLine("UpdateRawMaterial - from: not null, to: not null, part: not null");
                 }
@@ -335,6 +337,16 @@ public class DragAndDropViewModel
         {
             Console.WriteLine(exception);
         }
+    }
+
+    public static void RefreshArrangedRawMaterials()
+    {
+        var temp = new List<RawMaterial>(ArrangedRawMaterials!);
+        
+        ArrangedRawMaterials.Clear();
+        
+        foreach (var value in temp)
+            ArrangedRawMaterials.Add(value);
     }
 
     public static List<int> GetLengthOptionsRawMaterial()

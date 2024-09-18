@@ -133,7 +133,7 @@ public class DragAndDropViewModel
 
                         if (partFromIndex != -1)
                         {
-                            if (partToIndex <= partFromIndex)
+                            if (partToIndex <= partFromIndex && from.Equals(to))
                                 from.removePart(part, partFromIndex + 1);
                             else
                                 from.removePart(part, partFromIndex);
@@ -347,12 +347,19 @@ public class DragAndDropViewModel
                             // 뒤에 있는 다른 파트 밀어내기
                             if (partToIndex == 0)
                             {
-                                UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, 0);
+                                // 첫 번째 파트 우측 부분에 드랍한 경우
+                                if (midpointX < dropPosition.X)
+                                    UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, 1);
+                                else
+                                    UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, 0);
                             }
                             else if (partToIndex == rawMaterialTo.PartsInside.Count - 1)
                             {
-                                UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part,
-                                    rawMaterialTo.PartsInside.Count);
+                                // 마지막 파트 좌측 부분에 드랍한 경우
+                                if (dropPosition.X < midpointX)
+                                    UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, rawMaterialTo.PartsInside.Count - 1);
+                                else
+                                    UpdateRawMaterial(rawMaterialFrom, rawMaterialTo, part, rawMaterialTo.PartsInside.Count);
                             }
                             else
                             {

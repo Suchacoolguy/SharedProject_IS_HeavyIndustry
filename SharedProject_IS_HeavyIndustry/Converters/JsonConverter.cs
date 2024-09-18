@@ -69,7 +69,8 @@ namespace SharedProject_IS_HeavyIndustry.Converters
             catch (Exception ex)
             {
                 Console.WriteLine($"Error loading database: {ex.Message}");
-                return null;
+                // return null;
+                return new Dictionary<string, RawLengthSet>();
             }
         }
 

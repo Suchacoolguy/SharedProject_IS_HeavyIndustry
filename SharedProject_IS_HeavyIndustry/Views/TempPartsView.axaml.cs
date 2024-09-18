@@ -56,6 +56,7 @@ public partial class TempPartsView : UserControl
                     if (rawMaterialFrom.PartsInside.Count == 0)
                     {
                         DragAndDropViewModel.ArrangedRawMaterials.Remove(rawMaterialFrom);
+                        DragAndDropViewModel.RefreshArrangedRawMaterials();
                     }
                 }
             }

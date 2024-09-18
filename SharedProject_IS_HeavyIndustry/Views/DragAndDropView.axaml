@@ -14,6 +14,7 @@
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
         <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
         <converters:ElementIndexConverter x:Key="ElementIndexConverter"/>
+        <converters:IndexConverter x:Key="IndexConverter"/>
     </UserControl.Resources>
     
     <Grid Name="EntireGrid" DragDrop.AllowDrop="True">
@@ -48,12 +49,11 @@
                                             </Border.RenderTransform>-->
                                         </Border> 
                                     <!-- Raw material -->
-                                    <!-- <MultiBinding Converter="{StaticResource ElementIndexConverter}"> -->
-                                    <!--     <Binding Path="$parent[ItemsControl].DataContext"/> -->
-                                    <!--     <Binding Path="."/> -->
-                                    <!-- </MultiBinding> -->
-                                    
-                                    <TextBlock Name="Index" Canvas.Left="-8500" Canvas.Top="5" Foreground="Red">
+                                     <TextBlock Name="Index" 
+                                                Text="{Binding ., Converter={StaticResource IndexConverter}}"
+                                                Canvas.Left="-8500" 
+                                                Canvas.Top="5" 
+                                                Foreground="Red">
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>

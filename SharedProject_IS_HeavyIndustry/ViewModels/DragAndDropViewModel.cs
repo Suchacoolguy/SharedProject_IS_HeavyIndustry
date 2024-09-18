@@ -15,7 +15,7 @@ namespace SharedProject_IS_HeavyIndustry.ViewModels;
 
 public class DragAndDropViewModel
 {
-    public static ObservableCollection<RawMaterial?> ArrangedRawMaterials { get; set; }
+    public static ObservableCollection<RawMaterial?> ArrangedRawMaterials { get; set; } = [];
     public static string ArrangementType { get; set; } = "Min Raw Material Type";
     public RawMaterial CurrentRawMaterial { get; set; }
     public static ObservableCollection<Part> PartsCanNotBeArranged { get; set; } = new ObservableCollection<Part>();
@@ -28,8 +28,6 @@ public class DragAndDropViewModel
         ArrangedRawMaterials = new ObservableCollection<RawMaterial?>(arrangedRawMaterials);
         PartsCanNotBeArranged = new ObservableCollection<Part>(partsCanNotBeArranged);
     }
-    
-    
 
     public static void UpdateRawMaterial(RawMaterial? from, RawMaterial? to, Part part, int partToIndex = -1)
     {
@@ -92,6 +90,7 @@ public class DragAndDropViewModel
                     if (from.PartsInside.Count == 0)
                     {
                         ArrangedRawMaterials.Remove(from);
+                        RefreshArrangedRawMaterials();
                     }
                 }
             }
@@ -157,6 +156,7 @@ public class DragAndDropViewModel
                     if (from.PartsInside.Count == 0)
                     {
                         ArrangedRawMaterials.Remove(from);
+                        RefreshArrangedRawMaterials();
                     }
                     Console.WriteLine("UpdateRawMaterial - from: not null, to: not null, part: not null");
                     
@@ -404,6 +404,16 @@ public class DragAndDropViewModel
         {
             Console.WriteLine(exception);
         }
+    }
+
+    public static void RefreshArrangedRawMaterials()
+    {
+        var temp = new List<RawMaterial>(ArrangedRawMaterials!);
+        
+        ArrangedRawMaterials.Clear();
+        
+        foreach (var value in temp)
+            ArrangedRawMaterials.Add(value);
     }
 
     public static List<int> GetLengthOptionsRawMaterial()

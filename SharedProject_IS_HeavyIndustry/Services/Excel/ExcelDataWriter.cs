@@ -23,13 +23,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _row = 13;
         private static int _imgWidth = 0;
         
-        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> dict)
+        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> rawMaterialSet)
         {
-            //전달받은 RawMaterial딕셔너리를 오름차순 정렬하여 새로운 변수에 담는 코드 
-            var rawMaterialSet = dict
-                .OrderBy(pair => pair.Key)
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
-
             using (var workbook = new XLWorkbook())
             {
                 string type, size;
@@ -278,6 +273,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
             {
                 cellWidth += worksheet.Column(col).Width;
             }
+
             double cellHeight = worksheet.Row(row).Height;
 
             // Convert cell dimensions from points to pixels (assuming 96 DPI)
@@ -292,8 +288,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
                     .MoveTo(worksheet.Cell(row, 3))
                     .ScaleWidth(cellWidthPx / image.Width)
                     .ScaleHeight(cellHeightPx / image.Height);
-                
-                worksheet.Row(_row).Height += 10; 
+
+                worksheet.Row(_row).Height += 10;
 
                 // Adjust the position to fit within the cell
                 picture.MoveTo(worksheet.Cell(row, 3), worksheet.Cell(row, 8).CellBelow().CellRight());

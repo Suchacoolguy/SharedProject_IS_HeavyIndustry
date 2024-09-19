@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 
@@ -63,4 +64,58 @@ public class MainWindowViewModel : ViewModelBase
             TempPartSet.TryAdd(key, tempPartSet);
         }
     }
+
+    //레포트 출력 전에 RawMaterialSet 오름차순으로 정렬 
+    public static void SortRawMaterialSet()
+    {
+        var sortedDic = RawMaterialSet.OrderBy(kv => ParseKey(kv.Key), new ParsedKeyComparer())
+            .ToDictionary(kv => kv.Key, kv => kv.Value);
+        RawMaterialSet = sortedDic;
+    }
+
+    private static (string materialKey, List<int> numbers) ParseKey(string key)
+    {
+        // 쉼표로 구분하여 앞부분을 prefix로, 뒷부분을 materialKey로 분리
+        var parts = key.Split(',');
+
+        string materialKey = parts[1];
+
+        // materialKey에서 숫자를 추출하여 리스트로 변환
+        List<int> numbers = materialKey.SkipWhile(c => !char.IsDigit(c))
+            .Select(c => char.IsDigit(c) || c == '.' ? c : '*')
+            .Aggregate("", (acc, ch) => acc + ch)
+            .Split(new char[] { '*', '.' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(int.Parse)
+            .ToList();
+
+        return (materialKey, numbers);
+    }
+
+// 커스텀 Comparer 구현
+    class ParsedKeyComparer : IComparer<(string materialKey, List<int> numbers)>
+    {
+        public int Compare((string materialKey, List<int> numbers) x, (string materialKey, List<int> numbers) y)
+        {
+            // 1. materialKey(쉼표 이후의 문자열) 비교
+            int materialKeyComparison = string.Compare(x.materialKey, y.materialKey, StringComparison.Ordinal);
+            if (materialKeyComparison != 0)
+            {
+                return materialKeyComparison;
+            }
+
+            // 2. numbers(숫자 부분) 비교
+            for (int i = 0; i < Math.Min(x.numbers.Count, y.numbers.Count); i++)
+            {
+                int numberComparison = x.numbers[i].CompareTo(y.numbers[i]);
+                if (numberComparison != 0)
+                {
+                    return numberComparison;
+                }
+            }
+
+            // 3. 숫자 배열의 길이가 다를 경우 더 긴 쪽이 더 큼
+            return x.numbers.Count.CompareTo(y.numbers.Count);
+        }
+    }
+
 }

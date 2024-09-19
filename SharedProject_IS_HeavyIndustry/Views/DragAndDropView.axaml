@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <converters:DivideByTenConverter x:Key="DivideByTenConverter"/>
         <converters:RawMaterialConverter x:Key="RawMaterialConverter"/>
+        <converters:ElementIndexConverter x:Key="ElementIndexConverter"/>
         <converters:IndexConverter x:Key="IndexConverter"/>
     </UserControl.Resources>
     
@@ -48,7 +49,6 @@
                                             </Border.RenderTransform>-->
                                         </Border> 
                                     <!-- Raw material -->
-                                    
                                      <TextBlock Name="Index" 
                                                 Text="{Binding ., Converter={StaticResource IndexConverter}}"
                                                 Canvas.Left="-8500" 
@@ -57,7 +57,14 @@
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource ElementIndexConverter}">
+                                                <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
+                                                <Binding Path="."/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
                                     </TextBlock>
+                                    
                                     <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Background="{Binding BackgroundColor}"
                                            Canvas.Left="-8000" Canvas.Top="35">
                                         <!-- Define three columns -->

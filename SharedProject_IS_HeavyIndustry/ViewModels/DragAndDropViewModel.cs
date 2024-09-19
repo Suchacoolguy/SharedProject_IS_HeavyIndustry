@@ -382,8 +382,6 @@ public class DragAndDropViewModel
                         }
                     }    
                 }
-            
-            
                 Console.WriteLine("RawMaterial_Drop - to: null, part: not null");
             }
         

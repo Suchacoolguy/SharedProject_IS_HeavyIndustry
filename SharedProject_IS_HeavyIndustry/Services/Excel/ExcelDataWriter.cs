@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
+using ClosedXML.Excel.Drawings;
 using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 using DynamicData;
 using SharedProject_IS_HeavyIndustry.Converters;
@@ -271,23 +272,32 @@ namespace SharedProject_IS_HeavyIndustry.Models
             var mergedCells = worksheet.Range(row, 3, row, 8);
             // 셀 병합
             mergedCells.Merge();
-            worksheet.Row(row).Height = worksheet.Row(row).Height + 10; // 예시로 높이를 100으로 설정
-            
-            //double mergedCellWidth = worksheet.Column(3).Width;
-            var mergedCellHeight = worksheet.Row(row).Height;
-            /*Console.WriteLine("height : " + mergedCellHeight);
-            Console.WriteLine("width : " + mergedCellWidth);*/
-            mergedCellHeight = (worksheet.Row(row).Height * 96 / 72);
+            // Calculate the dimensions of the merged cell
+            double cellWidth = 0;
+            for (int col = 3; col <= 8; col++)
+            {
+                cellWidth += worksheet.Column(col).Width;
+            }
+            double cellHeight = worksheet.Row(row).Height;
 
-            var width = ReportTabViewModel.Width;
-            var height = ReportTabViewModel.Height;
-            
+            // Convert cell dimensions from points to pixels (assuming 96 DPI)
+            double cellWidthPx = cellWidth * 7.5; // Approximate conversion factor
+            double cellHeightPx = cellHeight * 1.33; // Approximate conversion factor
+
+            // Insert the image and scale it to fit the cell
             using (var ms = new MemoryStream())
             {
                 image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(ms);
-                var picture = worksheet.AddPicture(ms).MoveTo(worksheet.Cell(row, 3)).WithSize(width, height);
+                var picture = worksheet.AddPicture(ms)
+                    .MoveTo(worksheet.Cell(row, 3))
+                    .ScaleWidth(cellWidthPx / image.Width)
+                    .ScaleHeight(cellHeightPx / image.Height);
                 
-                worksheet.Row(_row).Height += 3; 
+                worksheet.Row(_row).Height += 10; 
+
+                // Adjust the position to fit within the cell
+                picture.MoveTo(worksheet.Cell(row, 3), worksheet.Cell(row, 8).CellBelow().CellRight());
+                picture.Placement = XLPicturePlacement.MoveAndSize;
             }
         }
 

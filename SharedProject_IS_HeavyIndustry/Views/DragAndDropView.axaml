@@ -57,12 +57,12 @@
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>
-                                        <TextBlock.Text>
+                                        <!--<TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource ElementIndexConverter}">
                                                 <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
                                                 <Binding Path="."/>
                                             </MultiBinding>
-                                        </TextBlock.Text>
+                                        </TextBlock.Text>-->
                                     </TextBlock>
                                     
                                     <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Background="{Binding BackgroundColor}"

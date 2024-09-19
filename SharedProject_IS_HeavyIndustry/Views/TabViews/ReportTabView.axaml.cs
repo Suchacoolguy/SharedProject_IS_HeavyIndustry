@@ -111,6 +111,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 }
             }
             WriteImageSizeFile();
+            MainWindowViewModel.SortRawMaterialSet();
             ExcelDataWriter.Write(MainWindowViewModel.RawMaterialSet);
         }
 

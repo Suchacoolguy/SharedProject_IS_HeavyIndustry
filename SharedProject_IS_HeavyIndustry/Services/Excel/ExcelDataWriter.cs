@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
+using ClosedXML.Excel.Drawings;
 using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 using DynamicData;
 using SharedProject_IS_HeavyIndustry.Converters;
@@ -22,13 +23,8 @@ namespace SharedProject_IS_HeavyIndustry.Models
         private static int _row = 13;
         private static int _imgWidth = 0;
         
-        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> dict)
+        public static void Write(Dictionary<string, ObservableCollection<RawMaterial?>> rawMaterialSet)
         {
-            //전달받은 RawMaterial딕셔너리를 오름차순 정렬하여 새로운 변수에 담는 코드 
-            var rawMaterialSet = dict
-                .OrderBy(pair => pair.Key)
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
-
             using (var workbook = new XLWorkbook())
             {
                 string type, size;
@@ -271,12 +267,44 @@ namespace SharedProject_IS_HeavyIndustry.Models
             var mergedCells = worksheet.Range(row, 3, row, 8);
             // 셀 병합
             mergedCells.Merge();
+            // Calculate the dimensions of the merged cell
+            double cellWidth = 0;
+            for (int col = 3; col <= 8; col++)
+            {
+                cellWidth += worksheet.Column(col).Width;
+            }
+            double cellHeight = worksheet.Row(row).Height;
+
+            // Convert cell dimensions from points to pixels (assuming 96 DPI)
+            double cellWidthPx = cellWidth * 7.5; // Approximate conversion factor
+            double cellHeightPx = cellHeight * 1.33; // Approximate conversion factor
+
+            // Insert the image and scale it to fit the cell
+            using (var ms = new MemoryStream())
+            {
+                image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(ms);
+                var picture = worksheet.AddPicture(ms)
+                    .MoveTo(worksheet.Cell(row, 3))
+                    .ScaleWidth(cellWidthPx / image.Width)
+                    .ScaleHeight(cellHeightPx / image.Height);
+
+                // Adjust the position to fit within the cell
+                picture.MoveTo(worksheet.Cell(row, 3), worksheet.Cell(row, 8).CellBelow().CellRight());
+                picture.Placement = XLPicturePlacement.MoveAndSize;
+            }
+        }
+        /*private static void InsertImage(IXLWorksheet worksheet, SKBitmap image, int row)
+        {
+            // 병합할 범위 선택
+            var mergedCells = worksheet.Range(row, 3, row, 8);
+            // 셀 병합
+            mergedCells.Merge();
             worksheet.Row(row).Height = worksheet.Row(row).Height + 10; // 예시로 높이를 100으로 설정
             
             //double mergedCellWidth = worksheet.Column(3).Width;
             var mergedCellHeight = worksheet.Row(row).Height;
             /*Console.WriteLine("height : " + mergedCellHeight);
-            Console.WriteLine("width : " + mergedCellWidth);*/
+            Console.WriteLine("width : " + mergedCellWidth);#1#
             mergedCellHeight = (worksheet.Row(row).Height * 96 / 72);
 
             var width = ReportTabViewModel.Width;
@@ -289,7 +317,7 @@ namespace SharedProject_IS_HeavyIndustry.Models
                 
                 worksheet.Row(_row).Height += 3; 
             }
-        }
+        }*/
 
         private static string ConvertSheetName(string input)
         {

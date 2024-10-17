@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using ClosedXML.Excel;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
 
@@ -13,6 +14,8 @@ public class MainWindowViewModel : ViewModelBase
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning restore CA1822 // Mark members as static
     
+    public static IXLWorksheet Sheet = null!;
+    public static XLWorkbook Workbook = null!;
     public static DragAndDropViewModel DragAndDropViewModel { get; set; }
     public static BOMDataViewModel BomDataViewModel { get; set; }
     //public static SettingsViewModel SettingsViewModel { get; set; }

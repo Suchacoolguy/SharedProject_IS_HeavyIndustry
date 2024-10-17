@@ -41,10 +41,11 @@ public class ArrangePartsService
         // 파트배치 하기 전에 분리하는 작업
         foreach (var ppp in overSizeParts)
         {
-            int length = ppp.Length;
+            /*int length = ppp.Length;*/
+            Console.WriteLine("*************************분리 길이 ******************\n" +ppp.lengthToBeSeparated);
             if (ppp.NeedSeparate && !string.IsNullOrEmpty(ppp.lengthToBeSeparated))
             {
-                int lengthToBeSeperated = Convert.ToInt32(ppp.lengthToBeSeparated);
+                /*int lengthToBeSeperated = Convert.ToInt32(ppp.lengthToBeSeparated);
                 while (length > lengthToBeSeperated)
                 {
                     length -= lengthToBeSeperated;
@@ -61,7 +62,8 @@ public class ArrangePartsService
                     Part restPart = new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material, length, ppp.Num,
                         ppp.WeightOne, ppp.WeightSum, ppp.PArea, ppp.Desc);
                     replacedParts.Add(restPart);
-                }
+                }*/
+                DividePart(ppp, replacedParts);
             }
             else
             {
@@ -87,6 +89,24 @@ public class ArrangePartsService
         }
     }
 
+    private static void DividePart(Part ppp, List<Part> replacedParts)
+    {
+        var initLen = ppp.Length;
+        foreach (var SeperateLength in ppp.GetSeperateLengthList())
+        {
+            initLen -= SeperateLength;
+            replacedParts.Add(
+                new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material,
+                    SeperateLength, ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea,
+                    ppp.Desc)
+                );
+        }
+        replacedParts.Add(
+                new Part(ppp.Assem, ppp.Mark.Insert(0, "J_"), ppp.Material,
+                    initLen, ppp.Num, ppp.WeightOne, ppp.WeightSum, ppp.PArea,
+                    ppp.Desc)
+            );
+    }
     public static ObservableCollection<RawMaterial?> ArrangeParts(List<Part> parts)
     {
         List<RawMaterial> rawMaterialsUsed = new List<RawMaterial>();
@@ -96,7 +116,7 @@ public class ArrangePartsService
         partList.Sort((a, b) => b.Length.CompareTo(a.Length));
         // sort in descending order
         _lengthOptionsRawMaterial.Sort((a, b) => b.CompareTo(a));
-        
+          
         // 블록마크 기준으로 파트들을 그룹화
         Dictionary<string, List<Part>> partsByMark = GroupPartsByMark(partList);
 

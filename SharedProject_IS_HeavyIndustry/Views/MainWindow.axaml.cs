@@ -20,8 +20,6 @@ namespace SharedProject_IS_HeavyIndustry.Views
 {
     public partial class MainWindow : Window
     {
-        private static IXLWorksheet _sheet = null!;
-        private static XLWorkbook _workbook = null!;
         private Loading loading;
 
         public MainWindow()
@@ -35,13 +33,13 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         public static List<string> GetSheetNames() // StartWindow에서 사용
         {
-            return _workbook.Worksheets.Select(sh => sh.Name).ToList();
+            return MainWindowViewModel.Workbook.Worksheets.Select(sh => sh.Name).ToList();
         }
 
         public static void SetSheet(string sheetName) // StartWindow에서 사용
         {
             if (string.IsNullOrEmpty(sheetName)) return;
-            _sheet = _workbook.Worksheet(sheetName);
+            MainWindowViewModel.Sheet = MainWindowViewModel.Workbook.Worksheet(sheetName);
             
             SettingsViewModel.Refresh();
 
@@ -49,7 +47,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
             try
             {
                 AlarmWindowViewModel.Clear();
-                List<Part> partsFromBOM = ExcelDataReader.PartListFromExcel(_sheet);
+                List<Part> partsFromBOM = ExcelDataReader.PartListFromExcel(MainWindowViewModel.Sheet);
                 MainWindowViewModel.BomDataViewModel = new BOMDataViewModel(partsFromBOM); 
                 BOMDataTabView.OffSwitches();
             }
@@ -88,7 +86,7 @@ namespace SharedProject_IS_HeavyIndustry.Views
         public async Task ReadExcelWorkbookAsync()
         {
             loading.Start(); // 로딩 시작
-            await Task.Run(() => _workbook = ExcelDataReader.Read(ExcelTabViewModel.ExcelFilePath)); // 비동기 작업
+            await Task.Run(() => MainWindowViewModel.Workbook = ExcelDataReader.Read(ExcelTabViewModel.ExcelFilePath)); // 비동기 작업
             loading.Stop(); // 로딩 종료
         }
 

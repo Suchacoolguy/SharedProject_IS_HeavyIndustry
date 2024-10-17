@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace SharedProject_IS_HeavyIndustry.Models;
 
@@ -24,8 +27,6 @@ public class Part : INotifyPropertyChanged
                 OnPropertyChanged();
                 return;
             }
-            if (!int.TryParse(value, out var intLen) || intLen <= 0) return;
-            if (_lengthToBeSeparated == value) return;
             _lengthToBeSeparated = value;
             OnPropertyChanged();
         }
@@ -145,6 +146,12 @@ public class Part : INotifyPropertyChanged
     protected void OnPropertyChanged(string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public List<int> GetSeperateLengthList()
+    {
+        var list = lengthToBeSeparated.Split(",");
+        return list.Select(str => Convert.ToInt32(str)).ToList();
     }
 
     public override string ToString()

@@ -8,6 +8,7 @@ using SharedProject_IS_HeavyIndustry.Services;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
 using Avalonia.Controls.Primitives;
+using OperationsResearch;
 using Button = Avalonia.Controls.Button;
 using ToggleButton = Avalonia.Controls.Primitives.ToggleButton;
 
@@ -158,13 +159,37 @@ public partial class BOMDataTabView : TabView
     private void Input_Btn_Clicked(object? sender, RoutedEventArgs e)
     {
         var inputBox = this.FindControl<TextBox>("SeparateLenBox")!;
-        foreach (var part in BOMDataViewModel.PartsFiltered)
+        var length = inputBox.Text;
+        
+        if(InputLengthValidCheck(length!))
+            foreach (var part in BOMDataViewModel.PartsFiltered)
+                part.lengthToBeSeparated = length!;
+        else
         {
-            part.lengthToBeSeparated = inputBox.Text!;
+            MessageService.Send("유효하지 않은 값입니다 ");
         }
 
         inputBox.Text = "";
 
+    }
+
+    private bool InputLengthValidCheck(string length)
+    {
+        // 쉼표로 구분된 두 개의 숫자를 처리
+        var lengths = length.Split(',');
+
+        // 두 개의 숫자를 확인
+        if (lengths.Length == 2)
+        {
+            if (int.TryParse(lengths[0], out var firstNumber) && firstNumber > 0 &&
+                int.TryParse(lengths[1], out var secondNumber) && secondNumber > 0)
+                return true;
+        }
+        // 쉼표가 없을 경우, 하나의 숫자만 확인
+        else if (int.TryParse(length, out var singleNumber) && singleNumber > 0)
+            return true;
+        
+        return false;
     }
 
     private bool SeparateLengthValidCheck()
@@ -180,10 +205,22 @@ public partial class BOMDataTabView : TabView
             }
             else
             {
-                if (!(SettingsViewModel.GetMaxLen(part.Desc.ToString()) < int.Parse(part.lengthToBeSeparated)))
-                    continue;
-                if (descSet.Add(part.Desc.ToString()))
+                List<int> list;
+                try
+                {
+                    list = part.GetSeperateLengthList();
+                }catch (Exception e)
+                {
                     descList.Add(part.Desc.ToString());
+                    continue;
+                }
+
+                foreach (var len in list)
+                {
+                    if (SettingsViewModel.GetMaxLen(part.Desc.ToString()) >= len) continue;
+                    if (descSet.Add(part.Desc.ToString()))
+                        descList.Add(part.Desc.ToString());
+                }
             }
         }
 

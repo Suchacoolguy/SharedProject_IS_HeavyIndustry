@@ -1,17 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using DynamicData;
 using SharedProject_IS_HeavyIndustry.Models;
-using Google.OrTools.LinearSolver;
-using Google.OrTools.Sat;
-using Newtonsoft.Json.Linq;
-using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.ViewModels;
-using Constraint = Google.OrTools.LinearSolver.Constraint;
 
 namespace SharedProject_IS_HeavyIndustry.Services;
 

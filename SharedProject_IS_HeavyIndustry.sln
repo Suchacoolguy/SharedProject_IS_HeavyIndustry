@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedProject_IS_HeavyIndustry", "SharedProject_IS_HeavyIndustry\SharedProject_IS_HeavyIndustry.csproj", "{8DAF5DA2-9CE5-4F47-A440-23F4DF8E5486}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestArrangePartsService", "UnitTestArrangePartsService\UnitTestArrangePartsService.csproj", "{1070DC7F-43BE-46F2-AF18-6A6FBE5C105D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{8DAF5DA2-9CE5-4F47-A440-23F4DF8E5486}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DAF5DA2-9CE5-4F47-A440-23F4DF8E5486}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DAF5DA2-9CE5-4F47-A440-23F4DF8E5486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1070DC7F-43BE-46F2-AF18-6A6FBE5C105D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1070DC7F-43BE-46F2-AF18-6A6FBE5C105D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1070DC7F-43BE-46F2-AF18-6A6FBE5C105D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1070DC7F-43BE-46F2-AF18-6A6FBE5C105D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

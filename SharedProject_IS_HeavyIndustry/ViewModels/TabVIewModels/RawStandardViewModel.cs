@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using DynamicData;
 using SharedProject_IS_HeavyIndustry.Converters;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.Services;
-using SharedProject_IS_HeavyIndustry.Views.TabViews;
 
 namespace SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels
 {

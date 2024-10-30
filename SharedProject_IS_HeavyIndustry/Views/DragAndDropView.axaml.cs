@@ -40,16 +40,6 @@ public partial class DragAndDropView : TabView
     {
         InitializeComponent();
         
-        // var entireGrid = this.FindControl<Grid>("EntireGrid");
-        // // Create a new instance of OverSizePartsView
-        // var overSizePartsView = new TempPartsView();
-        //
-        // // Set the Grid.Column property of the OverSizePartsView
-        // Grid.SetColumn(overSizePartsView, 1);
-        //
-        // // Add the OverSizePartsView to the Grid
-        // entireGrid.Children.Add(overSizePartsView);
-        
         AddHandler(DragDrop.DragOverEvent, RawMaterial_DragOver);
         AddHandler(DragDrop.DropEvent, DragAndDropViewModel.RawMaterial_Drop);
         

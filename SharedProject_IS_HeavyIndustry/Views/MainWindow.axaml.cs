@@ -5,12 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Media;
-using Avalonia.Threading;
-using ClosedXML.Excel;
 using SharedProject_IS_HeavyIndustry.Models;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using SharedProject_IS_HeavyIndustry.ViewModels.TabVIewModels;
@@ -136,27 +132,6 @@ namespace SharedProject_IS_HeavyIndustry.Views
             }
         }
 
-        /*public void AddTab(string tabHeader)
-        {
-            var tabPanel = this.FindControl<TabControl>("TabFrame");
-            var existingTab = tabPanel?.Items.Cast<TabItem>().FirstOrDefault(item => item.Header!.ToString() == tabHeader);
-
-            if (existingTab != null)
-            {
-                existingTab.Content = CreateTabContent(tabHeader);
-            }
-            else
-            {
-                var tabItem = new TabItem
-                {
-                    Header = tabHeader,
-                    Content = CreateTabContent(tabHeader)
-                };
-
-                tabPanel?.Items.Add(tabItem);
-            }
-        }*/
-
         private Control CreateTabContent(string tabHeader)
         {
             return tabHeader switch
@@ -172,12 +147,8 @@ namespace SharedProject_IS_HeavyIndustry.Views
 
         private void Bell_Click_Event(object? sender, RoutedEventArgs e)
         {
-            //var btn = sender as Button;
             var alarmWindow = new AlarmWindow();
             alarmWindow.Show();
-            //if (!btn!.Name!.Equals("BellActive")) return;
-            //btn.IsVisible = false;
-            //this.FindControl<Button>("Bell")!.IsVisible = true;
         }
 
         private void CuttingLoss_btn_click(object? sender, RoutedEventArgs e)

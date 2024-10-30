@@ -13,17 +13,6 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using SharedProject_IS_HeavyIndustry.ViewModels;
 using Thickness = Avalonia.Thickness;
 
-// 필터 구성
-// ContextFlyout{
-//  StackPanel{
-//      TextBlock,
-//      StackPanel{
-//          TextBox(검색 박스),
-//          ScrollViewer{
-//              Border{CheckBox(모두선택 체크박스)},
-//              CheckBox(체크박스 항목들) },
-//          Button(적용 버튼)
-
 namespace SharedProject_IS_HeavyIndustry.Services
 {
     public class FilteringService

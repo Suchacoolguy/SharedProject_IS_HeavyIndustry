@@ -73,17 +73,5 @@ namespace SharedProject_IS_HeavyIndustry.Views
                 }
             }
         }
-
-        // public void abc()
-        // {
-        //     var dataGrid = this.FindControl<DataGrid>("Table");
-        //     dataGrid.CellEditEnded
-        //     
-        //     foreach (var column in dataGrid.Columns)
-        //     {
-        //         if (column.Header.ToString() == "분리길이")
-        //             Console.WriteLine(column);
-        //     }
-        // }
     }
 }

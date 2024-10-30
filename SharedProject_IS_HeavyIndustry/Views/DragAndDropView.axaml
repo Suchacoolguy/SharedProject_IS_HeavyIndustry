@@ -44,9 +44,6 @@
                                             <Rectangle Name="RawMaterialRectangle" Height="30" Width="{Binding Length, Converter={StaticResource RawMaterialConverter}}"
                                                        Fill="LightGray"  DragDrop.AllowDrop="True" Tag="{Binding}" >
                                             </Rectangle>
-                                            <!--<Border.RenderTransform>
-                                                <ScaleTransform ScaleX="0.5"></ScaleTransform>
-                                            </Border.RenderTransform>-->
                                         </Border> 
                                     <!-- Raw material -->
                                      <TextBlock Name="Index" 
@@ -57,12 +54,6 @@
                                         <TextBlock.RenderTransform>
                                             <ScaleTransform ScaleX="20"/>
                                         </TextBlock.RenderTransform>
-                                        <!--<TextBlock.Text>
-                                            <MultiBinding Converter="{StaticResource ElementIndexConverter}">
-                                                <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
-                                                <Binding Path="."/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>-->
                                     </TextBlock>
                                     
                                     <Grid  Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" Background="{Binding BackgroundColor}"
@@ -93,24 +84,6 @@
                                             </TextBlock.RenderTransform>
                                         </TextBlock>
                                     </Grid>
-                                    <!--<TextBlock Text="{Binding Length}" TextAlignment="Left" Canvas.Left="-8000" Canvas.Top="35">
-                                        <TextBlock.RenderTransform>
-                                            <ScaleTransform ScaleX="20"/>
-                                        </TextBlock.RenderTransform>
-                                    </TextBlock>
-                                    <TextBlock Text="{Binding TotalPartsLength}" Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" 
-                                               TextAlignment="Center" Canvas.Top="35" Canvas.Left="-8000">
-                                        <TextBlock.RenderTransform>
-                                            <ScaleTransform ScaleX="20"/>
-                                        </TextBlock.RenderTransform>
-                                    </TextBlock>
-                                    <TextBlock Name="RemainingLengthText" Text="{Binding RemainingLength}" 
-                                               Width="{Binding Length, Converter={StaticResource DivideByTenConverter}}" TextAlignment="Right" Canvas.Top="35" Canvas.Left="-10000">
-                                        <TextBlock.RenderTransform>
-                                            <ScaleTransform ScaleX="20"/>
-                                        </TextBlock.RenderTransform>
-                                    </TextBlock>
-                                    -->
 
                                     
                                     <!-- Parts -->
@@ -138,9 +111,6 @@
                                                     </Grid>    
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
-                                        <!--<ItemsControl.RenderTransform>
-                                            <ScaleTransform ScaleX="0.5"></ScaleTransform>
-                                        </ItemsControl.RenderTransform>-->
                                     </ItemsControl>
                                     <Canvas.RenderTransform>
                                         <ScaleTransform ScaleX="0.05"/>
